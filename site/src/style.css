@@ -1302,13 +1302,13 @@ header .container .count {
   top: -0.8em;
   right: -0.8em;
   width: 1.7em;
-  height: 1.7em;
+  height: 1.5em;
   font-family: "Gilroy";
   font-size: 0.9em;
   font-weight: 500;
   border-radius: 50%;
   color: #fff;
-  background-color: #009640;
+  background-color: #E30613;
   -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1648,7 +1648,7 @@ main {
 
 @media (max-width: 575px) {
   .product-preview img {
-    height: 40vw;
+    height: 37vw;
   }
 }
 
@@ -1662,7 +1662,8 @@ main {
 
 @media (max-width: 767px) {
   .product-preview h5 {
-    font-size: 12px;
+    font-size: 13px;
+    white-space: normal;
   }
 }
 
@@ -1691,12 +1692,11 @@ main {
 .product-preview .add-to-cart {
   position: relative;
   overflow: hidden;
-  width: 8.125em;
   height: 2.5em;
   border-radius: 2.5em;
   color: #fff;
   background-color: #009640;
-  border: 1px solid #009640;
+  transition: .3s;
 }
 
 .product-preview .add-to-cart .add-prod {
@@ -1707,7 +1707,9 @@ main {
   font-family: "Gilroy";
   font-weight: 500;
 }
-
+.product-preview .add-to-cart:hover{
+  background-color: #E30613;
+}
 .product-preview .add-to-cart .add-count {
   position: absolute;
   top: -100%;
@@ -1790,6 +1792,7 @@ main {
 @media (max-width: 575px) {
   .product-preview .btn-icon {
     font-size: 14px;
+    left: 0.8em;
   }
 }
 

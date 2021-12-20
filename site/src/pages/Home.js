@@ -46,6 +46,9 @@ const Home = observer(() => {
                     slidesPerView={2}
                     centeredSlides={true}
                     spaceBetween={20}
+                    modules={[Navigation, Pagination]}
+                    navigation
+                    pagination={{ clickable: true }}
                 >
                     <SwiperSlide><img src="/images/homeslider1.png" alt="" className='img-fluid' /></SwiperSlide>
                     <SwiperSlide><img src="/images/homeslider1.png" alt="" className='img-fluid' /></SwiperSlide>
@@ -54,7 +57,7 @@ const Home = observer(() => {
                     <SwiperSlide><img src="/images/homeslider1.png" alt="" className='img-fluid' /></SwiperSlide>
                 </Swiper>
             </div>
-            <section className="sec-2 mb-8 mt-5">
+            <section className="sec-2 mb-8 mt-3 mt-md-5">
                 <div className="container">
                     <div class="p-2">
                         <h6><b>{product.selectedCategory.title}</b></h6>
