@@ -66,7 +66,25 @@ class Aiko {
                     category: (itemProduct.parentGroup) ? itemProduct.parentGroup : itemProduct.groupId,
                     //category_modifier: (itemProduct.groupModifiers[0]) ? itemProduct.groupModifiers[0].modifierId : 0,
                     weight: (itemProduct.weight) ? itemProduct.weight : 0,
-                    //type: item.type,
+                    //type: itemProduct.type,
+                    tags: JSON.stringify([
+                        {
+                            title: 'Жиры',
+                            value: (itemProduct.fatFullAmount) ? itemProduct.fatFullAmount : 0
+                        },
+                        {
+                            title: 'Белки',
+                            value: (itemProduct.fiberFullAmount) ? itemProduct.fiberFullAmount : 0
+                        },
+                        {
+                            title: 'Углеводы',
+                            value: (itemProduct.carbohydrateFullAmount) ? itemProduct.carbohydrateFullAmount : 0
+                        },
+                        {
+                            title: 'Калорийность',
+                            value: (itemProduct.energyFullAmount) ? itemProduct.energyFullAmount : 0
+                        }
+                    ]),
                     image: (fileName && fileName.length > 0) ? fileName : ''
                 })
             }

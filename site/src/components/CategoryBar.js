@@ -17,7 +17,7 @@ const CategoryBar = observer(() => {
                         slidesPerView={'auto'}
                         freeMode={true}
                     >
-                        {product.category.map(category =>
+                        {product.category.map((category, i) =>
                             <SwiperSlide>
                                 <a key={category.id} onClick={() => { product.setSelectedCategory(category); scrollTo() }} className={(category.id === product.selectedCategory.id) ? 'btn soop active' : 'btn soop'}>{category.title}</a>
                             </SwiperSlide>

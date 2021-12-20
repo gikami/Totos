@@ -70,7 +70,7 @@ const Product = sequelize.define('product', {
     weight: { type: DataTypes.FLOAT, defaultValue: 0 },
     description: { type: DataTypes.STRING(2500) },
     info: { type: DataTypes.STRING },
-    tags: { type: DataTypes.STRING },
+    tags: { type: DataTypes.STRING(2500) },
     //type: { type: DataTypes.STRING,  allowNull: false },
     image: { type: DataTypes.STRING },
     status: { type: DataTypes.INTEGER, defaultValue: 1 },

@@ -30,7 +30,7 @@ const Product = observer(() => {
             setBtnAdd(cart.checkCart(data))
         })
     }, [])
-     useEffect(() => {
+    useEffect(() => {
         setBtnAdd(cart.checkCart(product))
     }, [cart.cart])
     const dataFavorite = favorite.checkFavorite(product)
@@ -75,14 +75,13 @@ const Product = observer(() => {
                                     <div className="dropdown-menu dropdown-menu-end">
                                         <div className="fs-09 mb-1">Пищевая ценность на 100 г</div>
                                         {
-                                            /*(product && product.tags) &&
-                                            product.tags.map((item, i) => (
+                                            (product && product.tags) &&
+                                            JSON.parse(product.tags).map(item => (
                                                 <div className="d-flex justify-content-between fs-09 mb-1">
                                                     <span className="fw-5">{item.title}</span>
-                                                    <span>{Math.ceil(item.value)}</span>
+                                                    <span>{item.value} г</span>
                                                 </div>
                                             ))
-                                            */
                                         }
                                     </div>
                                 </div>

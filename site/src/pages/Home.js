@@ -17,11 +17,15 @@ const Home = observer(() => {
         document.title = "Доставка вкуснейших роллов и пиццы на дом и в офис по Казани."
         fetchCategory().then(data => {
             product.setCategory(data)
-            product.setSelectedCategory(data[0])
-        })
-        fetchProducts(null, 1, 8).then(data => {
-            product.setProducts(data.rows)
-            product.setTotalCount(data.count)
+            if (!product.selectedCategory.api_id) {
+                product.setSelectedCategory(data[0])
+            }
+            fetchProducts((product.selectedCategory.api_id) ? product.selectedCategory.api_id : data[0].api_id, 1, 40).then(data => {
+                if (data) {
+                    product.setProducts(data.rows)
+                    product.setTotalCount(data.count)
+                }
+            })
         })
     }, [])
     useEffect(() => {

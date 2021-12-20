@@ -6,8 +6,6 @@ import { Context } from "../index"
 import { Link } from "react-router-dom";
 import { HOME_ROUTE } from "../utils/consts";
 import { fetchProducts, fetchCategory } from "../http/productAPI"
-import Pages from "../components/Pages"
-import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation, Pagination } from 'swiper'
 SwiperCore.use([Navigation, Pagination])
 
@@ -18,13 +16,15 @@ const Shop = observer(() => {
         document.title = "Меню БизонФуд. Доставка вкуснейших роллов и пиццы на дом и в офис по Казани."
         fetchCategory().then(data => {
             product.setCategory(data)
-            product.setSelectedCategory(data[0])
-        })
-        fetchProducts(null, 1, 40).then(data => {
-            if (data) {
-                product.setProducts(data.rows)
-                product.setTotalCount(data.count)
+            if (!product.selectedCategory.api_id) {
+                product.setSelectedCategory(data[0])
             }
+            fetchProducts((product.selectedCategory.api_id) ? product.selectedCategory.api_id : data[0].api_id, 1, 40).then(data => {
+                if (data) {
+                    product.setProducts(data.rows)
+                    product.setTotalCount(data.count)
+                }
+            })
         })
     }, [])
 
