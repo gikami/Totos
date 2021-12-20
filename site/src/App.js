@@ -3,13 +3,13 @@ import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
+import CategoryBar from "./components/CategoryBar";
 import Footer from "./components/Footer";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userAPI";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import "./main.js";
 import 'swiper/swiper-bundle.min.css'
 import "./fonts.css";
 import "./style.css";
@@ -31,6 +31,7 @@ const App = observer(() => {
         <BrowserRouter>
             <ScrollToTop />
             <NavBar />
+            <CategoryBar />
             <AppRouter />
             <Footer />
         </BrowserRouter>

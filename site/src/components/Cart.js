@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Context } from "../index"
 import { Link } from "react-router-dom"
-import { CART_ROUTE, CHECKOUT_ROUTE, SHOP_ROUTE } from "../utils/consts"
+import { CHECKOUT_ROUTE } from "../utils/consts"
 import { observer } from "mobx-react-lite"
 
 const CartContent = observer(({ type }) => {

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Context } from "../index"
-import { HOME_ROUTE, SHOP_ROUTE, CART_ROUTE, PROFILE_ROUTE } from "../utils/consts"
+import { HOME_ROUTE, CART_ROUTE, PROFILE_ROUTE } from "../utils/consts"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { setOrder } from "../http/orderAPI"
@@ -28,19 +28,19 @@ const Checkout = observer(() => {
     useEffect(() => {
         document.title = "Оформление заказа"
     }, [])
-    
+
     const updateTotal = () => {
-        if(cart.total < cart.deliveryMinPrice && checkout.delivery == 2) {
+        if (cart.total < cart.deliveryMinPrice && checkout.delivery == 2) {
             checkout.total = cart.total + cart.deliveryPrice
-        }else{
+        } else {
             checkout.total = cart.total
         }
-        setCheckout({ ...checkout, total: checkout.total})
+        setCheckout({ ...checkout, total: checkout.total })
     }
     useEffect(() => {
-       updateTotal()
+        updateTotal()
     }, [checkout.delivery, cart.total])
- 
+
     const submit = (e) => {
         e.preventDefault()
         let data = setOrder(checkout)
@@ -65,7 +65,7 @@ const Checkout = observer(() => {
                             <div className="col-md-7 col-lg-6 col-xl-5">
                                 <h2 className="text-center">Заявка успешно отправлена!</h2>
                                 <div className="text-center mb-4 mb-sm-5">Ожидайте ответа консультанта для подтверждения заказа</div>
-                                <Link to={SHOP_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
+                                <Link to={HOME_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@ const Checkout = observer(() => {
                                 <div className="col-md-7 col-lg-6 col-xl-5">
                                     <h2 className="text-center">Мы работает с 10:00 до 23:00</h2>
                                     <div className="text-center mb-4 mb-sm-5">Вы можете пока собрать свой заказ в корзине и когда мы откроемся, оформить заказ.</div>
-                                    <Link to={SHOP_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
+                                    <Link to={HOME_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
                                 </div>
                             </div>
                         </div>

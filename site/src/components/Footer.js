@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Context } from "../index";
 import { Link, NavLink } from "react-router-dom";
-import { HOME_ROUTE, PROFILE_ROUTE, SHOP_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE } from "../utils/consts";
+import { HOME_ROUTE, PROFILE_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import { login, registration } from "../http/userAPI";
 
@@ -49,21 +49,22 @@ const Footer = observer(() => {
                                 <div className="col-6">
                                     <nav>
                                         <ul>
-                                            <li><Link to={SHOP_ROUTE}>Роллы холодные</Link></li>
-                                            <li><Link to={SHOP_ROUTE}>Роллы запеченые</Link></li>
-                                            <li><Link to={SHOP_ROUTE}>Роллы жареные</Link></li>
-                                            <li><Link to={SHOP_ROUTE}>Супы</Link></li>
-                                            <li><Link to={SHOP_ROUTE}>Поке</Link></li>
-                                            <li><Link to={SHOP_ROUTE}>Пиццы</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Роллы холодные</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Роллы запеченые</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Роллы жареные</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Супы</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Поке</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Пиццы</Link></li>
                                         </ul>
                                     </nav>
                                 </div>
                                 <div className="col-6">
                                     <nav>
                                         <ul>
-                                            <li><Link to={SHOP_ROUTE}>Напитки</Link></li>
+                                            <li><Link to={HOME_ROUTE}>Напитки</Link></li>
                                             <li><Link to={ABOUT_ROUTE}>О нас</Link></li>
                                             <li><Link to={DELIVERY_ROUTE}>Доставка и оплата</Link></li>
+                                            <li><Link to={POLICY_ROUTE}>Политика конфиденциальности</Link></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -71,8 +72,7 @@ const Footer = observer(() => {
                         </div>
                         <div className="col-4 col-xl-3 text-center d-flex flex-column justify-content-between">
                             <div className="mb-3 mb-lg-0">
-                                <Link to={HOME_ROUTE} className="d-block mb-2 mb-lg-4"><img src="/images/whitelogo.svg" alt="bizon food" className="img-fluid footer-logo" /></Link>
-                                <div className="sec-font fs-12"><Link to={POLICY_ROUTE} className="white">Политика конфиденциальности</Link></div>
+                                <Link to={HOME_ROUTE} className="d-block mb-2 mb-lg-4"><img src="/images/footerlogo.svg" alt="Totos" className="img-fluid footer-logo" /></Link>
                             </div>
                             <div>
                                 <div className="sec-font mb-2 mb-lg-3">Мы в социальных сетях:</div>
@@ -88,14 +88,8 @@ const Footer = observer(() => {
                         </div>
                         <div className="col-4 col-xl-3 d-flex flex-column justify-content-between">
                             <div>
-                                <div className="sec-font d-flex align-items-start mb-3">
-                                    <img src="/images/icons/map-pin3.svg" alt="адрес" className="icon me-2" />
-                                    <div>Мы находимся по адресу: <br />
-                                        г. Казань, улица 1 мая, дом 5</div>
-                                </div>
                                 <div className="sec-font d-flex align-items-start">
-                                    <img src="/images/icons/phone-white-bold.svg" alt="телефон" className="icon me-2" />
-                                    <div><a href="tel:+78432555133">+7 (843) 2-555-133</a></div>
+                                    Ямашева 97 ТЦ “XL” (+7 843 226-80-60) Гвардейская 33 (+7 843 226-80-06)
                                 </div>
                             </div>
                             <div>
@@ -117,7 +111,7 @@ const Footer = observer(() => {
                         <path d="M15 7.1125L21.25 12.7375V22.5H18.75V15H11.25V22.5H8.75V12.7375L15 7.1125ZM15 3.75L2.5 15H6.25V25H13.75V17.5H16.25V25H23.75V15H27.5L15 3.75Z" />
                     </svg>
                 </Link>
-                <Link to={SHOP_ROUTE} className="link">
+                <Link to={HOME_ROUTE} className="link">
                     <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11.875 3.75C14.0299 3.75 16.0965 4.60602 17.6202 6.12976C19.144 7.65349 20 9.72012 20 11.875C20 13.8875 19.2625 15.7375 18.05 17.1625L18.3875 17.5H19.375L25.625 23.75L23.75 25.625L17.5 19.375V18.3875L17.1625 18.05C15.6882 19.3085 13.8134 19.9999 11.875 20C9.72012 20 7.65349 19.144 6.12976 17.6202C4.60602 16.0965 3.75 14.0299 3.75 11.875C3.75 9.72012 4.60602 7.65349 6.12976 6.12976C7.65349 4.60602 9.72012 3.75 11.875 3.75ZM11.875 6.25C8.75 6.25 6.25 8.75 6.25 11.875C6.25 15 8.75 17.5 11.875 17.5C15 17.5 17.5 15 17.5 11.875C17.5 8.75 15 6.25 11.875 6.25Z" />
                     </svg>
@@ -143,7 +137,7 @@ const Footer = observer(() => {
                     <nav>
                         <ul data-bs-dismiss="offcanvas">
                             <li><Link to={HOME_ROUTE}>Главная</Link></li>
-                            <li><NavLink to={SHOP_ROUTE}>Меню</NavLink></li>
+                            <li><NavLink to={HOME_ROUTE}>Меню</NavLink></li>
                             <li><NavLink to={ABOUT_ROUTE}>О нас</NavLink></li>
                             <li><NavLink to={DELIVERY_ROUTE}>Доставка и оплата</NavLink></li>
                             <li><NavLink to={FAVORITES_ROUTE}>Избранное</NavLink></li>

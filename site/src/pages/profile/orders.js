@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from "react-router-dom";
-import { PROFILE_ROUTE, SHOP_ROUTE, HOME_ROUTE } from "../../utils/consts";
+import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts";
 import SideBar from "./components/menu";
 
 const Orders = () => {
@@ -23,7 +23,7 @@ const Orders = () => {
                         <div className="col-md-8 col-xl-7 col-xxl-6 offset-xl-1">
                             <h5>История заказов</h5>
                             <div className="gray-2 text-start mb-4">У вас пока не было ни одного заказа. Добавляйте <br /> товары и оформите свой первый заказ.</div>
-                            <Link to={SHOP_ROUTE} className="btn btn-2 mb-5">В каталог</Link>
+                            <Link to={HOME_ROUTE} className="btn btn-2 mb-5">В каталог</Link>
 
                             <h5>История заказов</h5>
                             <div className="order-history mt-4 mt-lg-5 mb-5">

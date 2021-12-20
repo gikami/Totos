@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Context } from "../index";
-import { HOME_ROUTE, SHOP_ROUTE } from "./../utils/consts";
+import { HOME_ROUTE } from "./../utils/consts";
 import ProductItem from "../components/ProductItem";
 const Favorites = () => {
     const { favorite } = useContext(Context)
@@ -60,7 +60,7 @@ const Favorites = () => {
                                 <img src="/images/icons/favorites2.svg" alt="" className="d-block mx-auto mb-4" />
                                 <h1 className="text-center">В избранном ничего</h1>
                                 <div className="text-center mb-4 mb-sm-5">Перейдите в каталог и добавляйте понравившиеся товары в этот список.</div>
-                                <Link to={SHOP_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
+                                <Link to={HOME_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
                             </div>
                         </div>
                     </div>

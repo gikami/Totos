@@ -3,7 +3,7 @@ import { Context } from "./../index"
 import { observer } from "mobx-react-lite"
 import Radio from "./../components/Radio"
 import { Link } from "react-router-dom"
-import { HOME_ROUTE, SHOP_ROUTE } from "../utils/consts"
+import { HOME_ROUTE } from "../utils/consts"
 import { useParams } from 'react-router-dom'
 import { fetchOneProduct } from "../http/productAPI"
 import Select from "./../components/Select"
@@ -51,7 +51,7 @@ const Product = observer(() => {
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb mb-0">
                         <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                        <li className="breadcrumb-item"><Link to={SHOP_ROUTE}>Меню</Link></li>
+                        <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Меню</Link></li>
                         <li className="breadcrumb-item"><a>{product.title}</a></li>
                     </ol>
                 </nav>

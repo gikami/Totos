@@ -58,7 +58,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 ::-webkit-scrollbar-button:vertical:start:decrement,
@@ -156,7 +156,7 @@ textarea:hover {
 
 input:focus,
 textarea:focus {
-  border: 1px solid #ad0426;
+  border: 1px solid #009640;
 }
 
 input[type="search"] {
@@ -207,7 +207,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 /* search / filter */
@@ -270,8 +270,8 @@ input[type="checkbox"]:checked {
 }
 
 .form-soop input:checked + div {
-  border: 1px solid #ad0426;
-  color: #ad0426;
+  border: 1px solid #009640;
+  color: #009640;
 }
 
 select {
@@ -293,7 +293,7 @@ select:hover {
 }
 
 select:focus {
-  border: 1px solid #ad0426;
+  border: 1px solid #009640;
 }
 .newSelect{
   width: 300px;
@@ -340,7 +340,7 @@ select:focus {
       -ms-flex-positive: 1;
           flex-grow: 1;
   color: #828282;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   text-align: center;
   padding: 0.5em 0.75em;
   pointer-events: auto;
@@ -366,7 +366,7 @@ select:focus {
 }
 
 .switch-option.active {
-  color: #ad0426;
+  color: #009640;
   pointer-events: none;
   cursor: auto;
 }
@@ -423,11 +423,11 @@ select:focus {
 }
 
 .text-form input:checked ~ div {
-  color: #ad0426;
+  color: #009640;
 }
 
 .text-form input:checked ~ div svg path {
-  stroke: #ad0426;
+  stroke: #009640;
 }
 
 .text-form div svg {
@@ -494,15 +494,15 @@ select:focus {
 
 .rating svg path {
   fill: none;
-  stroke: #ad0426;
+  stroke: #009640;
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .rating svg.grade path {
-  stroke: #ad0426;
-  fill: #ad0426;
+  stroke: #009640;
+  fill: #009640;
 }
 
 /* BUTTONS */
@@ -526,7 +526,7 @@ button {
   border-radius: 2.5em;
   padding: 0.6em 2em;
   text-align: center;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   font-weight: 500;
   font-size: 1em;
   line-height: normal;
@@ -544,14 +544,14 @@ button {
 
 .btn-1 {
   color: #fff;
-  background-color: #ad0426;
-  border: 1px solid #ad0426;
+  background-color: #009640;
+  border: 1px solid #009640;
 }
 
 .btn-1:hover, .btn-1:focus {
   color: #fff;
-  background: #8a031e;
-  border: 1px solid #8a031e;
+  background: #009640;
+  border: 1px solid #009640;
 }
 
 .btn-1:active {
@@ -561,14 +561,14 @@ button {
 }
 
 .btn-2 {
-  color: #ad0426;
+  color: #009640;
   background-color: #fff;
-  border: 1px solid #ad0426;
+  border: 1px solid #009640;
 }
 
 .btn-2:hover, .btn-2:focus {
   color: #fff;
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 .btn-2:active {
@@ -613,11 +613,11 @@ button {
 }
 
 .btn-icon[data-state="off"] {
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 .btn-icon[data-state="on"] {
-  background-color: #8a031e;
+  background-color: #009640;
 }
 
 .btn-icon[data-state="on"].favorite {
@@ -658,17 +658,17 @@ button {
 }
 
 .btn-svg svg path {
-  fill: white;
+  fill: #009640;
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
 }
 
 .btn-svg:hover svg path, .btn-svg:focus svg path {
-  fill: #ad0426;
+  fill: #009640;
 }
 
 .btn-svg:active svg path {
-  fill: #8a031e;
+  fill: #009640;
 }
 
 .btn-svg-2 {
@@ -706,16 +706,16 @@ button {
 }
 
 .btn-svg-2:hover svg path, .btn-svg-2:focus svg path {
-  stroke: #ad0426;
+  stroke: #009640;
 }
 
 .btn-svg-2:active svg path {
-  stroke: #8a031e;
+  stroke: #009640;
 }
 
 /* TEXT STYLIZATION */
 h1, h2, h3, h5 {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
 }
 
 h1 {
@@ -740,7 +740,7 @@ h3 {
 }
 
 h4 {
-  font-family: "Rubik";
+  font-family: "Gilroy";
   text-align: center;
   font-size: 2em;
   font-weight: 500;
@@ -786,11 +786,11 @@ h5 {
 }
 
 .title-font {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
 }
 
 .sec-font {
-  font-family: "Rubik";
+  font-family: "Gilroy";
 }
 
 .fs-07 {
@@ -902,11 +902,11 @@ h5 {
 }
 
 .primary {
-  color: #ad0426;
+  color: #009640;
 }
 
 .bb-dash {
-  border-bottom: 1px dashed #ad0426;
+  border-bottom: 1px dashed #009640;
 }
 
 .lh-15 {
@@ -927,7 +927,7 @@ h5 {
   border-radius: 40px !important
 }
 .page-item.active .page-link{
-  background-color: #ad0426;
+  background-color: #009640;
 }
 @media (max-width: 767px) {
   .box {
@@ -1110,7 +1110,7 @@ h5 {
 }
 
 .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 @media (max-width: 575px) {
@@ -1121,7 +1121,7 @@ h5 {
 }
 
 body {
-  font-family: "Roboto";
+  font-family: "Gilroy";
   font-size: 16px;
   font-weight: 400;
   color: #141a24;
@@ -1189,7 +1189,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: url(assets/cssimages/bg/bg1.jpg) no-repeat center top;
+  background-color:#ffffff
 }
 
 @media (max-width: 1399px) {
@@ -1229,8 +1229,7 @@ header .container {
 }
 
 header .container .logo img {
-  width: 14em;
-  height: 4em;
+  height: 5em;
   object-fit: scale-down;
   -o-object-fit: scale-down;
 }
@@ -1265,10 +1264,10 @@ header .container nav ul li {
 }
 
 header .container nav ul li a {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   font-weight: 600;
   font-size: 1.2em;
-  color: #fff;
+  color: #3F9865;
   padding: 0.4em 0.8em;
   border-bottom: 2px dashed transparent;
   -webkit-transition: 200ms;
@@ -1276,7 +1275,7 @@ header .container nav ul li a {
 }
 
 header .container nav ul li a.active, header .container nav ul li a:hover, header .container nav ul li a:focus {
-  color: #ad0426;
+  color: #009640;
 }
 
 @media (max-width: 1659px) {
@@ -1304,12 +1303,12 @@ header .container .count {
   right: -0.8em;
   width: 1.7em;
   height: 1.7em;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   font-size: 0.9em;
   font-weight: 500;
   border-radius: 50%;
   color: #fff;
-  background-color: #ad0426;
+  background-color: #009640;
   -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1320,7 +1319,6 @@ header .container .count {
     font-size: 0.8em;
   }
 }
-
 header .container #toggle-cart {
   position: relative;
 }
@@ -1367,13 +1365,13 @@ header .container #toggle-cart .cart-preview .item .text .title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   font-weight: 700;
   margin-bottom: 0.25em;
 }
 
 header .container #toggle-cart .cart-preview .item .text .ingredients {
-  font-family: "Rubik";
+  font-family: "Gilroy";
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1408,7 +1406,7 @@ header .container #toggle-cart .cart-preview .item .weight {
 }
 
 header .container #toggle-cart .cart-preview .item input[type="number"] {
-  font-family: "Rubik";
+  font-family: "Gilroy";
   border: none;
   max-width: 55px;
   padding: 0px;
@@ -1464,100 +1462,8 @@ header .container #toggle-cart .cart-preview .item .btn-mini {
       transform:rotate(360deg);
   }
 }
-/* sec 1 */
-#sec-1 {
-  background-image: url(assets/cssimages/bg/basil-1.png), url(assets/cssimages/bg/bg1.jpg);
-  background-repeat: no-repeat;
-  background-position: left top, center top;
-  background-size: auto 33%, 100% 100%;
-  color: #fff;
-  -webkit-filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-          filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-}
 
-#main-slider {
-  padding: 0em 0 4em;
-}
 
-#main-slider .img-slider {
-  width: 100%;
-  height: 800px;
-  -o-object-fit: scale-down;
-     object-fit: scale-down;
-  -webkit-filter: drop-shadow(0px 7px 12px #000000);
-          filter: drop-shadow(0px 7px 12px #000000);
-}
-
-@media (max-width: 1659px) {
-  #main-slider .img-slider {
-    height: 730px;
-  }
-}
-
-@media (max-width: 1399px) {
-  #main-slider .img-slider {
-    height: 625px;
-  }
-}
-
-@media (max-width: 1199px) {
-  #main-slider .img-slider {
-    height: 520px;
-  }
-}
-
-@media (max-width: 991px) {
-  #main-slider .img-slider {
-    height: 400px;
-  }
-}
-
-#main-slider .carousel-indicators {
-  bottom: 2em;
-  margin-bottom: 0px;
-}
-
-#main-slider .carousel-indicators [data-bs-target] {
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  background-color: #E0E0E0;
-  opacity: 1;
-}
-
-#main-slider .carousel-indicators [data-bs-target]:not(:first-child) {
-  margin-left: 1em;
-}
-
-#main-slider .carousel-indicators [data-bs-target].active {
-  background-color: #ad0426;
-}
-
-#main-slider .carousel-control-next,
-#main-slider .carousel-control-prev {
-  width: 2em;
-  height: 3em;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
-#main-slider .carousel-control-prev {
-  left: -2em;
-}
-
-#main-slider .carousel-control-next {
-  right: -2em;
-}
 
 main {
   display: -webkit-box;
@@ -1625,13 +1531,12 @@ main {
 }
 
 .soops .soop {
-  padding: 0.5em 1em;
-  border-radius: 2em;
-  background-color: #fff;
-  color: #828282;
-  font-family: "Montserrat";
+  padding: 1em 1em;
+  border-radius: 0;
+  color: #fff;
+  font-family: "Gilroy";
   font-weight: 600;
-  font-size: 1.2em;
+  font-size: 1em;
   white-space: nowrap;
 }
 
@@ -1650,7 +1555,7 @@ main {
 
 .soops .soop.active {
   color: #fff;
-  background-color: #141a24;
+  background-color: #007B35;
 }
 
 #soop-menu {
@@ -1660,10 +1565,11 @@ main {
   left: 0px;
   top: 100px;
   z-index: 100;
-  background-color: #fff;
-  padding: 0.5em 0.25em;
+  background-color: #009640;
 }
-
+#soop-menu .swiper-wrapper{
+  justify-content: space-evenly;
+}
 @media (max-width: 1399px) {
   #soop-menu {
     top: 85px;
@@ -1686,19 +1592,13 @@ main {
 
 .product-preview {
   position: relative;
-  background: #ffffff;
-  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-          box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 1.4em;
-  padding: 1em;
+  padding: 1.2em;
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -1757,6 +1657,7 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0.5em;
+  font-size: 15px;
 }
 
 @media (max-width: 767px) {
@@ -1772,15 +1673,9 @@ main {
   overflow: hidden;
   line-height: 1.3em;
   height: 2.6em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   color: #828282;
-  font-family: "Rubik";
-}
-
-@media (max-width: 767px) {
-  .product-preview .ingredients {
-    display: none;
-  }
+  font-family: "Gilroy";
 }
 
 .product-preview .switch {
@@ -1800,8 +1695,8 @@ main {
   height: 2.5em;
   border-radius: 2.5em;
   color: #fff;
-  background-color: #ad0426;
-  border: 1px solid #ad0426;
+  background-color: #009640;
+  border: 1px solid #009640;
 }
 
 .product-preview .add-to-cart .add-prod {
@@ -1809,7 +1704,7 @@ main {
   height: 100%;
   color: inherit;
   text-align: center;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   font-weight: 500;
 }
 
@@ -1817,7 +1712,7 @@ main {
   position: absolute;
   top: -100%;
   left: 0px;
-  background-color: #ad0426;
+  background-color: #009640;
   width: 100%;
   height: 100%;
   -webkit-transition: 250ms;
@@ -1881,7 +1776,8 @@ main {
 
 .product-preview .btn-icon {
   position: absolute;
-  top: 1em;
+  top: 1.8em;
+  right: 1.8em;
   z-index: 10;
 }
 
@@ -1952,8 +1848,8 @@ main {
 }
 
 .subcategories .swiper-slide .sub-soop.active {
-  color: #ad0426;
-  border-bottom: 0.1em dotted #ad0426;
+  color: #009640;
+  border-bottom: 0.1em dotted #009640;
 }
 
 /* categorie */
@@ -2057,7 +1953,7 @@ main {
 }
 
 .categorie a.stretched-link:hover ~ .text h4 {
-  color: #ad0426;
+  color: #009640;
 }
 
 /* sec 3 */
@@ -2110,7 +2006,7 @@ main {
 }
 
 .compare-categorie.active {
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 .compare-categorie.active .cat {
@@ -2475,12 +2371,12 @@ main {
   font-size: 1.5em;
   font-weight: 500;
   color: #000;
-  font-family: "Rubik";
+  font-family: "Gilroy";
 }
 
 .offer .visual .text div.title {
-  color: #ad0426;
-  font-family: "Montserrat";
+  color: #009640;
+  font-family: "Gilroy";
   font-size: 2.5em;
   font-weight: 700;
   margin-bottom: 0.5em;
@@ -2798,7 +2694,7 @@ main {
 }
 
 .ingredient button {
-  border: 1px solid #ad0426;
+  border: 1px solid #009640;
   padding: 0.6em 0;
   width: 120px;
   text-align: center;
@@ -2818,7 +2714,7 @@ main {
 }
 
 .ingredient button[data-state="off"] {
-  color: #ad0426;
+  color: #009640;
   background-color: #fff;
 }
 
@@ -2828,7 +2724,7 @@ main {
 
 .ingredient button[data-state="on"] {
   color: #fff;
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 .ingredient button[data-state="on"]::after {
@@ -2852,7 +2748,7 @@ main {
   font-size: 2em;
   font-weight: bold;
   color: #141a24;
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   background-color: transparent;
 }
 
@@ -2863,15 +2759,15 @@ main {
 }
 
 .nav-tabs .nav-item .nav-link.active {
-  color: #ad0426;
-  border-color: #ad0426;
+  color: #009640;
+  border-color: #009640;
   background-color: transparent;
 }
 
 .nav-tabs .nav-item .nav-link span {
   color: #000;
   font-size: 1rem;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   vertical-align: baseline;
   font-weight: normal;
 }
@@ -3030,37 +2926,37 @@ main {
   background-color: #fff;
   color: #333333;
   font-size: 1.2em;
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   font-weight: 700;
   line-height: 1.5em;
 }
 
 #sec-13 nav ul li a:hover, #sec-13 nav ul li a:focus, #sec-13 nav ul li button:hover, #sec-13 nav ul li button:focus {
-  color: #8a031e;
+  color: #009640;
 }
 
 #sec-13 nav ul li a:active, #sec-13 nav ul li a.active, #sec-13 nav ul li button:active, #sec-13 nav ul li button.active {
   color: #fff;
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 #sec-13 nav ul li a.note::after, #sec-13 nav ul li button.note::after {
   content: "●";
-  color: #ad0426;
+  color: #009640;
   float: right;
 }
 
 #sec-13 nav ul li:last-child a, #sec-13 nav ul li:last-child button {
-  color: #ad0426;
+  color: #009640;
 }
 
 #sec-13 nav ul li:last-child a:hover, #sec-13 nav ul li:last-child a:focus, #sec-13 nav ul li:last-child button:hover, #sec-13 nav ul li:last-child button:focus {
-  color: #8a031e;
+  color: #009640;
 }
 
 #sec-13 nav ul li:last-child a:active, #sec-13 nav ul li:last-child a.active, #sec-13 nav ul li:last-child button:active, #sec-13 nav ul li:last-child button.active {
   color: #fff;
-  background-color: #ad0426;
+  background-color: #009640;
 }
 
 #sec-13 .card {
@@ -3745,14 +3641,14 @@ main {
 }
 
 footer {
-  background-color: #080A0E;
+  background-color: #323232;
   color: #fff;
   padding: 3em 0;
   z-index: 100;
 }
 
 footer nav ul {
-  font-family: "Rubik";
+  font-family: "Gilroy";
   list-style: none;
   padding-left: 0px;
 }
@@ -3762,7 +3658,7 @@ footer nav ul li:not(:last-child) {
 }
 
 footer nav ul li a:hover, footer nav ul li a:focus {
-  color: #ad0426;
+  color: #009640;
 }
 
 footer nav ul li a:active {
@@ -3793,13 +3689,13 @@ footer .social:not(:first-child) {
 }
 
 footer .social:hover, footer .social:focus {
-  border: 1px solid #ad0426;
-  background-color: #ad0426;
+  border: 1px solid #009640;
+  background-color: #009640;
 }
 
 footer .social:active {
-  border: 1px solid #8a031e;
-  background-color: #8a031e;
+  border: 1px solid #009640;
+  background-color: #009640;
 }
 
 footer .social img {
@@ -3840,7 +3736,7 @@ footer.mobile .link svg path {
 }
 
 footer.mobile .link.active svg path {
-  fill: #ad0426;
+  fill: #009640;
 }
 
 footer .icon {
@@ -3858,11 +3754,11 @@ footer .icon {
 }
 
 .breadcrumb-item a:hover, .breadcrumb-item a:focus {
-  color: #ad0426;
+  color: #009640;
 }
 
 .breadcrumb-item a:active {
-  color: #8a031e;
+  color: #009640;
 }
 
 .breadcrumb-item:last-child a {
@@ -3913,11 +3809,11 @@ footer .icon {
 }
 
 .btn-close:hover svg path, .btn-close:focus svg path {
-  stroke: #ad0426;
+  stroke: #009640;
 }
 
 .btn-close:active svg path {
-  stroke: #8a031e;
+  stroke: #009640;
 }
 
 /* right menu */
@@ -3959,7 +3855,7 @@ footer .icon {
 }
 
 .offcanvas#right-menu .btn-entrance img {
-  background-color: #ad0426;
+  background-color: #009640;
   padding: 0.75em;
   border-radius: 50%;
   margin-right: 0.5em;
@@ -3981,7 +3877,7 @@ footer .icon {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-family: "Rubik";
+  font-family: "Gilroy";
   font-size: 1.2em;
 }
 
