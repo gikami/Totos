@@ -41,13 +41,37 @@ const ProductItem = observer(({ product }) => {
         cart.setCartCount(product, num)
         setUpdateState(!updateState)
     }
+    const AsyncImage = (props) => {
+        const [loadedSrc, setLoadedSrc] = useState(null);
+        useEffect(() => {
+            setLoadedSrc(null);
+            if (props.src) {
+                const handleLoad = () => {
+                    setLoadedSrc(props.src);
+                };
+                const image = new Image();
+                image.addEventListener('load', handleLoad);
+                image.src = props.src;
+                return () => {
+                    image.removeEventListener('load', handleLoad);
+                };
+            }
+        }, [props.src]);
+        if (loadedSrc === props.src) {
+            return (
+                <img {...props} />
+            );
+        }
+        return null;
+    }
+
     return (
         <>
             <div className="product-preview">
                 <div class="row m-0 w-100">
                     <div class="col-5 col-md-12 p-0">
                         <a onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>
-                            <img src={process.env.REACT_APP_API_URL + '/' + product.image} alt="" />
+                            <AsyncImage src={process.env.REACT_APP_API_URL + '/' + product.image} alt="" />
                         </a>
                     </div>
                     <div className="col-7 col-md-12 pl-2 pe-0 p-md-0">
