@@ -1,52 +1,86 @@
 const axios = require('axios')
-const { Order } = require('../models/models')
+const { Order, Address } = require('../models/models')
 const Telegram = require('../components/telegram')
 const ApiError = require('../error/ApiError')
 
 class OrderController {
     async create(req, res, next) {
         try {
-            const data = req.body
+            var data = req.body
             if (!data) {
                 return res.json('Нет данных для заказа')
             }
+            if (!data.phone || data.phone.length < 10) {
+                return res.json('Введите номер телефона')
+            }
+            var address = {
+                full: (data.address && data.address.full) ? data.address.full : data.full,
+                street: (data.address && data.address.street) ? data.address.street : data.street,
+                home: (data.address && data.address.home) ? data.address.home : data.home,
+                entrance: (data.address && data.address.entrance) ? data.address.entrance : data.entrance,
+                code: (data.address && data.address.code) ? data.address.code : data.code,
+                floor: (data.address && data.address.floor) ? data.address.floor : data.floor,
+                apartment: (data.address && data.address.apartment) ? data.address.apartment : data.apartment
+            }
+
+            data.phone = data.phone.replace(/[^\d]/g, '')
+
             await Order.create({
                 name: data.name,
                 phone: data.phone,
+                user: (data.user) ? data.user : 0,
                 payment: data.payment,
                 delivery: data.delivery,
                 time: data.time == 1 ? 'Как можно скорее' : 'Приготовить к ' + data.timevalue ? data.timevalue : '',
                 products: JSON.stringify(data.products),
-                street: data.street,
-                home: data.home,
-                entrance: data.entrance,
-                code: data.code,
-                floor: data.floor,
-                apartment: data.apartment,
+                street: (address.street) ? address.street : '',
+                home: (address.home) ? address.home : '',
+                entrance: (address.entrance) ? address.entrance : '',
+                code: (address.code) ? address.code : '',
+                floor: (address.floor) ? address.floor : '',
+                apartment: (address.apartment) ? address.apartment : '',
                 total: data.total,
-                comment: data.comment
+                comment: (data.comment) ? data.comment : ''
             }).then(async result => {
                 if (result && result.id) {
+                    if (data.saveaddress && data.user && data.delivery == 2) {
+                        await Address.create({
+                            user: data.user,
+                            name: (address.street) ? address.street : '',
+                            full: (address.full) ? address.full : '',
+                            street: (address.street) ? address.street : '',
+                            home: (address.home) ? address.home : '',
+                            entrance: (address.entrance) ? address.entrance : '',
+                            code: (address.code) ? address.code : '',
+                            floor: (address.floor) ? address.floor : '',
+                            apartment: (address.apartment) ? address.apartment : '',
+                        });
+                    }
                     if (data.payment == 'online') {
-                        const login = process.env.SBERBANK_LOGIN
-                        const password = process.env.SBERBANK_PASSWORD
-                        const url_success = process.env.SBERBANK_SUCCESS
-                        const url_serror = process.env.SBERBANK_ERROR
-                        var send = new URLSearchParams({
-                            userName: login,
-                            password: password,
-                            orderNumber: result.id,
-                            amount: data.total * 100,
-                            returnUrl: url_success,
-                            failUrl: url_serror,
-                            description: 'Заказ на сайте Bizon food'
-                        })
-                        const sendData = await axios.get('https://3dsec.sberbank.ru/payment/rest/register.do?' + send.toString())
-                        if (sendData && sendData.data.orderId) {
-                            await result.update({ paymentId: sendData.data.orderId })
-                            return res.json(sendData.data)
-                        }
 
+                        const send = JSON.stringify({
+                            TerminalKey: process.env.TINKOFF_KEY,
+                            OrderId: result.id,
+                            Amount: data.total * 100,
+                            SuccessURL: process.env.TINKOFF_SUCCESS,
+                            FailURL: process.env.TINKOFF_ERROR,
+                            Description: "Заказ на сайте Bizon food",
+                            PayType: "O"
+                        })
+
+                        await axios.post('https://securepay.tinkoff.ru/v2/Init', send, {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(response => {
+                                if (response.data) {
+                                    res.json(response.data)
+                                } else {
+                                    res.json('Неизвестная ошибка')
+                                }
+                            })
+                            .catch(e => res.json(e))
                     } else {
 
                         if (data.payment == 'card') {
@@ -54,21 +88,23 @@ class OrderController {
                         } else {
                             var payment = 'Наличными'
                         }
-                        let text = 'Номер заказа: <b>' + result.id + '</b>\n' +
-                            'Имя клиента: <b>' + data.name + '</b>\n' +
-                            'Номер телефона: <b>' + data.phone + '</b>\n' +
-                            'Тип оплаты: <b>' + payment + '</b>\n' +
-                            'Тип (Доставка/Самовывоз): <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b>\n' +
-                            (data.delivery == 2 ? 'Адрес доставки: <b>' + data.street + ' ' + data.home + ((data.entrance) ? ' подъезд ' + data.entrance : '') + ((data.floor) ? ' этаж ' + data.floor : '') + ((data.apartment) ? ' кв ' + data.apartment : '') + ((data.code) ? ' код ' + data.code : '') + '</b>\n' : '') +
-                            'Время приготовления: <b>' + ((data.time == 1) ? 'Как можно скорее' : 'Приготовить к ' + (data.timevalue ? data.timevalue : '')) + '</b>\n' +
+                        let text = '<b>№' + result.id + '</b>\n' +
+                            'Имя: <b>' + data.name + '</b>\n' +
+                            'Телефон: <b>' + data.phone + '</b>\n' +
+                            'Оплаты: <b>' + payment + '</b>\n' +
+                            'Доставка/Самовывоз: <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b>\n' +
+                            (data.delivery == 2 ? 'Адрес: <b>' + address.street + ' ' + address.home + ((address.entrance) ? ' подъезд ' + address.entrance : '') + ((address.floor) ? ' этаж ' + address.floor : '') + ((address.apartment) ? ' кв ' + address.apartment : '') + ((address.code) ? ' код ' + address.code : '') + '</b>\n' : '') +
+                            'Время готовки: <b>' + ((data.time == 1) ? 'Сейчас' : 'К ' + (data.timevalue ? data.timevalue : '')) + '</b>\n' +
+                            ((data.comment) ? 'Комментарий: ' + data.comment + '\n' : '') +
                             'Товары:' +
-                            data.products.map(item => '\n<b>' + item.title + '</b> кол-во: <b>' + item.count + '</b> сумма: <b>' + (item.price * item.count) + ' руб</b>') +
+                            data.products.map(item => '\n<b>' + item.title + '</b> - <b>' + item.count + '</b> шт - <b>' + (item.price * item.count) + '</b> р' + ((item.dop) ? '\n(' + item.dop.map(dop => '<b>' + dop.title + '</b> - <b>' + 1 + '</b> шт - <b>' + dop.price + '</b> р') + ')' : '')) +
+                            ((data.sale && data.sale.total > 0) ? '\n' + ((data.sale.text) ? data.sale.text : 'Скидка: ') + ' -' + data.sale.total + ' руб' : '') +
                             '\nИтого: <b>' + data.total + ' руб</b>';
 
                         Telegram.send(text)
-                        Aiko.sendOrder(data)
+                        //Aiko.sendOrder(data)
 
-                        return res.json((send) ? send : false)
+                        return res.json(true)
                     }
                 } else {
                     return res.json('Ошибка при создании заявки')
@@ -77,15 +113,23 @@ class OrderController {
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
-
     }
-    async webhook(req, res, next) {
+    async webhook(req, res) {
         let body = req.query
-        if (body.status == 1 && body.operation == 'deposited') {
+        if (body.status == 'approved') {
             await Order.update({ status: 1 }, { where: { id: body.orderNumber } })
             return res.json('Данные обновлены')
         } else {
             return res.json('Ошибка')
+        }
+    }
+    async getOrders(req, res) {
+        const { user } = req.body
+        if (user) {
+            const orders = await Order.findAll({ where: { user } })
+            return res.json(orders)
+        } else {
+            return res.json('Ошибка при получении истории заказов')
         }
     }
 }

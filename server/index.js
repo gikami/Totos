@@ -4,7 +4,6 @@ const sequelize = require('./db')
 const models = require('./models/models')
 const cors = require('cors')
 const https = require('https');
-const http = require('http');
 const fs = require('fs');
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
@@ -13,8 +12,8 @@ const path = require('path')
 
 const PORT = process.env.PORT || 5000
 const options = {
-    // key: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/privkey.pem'),
-    // cert: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/fullchain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/fullchain.pem')
 };
 const app = express()
 app.use(cors())
@@ -30,7 +29,7 @@ const start = async () => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
-        http.createServer(options, app).listen(PORT);
+        https.createServer(options, app).listen(PORT);
     } catch (e) {
         console.log(e)
     }
