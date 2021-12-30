@@ -8,13 +8,9 @@ import Radio from "./../components/Radio"
 const ProductItem = observer(({ product }) => {
     const { cart, favorite } = useContext(Context)
     const history = useHistory()
-    const [updateState, setUpdateState] = useState(false);
-    const [updateFavorite, setUpdateFavorite] = useState(false);
-    const sizeList = [
-        { id: 1, group: 1, title: '25 см' },
-        { id: 2, group: 1, title: '30 см' },
-        { id: 3, group: 1, title: '35 см' }
-    ]
+    const [updateState, setUpdateState] = useState(false)
+    const [updateFavorite, setUpdateFavorite] = useState(false)
+    let param = (product.param) ? JSON.parse(product.param)[0] : false
     const dataCart = cart.checkCart(product)
     const dataFavorite = favorite.checkFavorite(product)
     const btnAdd = (dataCart) ? dataCart.status : false
@@ -41,29 +37,6 @@ const ProductItem = observer(({ product }) => {
         cart.setCartCount(product, num)
         setUpdateState(!updateState)
     }
-    const AsyncImage = (props) => {
-        const [loadedSrc, setLoadedSrc] = useState(null);
-        useEffect(() => {
-            setLoadedSrc(null);
-            if (props.src) {
-                const handleLoad = () => {
-                    setLoadedSrc(props.src);
-                };
-                const image = new Image();
-                image.addEventListener('load', handleLoad);
-                image.src = props.src;
-                return () => {
-                    image.removeEventListener('load', handleLoad);
-                };
-            }
-        }, [props.src]);
-        if (loadedSrc === props.src) {
-            return (
-                <img {...props} />
-            );
-        }
-        return null;
-    }
 
     return (
         <>
@@ -71,14 +44,14 @@ const ProductItem = observer(({ product }) => {
                 <div class="row m-0 w-100">
                     <div class="col-5 col-md-12 p-0">
                         <a onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>
-                            <AsyncImage src={process.env.REACT_APP_API_URL + '/' + product.image} alt="" />
+                            {(product.image) ? <img key={product.id} src={process.env.REACT_APP_API_URL + '/' + product.image} effect="blur" /> : null}
                         </a>
                     </div>
                     <div className="col-7 col-md-12 pl-2 pe-0 p-md-0">
                         <a onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>
                             <h5>{product.title}</h5>
                         </a>
-                        <div className="ingredients">{product.description}</div>
+                        <div className="ingredients">{(product.mini_description) ? product.mini_description : product.description}</div>
                         <div class="row m-0 justify-content-between align-items-center">
                             <div className="col p-0 d-none d-md-block">
                                 <div class="price mb-2 mb-md-0">

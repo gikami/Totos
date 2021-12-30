@@ -4,6 +4,6 @@ const orderController = require('../controllers/orderController')
 
 router.post('/', orderController.create)
 router.post('/getorders', orderController.getOrders)
-router.get('/webhook', orderController.webhook)
+router.post('/webhook', orderController.webhook)
 
 module.exports = router

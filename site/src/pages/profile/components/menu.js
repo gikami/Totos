@@ -15,24 +15,24 @@ const Menu = () => {
                     <li>
                         <Link to={PROFILE_ROUTE + "/edit"} className={(id === 'edit') ? 'active' : null}>Настройки профиля</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to={PROFILE_ROUTE + "/points"} className={(id === 'points') ? 'active' : null}>Бонусы</Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to={PROFILE_ROUTE + "/address"} className={(id === 'address') ? 'active' : null}>Адрес доставки</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to={PROFILE_ROUTE + "/payments"} className={(id === 'payments') ? 'active' : null}>Способы оплаты</Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to={PROFILE_ROUTE + "/orders"} className={(id === 'orders') ? 'active' : null}>История заказов</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to={PROFILE_ROUTE + "/terms"} className={(id === 'terms') ? 'active' : null}>Условия использования</Link>
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                         <Link to={PROFILE_ROUTE + "/notifications"} className={(id === 'notifications') ? 'active' : null}>Уведомления</Link>
-                    </li>
+                    </li> */}
                     <li>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#account-exit">Выйти</button>
                     </li>

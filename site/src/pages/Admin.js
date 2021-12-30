@@ -42,25 +42,6 @@ const Admin = () => {
             >
                 Добавить товар
             </button>
-            <h5>Айко</h5>
-            <button
-                className="btn btn-primary mt-4"
-                onClick={() => aikoLoadCategory()}
-            >
-                Выгрузить категории
-            </button>
-            <button
-                className="btn btn-primary mt-4"
-                onClick={() => aikoLoadProducts()}
-            >
-                Выгрузить товары
-            </button>
-            <button
-                className="btn btn-primary mt-4"
-                onClick={() => aikoSendOrder()}
-            >
-                Отправить тестовую заявку
-            </button>
             <CreateProduct show={productVisible} onHide={() => setDeviceVisible(false)} />
             <CreateCategory show={categoryVisible} onHide={() => setCategoryVisible(false)} />
         </div>
@@ -68,3 +49,23 @@ const Admin = () => {
 };
 
 export default Admin;
+
+{/* <h5>Айко</h5>
+<button
+    className="btn btn-primary mt-4"
+    onClick={() => aikoLoadCategory()}
+>
+    Выгрузить категории
+</button>
+<button
+    className="btn btn-primary mt-4"
+    onClick={() => aikoLoadProducts()}
+>
+    Выгрузить товары
+</button>
+<button
+    className="btn btn-primary mt-4"
+    onClick={() => aikoSendOrder()}
+>
+    Отправить тестовую заявку
+</button> */}

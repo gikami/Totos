@@ -21,9 +21,9 @@ const Address = sequelize.define('address', {
     full: { type: DataTypes.STRING },
     street: { type: DataTypes.STRING },
     home: { type: DataTypes.STRING },
-    floor: { type: DataTypes.INTEGER },
+    floor: { type: DataTypes.STRING },
     apartment: { type: DataTypes.STRING },
-    entrance: { type: DataTypes.INTEGER },
+    entrance: { type: DataTypes.STRING },
     code: { type: DataTypes.STRING },
     status: { type: DataTypes.INTEGER, defaultValue: 0 },
 })
@@ -48,7 +48,8 @@ const Order = sequelize.define('order', {
     apartment: { type: DataTypes.STRING },
     comment: { type: DataTypes.STRING(1500) },
     point: { type: DataTypes.INTEGER, defaultValue: 0 },
-    status: { type: DataTypes.INTEGER, defaultValue: 0 }
+    status: { type: DataTypes.INTEGER, defaultValue: 0 },
+    sale: { type: DataTypes.STRING(500) }
 })
 const Product = sequelize.define('product', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },

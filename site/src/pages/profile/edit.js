@@ -1,34 +1,40 @@
-import React, { useContext, useState } from 'react';
-import { Link } from "react-router-dom";
-import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts";
-import { Context } from "../../index";
-import { edit } from "../../http/userAPI";
-import SideBar from "./components/menu";
+import React, { useContext, useState } from 'react'
+import { Link } from "react-router-dom"
+import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts"
+import { Context } from "../../index"
+import { edit } from "../../http/userAPI"
+import InputMask from 'react-input-mask'
+import SideBar from "./components/menu"
+import { NotificationManager } from 'react-notifications'
+
 const ProfileEdit = () => {
     const { user } = useContext(Context)
-    const birthday = new Date(user.user.birthday).toLocaleDateString("ru-RU")
     const [userArray, setUserArray] = useState({
         id: user.user.id,
-        email: user.user.email,
+        email: (user.user.email) ? user.user.email : '',
         password: user.user.password,
-        firstname: user.user.firstname,
-        lastname: user.user.lastname,
-        phone: user.user.phone,
-        birthday_day: String(user.user.birthday_day),
-        birthday_month: String(user.user.birthday_month),
-        sex: String(user.user.sex)
+        firstname: (user.user.firstname) ? user.user.firstname : '',
+        lastname: (user.user.lastname) ? user.user.lastname : '',
+        phone: (user.user.phone) ? user.user.phone : '',
+        birthday_day: (user.user.birthday_day) ? String(user.user.birthday_day) : 0,
+        birthday_month: (user.user.birthday_month) ? String(user.user.birthday_month) : 0,
+        sex: (user.user.sex) ? String(user.user.sex) : 0
     })
+
     const submit = async (e) => {
         try {
             e.preventDefault();
             let data;
-            data = await edit(userArray);
-            user.setUser(userArray)
+            data = await edit(userArray)
+            if (data) {
+                NotificationManager.success('Данные успешно сохранены')
+                user.setUser(userArray)
+            }
         } catch (e) {
             if (e.response && e.response.data) {
-                alert(e.response.data.message)
+                NotificationManager.error(e.response.data.message)
             } else {
-                alert(e)
+                NotificationManager.error(e)
             }
         }
     }
@@ -59,7 +65,9 @@ const ProfileEdit = () => {
                                     <div className="sec-font mb-2">Фамилия</div>
                                     <input type="text" placeholder="Фамилия" name="lastname" value={userArray.lastname} className="mb-3" />
                                     <div className="sec-font mb-2">Телефон</div>
-                                    <input type="tel" placeholder="+7 (000) 000-00-00" name="phone" value={userArray.phone} />
+                                    <InputMask mask="+7 999 999 99 99" placeholder="+7 000 000 00 00" name="phone" maskChar="" value={userArray.phone} className="mb-3" />
+                                    <div className="sec-font mb-2">E-mail</div>
+                                    <input type="email" placeholder="E-mail" name="email" value={userArray.email} />
                                 </fieldset>
                                 <fieldset className="mb-4 mb-sm-5">
                                     <legend className="gray-1 fw-5 fs-11 mb-3">День рождения</legend>
@@ -147,7 +155,6 @@ const ProfileEdit = () => {
                                         <img src="/images/icons/chevron-left.svg" alt="Вернуться назад" className="me-1" />
                                         Вернуться назад
                                     </Link>
-                                    <button type="button" className="primary ms-auto" data-bs-toggle="modal" data-bs-target="#account-delete">Удалить аккаунт</button>
                                 </div>
                             </form>
                         </div>
@@ -157,4 +164,4 @@ const ProfileEdit = () => {
         </main>
     )
 }
-export default ProfileEdit;
+export default ProfileEdit

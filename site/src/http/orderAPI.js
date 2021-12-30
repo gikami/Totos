@@ -10,9 +10,17 @@ export const setOrder = async (array) => {
     }
 }
 export const getOrder = async (array) => {
-    const { data } = await $authHost.post('api/user/getorder', array)
+    const { data } = await $authHost.post('api/order/getorder', array)
     if (data) {
         return jwt_decode(data)
+    } else {
+        return false
+    }
+}
+export const getOrders = async (user) => {
+    const { data } = await $authHost.post('api/order/getorders', { user })
+    if (data) {
+        return data
     } else {
         return false
     }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Modal from "react-bootstrap/Modal";
-import { Button, Dropdown, Form, Row, Col } from "react-bootstrap";
+import { Button, Dropdown, Form } from "react-bootstrap";
 import { Context } from "../../index";
 import { createProduct, fetchCategory } from "../../http/productAPI";
 import { observer } from "mobx-react-lite";
@@ -10,21 +10,10 @@ const CreateProduct = observer(({ show, onHide }) => {
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState(0)
     const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
 
     useEffect(() => {
         fetchCategory().then(data => product.setCategory(data))
     }, [])
-
-    const addInfo = () => {
-        setInfo([...info, { title: '', description: '', number: Date.now() }])
-    }
-    const removeInfo = (number) => {
-        setInfo(info.filter(i => i.number !== number))
-    }
-    const changeInfo = (key, value, number) => {
-        setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i))
-    }
 
     const selectFile = e => {
         setFile(e.target.files[0])
@@ -32,11 +21,9 @@ const CreateProduct = observer(({ show, onHide }) => {
 
     const addProduct = () => {
         const formData = new FormData()
-        formData.append('title', title)
+        formData.append('title', `${title}`)
         formData.append('price', `${price}`)
         formData.append('image', file)
-        formData.append('categoryId', product.selectedCategory.id)
-        formData.append('info', JSON.stringify(info))
         createProduct(formData).then(data => onHide())
     }
 

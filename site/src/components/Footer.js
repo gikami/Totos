@@ -1,42 +1,58 @@
-import React, { useContext, useState } from 'react';
-import { Context } from "../index";
-import { Link, NavLink } from "react-router-dom";
-import { HOME_ROUTE, PROFILE_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE } from "../utils/consts";
-import { observer } from "mobx-react-lite";
-import { login, registration } from "../http/userAPI";
+import React, { useContext, useState } from 'react'
+import { Context } from "../index"
+import { Link, NavLink } from "react-router-dom"
+import { HOME_ROUTE, PROFILE_ROUTE, SHOP_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE } from "../utils/consts"
+import { observer } from "mobx-react-lite"
+import { login, registration } from "../http/userAPI"
+import InputMask from 'react-input-mask'
+import { NotificationManager } from 'react-notifications'
 
 const Footer = observer(() => {
     const { user, cart } = useContext(Context)
-    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
+    const [isRegistarion, setIsRegistarion] = useState(false)
+    const [viewPass, setViewPass] = useState(false)
+    const viewPassword = () => setViewPass(!viewPass)
     const formLogin = async (e) => {
         try {
-            e.preventDefault();
-            let data;
-            data = await login(email, password);
-            user.setUser(data)
-            user.setIsAuth(true)
-            window.location.reload();
-        } catch (e) {
-            if (e.response && e.response.data) {
-                alert(e.response.data.message)
-            } else {
-                alert('Неверный логин или пароль')
+            e.preventDefault()
+            if (!phone || phone.length < 10 || !password || password.length < 4) {
+                NotificationManager.error('Введите номер телефона и пароль')
+                return;
             }
+            let data
+            data = await login(phone, password)
+
+            if (data) {
+                NotificationManager.success('Вы успешно авторизовались')
+                user.setUser(data)
+                user.setIsAuth(true)
+                window.location.reload()
+            } else {
+                NotificationManager.error('Неверно введен номер телефона или пароль')
+            }
+        } catch (e) {
+            NotificationManager.error(e.response.data.message)
         }
     }
     const formReg = async (e) => {
         try {
-            e.preventDefault();
-            let data;
-            let password;
-            password = 121212;
-            data = await registration(email, password);
-            user.setUser(data)
-            user.setIsAuth(true)
-            window.location.href = PROFILE_ROUTE;
+            e.preventDefault()
+            if (!phone || phone.length < 10) {
+                NotificationManager.error('Введите номер телефона')
+                return;
+            }
+            let data
+            data = await registration(phone)
+            if (data) {
+                NotificationManager.success('Вы успешно зарегистрировались')
+                setIsRegistarion(true)
+            } else {
+                NotificationManager.error('Неверно введен номер телефона или пароль')
+            }
         } catch (e) {
-            alert(e.response.data.message)
+            NotificationManager.error(e.response.data.message)
         }
     }
     return (
@@ -111,9 +127,14 @@ const Footer = observer(() => {
                         <path d="M15 7.1125L21.25 12.7375V22.5H18.75V15H11.25V22.5H8.75V12.7375L15 7.1125ZM15 3.75L2.5 15H6.25V25H13.75V17.5H16.25V25H23.75V15H27.5L15 3.75Z" />
                     </svg>
                 </Link>
-                <Link to={HOME_ROUTE} className="link">
+                <Link to={SHOP_ROUTE} className="link">
                     <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11.875 3.75C14.0299 3.75 16.0965 4.60602 17.6202 6.12976C19.144 7.65349 20 9.72012 20 11.875C20 13.8875 19.2625 15.7375 18.05 17.1625L18.3875 17.5H19.375L25.625 23.75L23.75 25.625L17.5 19.375V18.3875L17.1625 18.05C15.6882 19.3085 13.8134 19.9999 11.875 20C9.72012 20 7.65349 19.144 6.12976 17.6202C4.60602 16.0965 3.75 14.0299 3.75 11.875C3.75 9.72012 4.60602 7.65349 6.12976 6.12976C7.65349 4.60602 9.72012 3.75 11.875 3.75ZM11.875 6.25C8.75 6.25 6.25 8.75 6.25 11.875C6.25 15 8.75 17.5 11.875 17.5C15 17.5 17.5 15 17.5 11.875C17.5 8.75 15 6.25 11.875 6.25Z" />
+                    </svg>
+                </Link>
+                <Link data-bs-toggle="modal" data-bs-target="#entrance" className="btn-svg ms-3 link ms-3 d-block d-lg-none">
+                    <svg viewBox="0 0 38 39" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 19.5C20.8897 19.5 22.7019 18.7296 24.0381 17.3582C25.3743 15.9869 26.125 14.1269 26.125 12.1875C26.125 10.2481 25.3743 8.38814 24.0381 7.01678C22.7019 5.64542 20.8897 4.875 19 4.875C17.1103 4.875 15.2981 5.64542 13.9619 7.01678C12.6257 8.38814 11.875 10.2481 11.875 12.1875C11.875 14.1269 12.6257 15.9869 13.9619 17.3582C15.2981 18.7296 17.1103 19.5 19 19.5ZM23.75 12.1875C23.75 13.4804 23.2496 14.7204 22.3588 15.6346C21.468 16.5489 20.2598 17.0625 19 17.0625C17.7402 17.0625 16.532 16.5489 15.6412 15.6346C14.7504 14.7204 14.25 13.4804 14.25 12.1875C14.25 10.8946 14.7504 9.65459 15.6412 8.74035C16.532 7.82611 17.7402 7.3125 19 7.3125C20.2598 7.3125 21.468 7.82611 22.3588 8.74035C23.2496 9.65459 23.75 10.8946 23.75 12.1875ZM33.25 31.6875C33.25 34.125 30.875 34.125 30.875 34.125H7.125C7.125 34.125 4.75 34.125 4.75 31.6875C4.75 29.25 7.125 21.9375 19 21.9375C30.875 21.9375 33.25 29.25 33.25 31.6875ZM30.875 31.6778C30.8726 31.0781 30.5093 29.2744 28.899 27.6217C27.3505 26.0325 24.4364 24.375 19 24.375C13.5612 24.375 10.6495 26.0325 9.101 27.6217C7.49075 29.2744 7.12975 31.0781 7.125 31.6778H30.875Z"></path>
                     </svg>
                 </Link>
                 <Link to={CART_ROUTE} className="btn-svg position-relative">
@@ -137,7 +158,7 @@ const Footer = observer(() => {
                     <nav>
                         <ul data-bs-dismiss="offcanvas">
                             <li><Link to={HOME_ROUTE}>Главная</Link></li>
-                            <li><NavLink to={HOME_ROUTE}>Меню</NavLink></li>
+                            <li><NavLink to={SHOP_ROUTE}>Меню</NavLink></li>
                             <li><NavLink to={ABOUT_ROUTE}>О нас</NavLink></li>
                             <li><NavLink to={DELIVERY_ROUTE}>Доставка и оплата</NavLink></li>
                             <li><NavLink to={FAVORITES_ROUTE}>Избранное</NavLink></li>
@@ -162,7 +183,6 @@ const Footer = observer(() => {
                         </svg>
                     </button>
                 </div>
-
             </div>
 
             <div id="cookie" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
@@ -173,237 +193,174 @@ const Footer = observer(() => {
                 </div>
             </div>
 
-            <div className="modal fade" id="entrance" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center mb-4 mb-md-5">Вход</h5>
-                            <form onSubmit={formLogin}>
-                                <div className="mb-2 mb-md-3">Номер телефона</div>
-                                <input type="text" placeholder="+7 000 000 00 00" className="mb-3 mb-md-4" onChange={e => setEmail(e.target.value)} />
-                                <div className="mb-2 mb-md-3">Пароль</div>
-                                <div className="password mb-3 mb-md-4">
-                                    <input type="password" name="password" autoComplete="current-password" minLength="4" maxLength="8" placeholder="Пароль" data-state="invisible" onChange={e => setPassword(e.target.value)} />
-                                    <button type="button" data-state="invisible" className="pass_btn" onclick="change_state(this);"></button>
-                                </div>
-                                <div className="d-flex flex-column flex-sm-row align-items-center my-4 my-md-5">
-                                    <button type="submit" className="btn btn-1 px-5 py-sm-3 me-sm-3 me-md-4 mb-3 mb-sm-0">Войти</button>
-                                    <button type="button" className="blue" data-bs-toggle="modal" data-bs-target="#password-recovery-1" data-bs-dismiss="modal">Забыли пароль?</button>
-                                </div>
-                                <div className="d-flex flex-wrap align-items-center">
-                                    <span>У вас ещё нет учётной записи?</span>
-                                    <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#registration" data-bs-dismiss="modal">Регистрация</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="password-recovery-1" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center">Восстановление пароля</h5>
-                            <div className="text-center mb-3 mb-md-5">Введите номер телефона, на который вы регистрировались.</div>
-                            <form>
-                                <input type="text" placeholder="+7 000 000 00 00" className="mb-3 mb-md-5" />
-                                <button type="submit" data-bs-toggle="modal" data-bs-target="#password-recovery-2" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Выслать код</button>
-                                <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="password-recovery-2" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center">Восстановление пароля</h5>
-                            <div className="text-center mb-3 mb-md-5">На номер +7 (987) 897-67-67 выслано СМС-сообщение с кодом подтверждения.</div>
-                            <form>
-                                <input type="text" placeholder="Код подтверждения" className="mb-3 mb-md-5" />
-                                <button type="submit" data-bs-toggle="modal" data-bs-target="#password-recovery-3" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Подтвердить</button>
-                                <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="password-recovery-3" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center mb-5">Восстановление пароля</h5>
-                            <form>
-                                <div className="mb-2 mb-md-3">Новый пароль</div>
-                                <div className="password mb-4 mb-md-5">
-                                    <input type="password" name="password" autoComplete="current-password" minLength="4" maxLength="8" placeholder="Пароль" data-state="invisible" />
-                                    <button type="button" data-state="invisible" className="pass_btn" onclick="change_state(this);"></button>
-                                </div>
-                                <button type="submit" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Далее</button>
-                                <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="registration" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center mb-4 mb-md-5">Регистрация</h5>
-                            <form onSubmit={formReg}>
-                                <div className="mb-2 mb-md-3">Номер телефона</div>
-                                <input type="text" placeholder="+7 000 000 00 00" className="mb-3 mb-md-5" onChange={e => setEmail(e.target.value)} />
-                                <button type="submit" data-bs-toggle="modal" data-bs-target="#confirmation" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-4 mb-md-5">Выслать код</button>
-                                <div className="d-flex flex-wrap align-items-center">
-                                    <span>У вас уже есть учётная запись?</span>
-                                    <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Вход</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="confirmation" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center">Подтвердите номер телефона</h5>
-                            <div className="text-center mb-3 mb-md-5">На номер +7 (987) 897-67-67 выслано СМС-сообщение с кодом подтверждения.</div>
-                            <form>
-                                <input type="text" placeholder="Код подтверждения" className="mb-4 mb-md-5" />
-                                <button type="submit" data-bs-toggle="modal" data-bs-target="#pick-password" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-4 mb-md-5">Подтвердить</button>
-                                <div className="d-flex flex-wrap align-items-center">
-                                    <span>У вас уже есть учётная запись?</span>
-                                    <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Вход</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="pick-password" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center">Придумайте пароль</h5>
-                            <form>
-                                <div className="password mb-4 mb-md-5">
-                                    <input type="password" name="password" autoComplete="current-password" minLength="4" maxLength="8" placeholder="Пароль" data-state="invisible" />
-                                    <button type="button" data-state="invisible" className="pass_btn" onclick="change_state(this);"></button>
-                                </div>
-                                <button type="submit" className="btn btn-1 py-sm-3 mb-4 mb-md-5">Регистрация</button>
-                                <div className="d-flex flex-wrap align-items-center">
-                                    <span>У вас уже есть учётная запись?</span>
-                                    <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Вход</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="modal fade" id="write-feedback" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <h5 className="text-center">Отправка отзыва</h5>
-                            <form>
-                                <div className="mb-2">Имя и Фамилия: </div>
-                                <input type="text" className="mb-4" placeholder="Иван Иванов" />
-                                <div className="mb-2">Ваша оценка: </div>
-                                <div className="leave-rating mb-4">
-                                    <input type="radio" name="rating" value="5" />
-                                    <input type="radio" name="rating" value="4" />
-                                    <input type="radio" name="rating" value="3" />
-                                    <input type="radio" name="rating" value="2" />
-                                    <input type="radio" name="rating" value="1" />
-                                </div>
-
-                                <div className="mb-2">Ваш отзыв</div>
-                                <textarea className="mb-4" rows="5" placeholder="Начните вводить текст…"></textarea>
-
-                                <button type="submit" className="btn btn-1 py-sm-3">Отправить отзыв</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="account-delete" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18" />
-                                <path d="M6 6L18 18" />
-                            </svg>
-                        </button>
-                        <div className="modal-body">
-                            <div className="row justify-content-center">
-                                <div className="col-md-9">
-                                    <h5 className="text-center">Удаление аккаунта</h5>
-                                    <div className="text-center gray-3 mb-4">Все ваши данные, история заказов, бонусы и скидки будут утеряны.</div>
-                                    <div className="d-flex justify-content-center align-items-center">
-                                        <button type="button" className="btn btn-2 px-5">Удалить</button>
-                                        <button type="button" data-bs-dismiss="modal" className="gray-2 ms-4">Отменить</button>
-                                    </div>
+            {(!user.isAuth) &&
+                <>
+                    <div className="modal fade" id="entrance" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    <h5 className="text-center mb-4 mb-md-5">Вход</h5>
+                                    <form onSubmit={formLogin}>
+                                        <div className="mb-2 mb-md-3">Номер телефона</div>
+                                        <InputMask mask="+7 999 999 99 99" placeholder="+7 000 000 00 00" maskChar="" className="mb-3 mb-md-4" defaultValue={phone} onChange={e => setPhone(e.target.value)} />
+                                        <div className="mb-2 mb-md-3">Пароль</div>
+                                        <div className="password mb-3 mb-md-4">
+                                            <input type={viewPass ? 'text' : 'password'} name="password" autoComplete="current-password" minLength="4" maxLength="50" placeholder="Пароль" data-state="invisible" onChange={e => setPassword(e.target.value)} />
+                                            <button type="button" data-state={viewPass ? 'visible' : 'invisible'} onClick={viewPassword} className="pass_btn" ></button>
+                                        </div>
+                                        <div className="d-flex flex-column flex-sm-row align-items-center my-4 my-md-5">
+                                            <button type="submit" className="btn btn-1 px-5 py-sm-3 me-sm-3 me-md-4 mb-3 mb-sm-0">Войти</button>
+                                            {/*<button type="button" className="blue" data-bs-toggle="modal" data-bs-target="#password-recovery-1" data-bs-dismiss="modal">Забыли пароль?</button>*/}
+                                        </div>
+                                        <div className="d-flex flex-wrap align-items-center">
+                                            <span>У вас ещё нет учётной записи?</span>
+                                            <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#registration" data-bs-dismiss="modal">Регистрация</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </>
-    );
-});
+                    <div className="modal fade" id="password-recovery-1" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    <h5 className="text-center">Восстановление пароля</h5>
+                                    <div className="text-center mb-3 mb-md-5">Введите номер телефона, на который вы регистрировались.</div>
+                                    <form>
+                                        <input type="text" placeholder="+7 000 000 00 00" className="mb-3 mb-md-5" />
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#password-recovery-2" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Выслать код</button>
+                                        <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal fade" id="password-recovery-2" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    <h5 className="text-center">Восстановление пароля</h5>
+                                    <div className="text-center mb-3 mb-md-5">На номер +7 (987) 897-67-67 выслано СМС-сообщение с кодом подтверждения.</div>
+                                    <form>
+                                        <input type="text" placeholder="Код подтверждения" className="mb-3 mb-md-5" />
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#password-recovery-3" data-bs-dismiss="modal" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Подтвердить</button>
+                                        <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal fade" id="password-recovery-3" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    <h5 className="text-center mb-5">Восстановление пароля</h5>
+                                    <form>
+                                        <div className="mb-2 mb-md-3">Новый пароль</div>
+                                        <div className="password mb-4 mb-md-5">
+                                            <input type="password" name="password" autoComplete="current-password" minLength="4" maxLength="8" placeholder="Пароль" data-state="invisible" />
+                                            <button type="button" data-state="invisible" className="pass_btn" ></button>
+                                        </div>
+                                        <button type="submit" className="btn btn-1 py-sm-3 mb-3 mb-md-4">Далее</button>
+                                        <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Я вспомнил пароль</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal fade" id="registration" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    {
+                                        (isRegistarion) ?
+                                            <>
+                                                <h5 className="text-center">Войдите в свой профиль</h5>
+                                                <div className="text-center mb-3 mb-md-5">На номер {phone} выслано СМС-сообщение с данными для входа.</div>
+                                                <div className="d-flex justify-content-center">
+                                                    <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Войти в профиль</button>
+                                                </div>
+                                            </>
+                                            :
+                                            <>
+                                                <h5 className="text-center mb-4 mb-md-5">Регистрация</h5>
+                                                <form onSubmit={formReg}>
+                                                    <div className="mb-2 mb-md-3">Номер телефона</div>
+                                                    <InputMask mask="+7 999 999 99 99" placeholder="+7 000 000 00 00" maskChar="" className="mb-3 mb-md-4" defaultValue={phone} onChange={e => setPhone(e.target.value)} />
+                                                    <button type="submit" className="btn btn-1 py-sm-3 mb-4 mb-md-5">Зарегистрироваться</button>
+                                                    <div className="d-flex flex-wrap align-items-center">
+                                                        <span>У вас уже есть учётная запись?</span>
+                                                        <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Вход</button>
+                                                    </div>
+                                                </form>
+                                            </>
+                                    }
 
-export default Footer;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal fade" id="pick-password" tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" />
+                                        <path d="M6 6L18 18" />
+                                    </svg>
+                                </button>
+                                <div className="modal-body">
+                                    <h5 className="text-center">Придумайте пароль</h5>
+                                    <form>
+                                        <div className="password mb-4 mb-md-5">
+                                            <input type="password" name="password" autoComplete="current-password" minLength="4" maxLength="8" placeholder="Пароль" data-state="invisible" />
+                                            <button type="button" data-state="invisible" className="pass_btn" ></button>
+                                        </div>
+                                        <button type="submit" className="btn btn-1 py-sm-3 mb-4 mb-md-5">Регистрация</button>
+                                        <div className="d-flex flex-wrap align-items-center">
+                                            <span>У вас уже есть учётная запись?</span>
+                                            <button type="button" className="blue ms-1" data-bs-toggle="modal" data-bs-target="#entrance" data-bs-dismiss="modal">Вход</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            }
+        </>
+    )
+})
+
+export default Footer

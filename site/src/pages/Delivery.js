@@ -19,16 +19,28 @@ const About = () => {
                 <div className="container">
                     <h2 className="text-start">Доставка и оплата</h2>
                     <div className="row mb-5">
-                        <div className="col-xl-9 col-xxl-7">
-                            <p>Бесплатная доставка при заказе от 700 ₽ в черте города.</p>
-                            <p>Среднее время доставки 1ч — 1ч 20м.</p>
-                            <p>Время доставки может меняться в зависимости от количества заказов.</p>
-                            <p>Скидки и акции на доставку не распространяются.</p>
-                            <p>Важно понимать, что наш курьер терпеливо подождёт вас 10 минут у входа, если вы вдруг перестанете выходить на связь или не откроете дверь. Но затем ему придётся уезжать к другим Клиентам, чтобы вовремя доставить свежую еду. В этом случае вам будет необходимо повторно связаться с Администратором.</p>
-                            <p>Доставку осуществляем в <b>Новосавиновский</b>, <b>Московский</b>, <b>Кировский</b>, <b>Авиастроительный</b>, <b>Центр</b></p>
+                        <div className="col-md-4">
+                            <div id="map"></div>
+                        </div>
+                        <div className="col-md-8">
+                            <ul class="ul-style-default">
+                                <li>Принятие заказов ежедневно (пн-вс) с 10:00 до 21:45</li>
+                                <li>При доставке на расстояние менее 9 км</li>
+                                <ul>
+                                    <li>Минимальный заказ 450 р</li>
+                                    <li>Бесплатная достовка при заказе от 700 р</li>
+                                </ul>
+                                <li>При доставке на расстояние более 9 км</li>
+                                <ul>
+                                    <li>Минимальный заказ 1000 р</li>
+                                    <li>Бесплатная достовка при заказе от 1500 р</li>
+                                </ul>
+                                <li>Среднее время доставки составляет от 45 минут. Максимальное время доставки заказа от 60 до 90 минут.</li>
+                            </ul>
+                            <a>Подробнее о доставке</a>
                         </div>
                     </div>
-                    <h5>Способы доставки:</h5>
+                    <h2 className="text-start">Варианты оплаты</h2>
                     <div className="row row-cols-md-2 row-cols-lg-3 gx-xl-5 mb-5">
                         <div className="d-flex align-items-start mb-4 mb-md-0">
                             <img src="/images/icons/icon-delivery.svg" alt="Доставка курьером" className="icon" />
@@ -42,30 +54,6 @@ const About = () => {
                             <div className="ms-2 ms-md-3">
                                 <div className="fw-5 mb-2">Самовывоз</div>
                                 <p>Забрать заказ можно по адресу г. Казань, улица 1 мая, дом 5</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h5>Способы оплаты:</h5>
-                    <div className="row row-cols-md-2 row-cols-lg-3 gx-xl-5">
-                        <div className="d-flex align-items-start mb-4 mb-md-0">
-                            <img src="/images/icons/icon-online.svg" alt="Онлайн оплата" className="icon" />
-                            <div className="ms-2 ms-md-3">
-                                <div className="fw-5 mb-2">Онлайн оплата</div>
-                                <p>Принимаются карты Mastercard, Maestro, Visa и МИР.</p>
-                            </div>
-                        </div>
-                        <div className="d-flex align-items-start mb-4 mb-md-0">
-                            <img src="/images/icons/icon-courier.svg" alt="Оплата картой курьеру" className="icon" />
-                            <div className="ms-2 ms-md-3">
-                                <div className="fw-5 mb-2">Оплата картой курьеру</div>
-                                <p>Курьер привезёт с собой мобильный платёжный терминал. Принимаются карты Mastercard, Maestro, Visa и МИР.</p>
-                            </div>
-                        </div>
-                        <div className="d-flex align-items-start">
-                            <img src="/images/icons/icon-cash.svg" alt="Оплата наличными" className="icon" />
-                            <div className="ms-2 ms-md-3">
-                                <div className="fw-5 mb-2">Оплата наличными</div>
-                                <p>Вы можете оплатить заказ наличными нашему курьеру или при самовывозе</p>
                             </div>
                         </div>
                     </div>

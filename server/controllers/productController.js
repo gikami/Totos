@@ -42,9 +42,9 @@ class ProductController {
         let products
 
         if (categoryId) {
-            products = await Product.findAndCountAll({ where: { category: categoryId, type: 'product' }, order: [['price', 'ASC']], limit, offset })
+            products = await Product.findAndCountAll({ where: { category: categoryId, type: 'product', status: 1 }, order: [['price', 'ASC']], limit, offset })
         } else {
-            products = await Product.findAndCountAll({ where: { type: 'product' }, order: [['price', 'ASC']], limit, offset })
+            products = await Product.findAndCountAll({ where: { type: 'product', status: 1 }, order: [['price', 'ASC']], limit, offset })
         }
 
         return res.json(products)
@@ -56,9 +56,9 @@ class ProductController {
     }
     async getOne(req, res) {
         const { id } = req.params
-        let product = await Product.findOne({ where: { id, type: 'product' } })
+        let product = await Product.findOne({ where: { id, type: 'product', status: 1 } })
         let review = await Review.findAll({ include: User, where: { product: id } })
-        let dop = await Product.findAll({ where: { type: 'dop' } })
+        let dop = await Product.findAll({ where: { type: 'dop', status: 1 } })
         let rating = []
         if (review && review.length > 0) {
             rating.push(

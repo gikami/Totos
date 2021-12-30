@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { Context } from "../../index";
 import SideBar from "./components/menu";
@@ -13,6 +13,11 @@ import ProfileNotifications from "./notifications";
 const Profile = () => {
     const { id } = useParams()
     const { user } = useContext(Context)
+
+    useEffect(() => {
+        document.title = 'Профиль'
+    }, [])
+
     if (id === 'edit') {
         return (<ProfileEdit />);
     } else if (id === 'points') {
@@ -47,29 +52,32 @@ const Profile = () => {
                                 <form>
                                     <h1 className="d-none d-md-block">Личный кабинет</h1>
                                     <h5 className="gray-1">{(user.user.firstname) ? user.user.firstname : 'Имя'} {(user.user.lastname) ? user.user.lastname : 'Фамилия'}</h5>
-                                    {user.user.phone &&
+                                    {user.user.phone ?
                                         <fieldset className="mb-4 mb-sm-5">
                                             <legend className="gray-1 fw-5 fs-11 mb-3">Телефон</legend>
                                             <div className="d-sm-flex">
-                                                {user.user.phone.replace(/^\d{0}(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})+$/, "$1($2)$3-$4-$5")}
+                                                {user.user.phone}
                                             </div>
                                         </fieldset>
+                                        : null
                                     }
-                                    {user.birthday &&
+                                    {user.birthday ?
                                         <fieldset className="mb-4 mb-sm-5">
                                             <legend className="gray-1 fw-5 fs-11 mb-3">День рождения</legend>
                                             <div className="d-sm-flex">
                                                 {user.birthday}
                                             </div>
                                         </fieldset>
+                                        : null
                                     }
-                                    {user.user.sex &&
+                                    {user.user.sex ?
                                         <fieldset className="mb-4 mb-sm-5">
                                             <legend className="gray-1 fw-5 fs-11 mb-3">Мой пол</legend>
                                             <div className="d-sm-flex">
                                                 {(user.user.sex) ? 'Мужской' : 'Женский'}
                                             </div>
                                         </fieldset>
+                                        : null
                                     }
                                 </form>
                             </div>
