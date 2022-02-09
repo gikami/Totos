@@ -4,6 +4,7 @@ const userController = require('../controllers/userController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 router.post('/registration', userController.registration)
+router.post('/newpassword', userController.newPassword)
 router.post('/login', userController.login)
 router.post('/address', authMiddleware, userController.addAddress)
 router.post('/editaddress', authMiddleware, userController.editAddress)

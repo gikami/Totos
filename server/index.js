@@ -11,11 +11,11 @@ const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const path = require('path')
 
-const PORT = process.env.PORT || 5000
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/fullchain.pem')
-};
+const PORT = process.env.PORT || 5001
+// const options = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/bizon-food.ru/fullchain.pem')
+// };
 const app = express()
 app.use(cors())
 app.use(express.json())

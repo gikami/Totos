@@ -4,26 +4,13 @@ const { Product, Review, User } = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class ProductController {
-    async createProduct(req, res, next) {
-        try {
-            let { name, price, typeId } = req.body
-            const { image } = req.files
-            let fileName = uuid.v4() + ".jpg"
-            image.mv(path.resolve(__dirname, '..', 'static', fileName))
-            const product = await Product.create({ name, price, typeId, image: fileName })
-
-            return res.json(product)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
-    }
 
     async createReview(req, res, next) {
         try {
-            let { rating, text, user, product } = req.body
+            let { rating, text, name, user, product } = req.body
             const infoReview = await Review.findOne({ where: { userId: user, product } })
             if (!infoReview) {
-                const data = await Review.create({ rating, text, userId: user, product })
+                const data = await Review.create({ rating, text, userId: user, name, product })
                 return res.json(data.data)
             } else {
                 return res.json('Вы уже опубликовали отзыв')
