@@ -41,8 +41,8 @@ const ProductItem = observer(({ product }) => {
     return (
         <>
             <div className="product-preview">
-                <div class="row m-0 w-100">
-                    <div class="col-5 col-md-12 p-0">
+                <div className="row m-0 w-100">
+                    <div className="col-5 col-md-12 p-0">
                         <a onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>
                             {(product.image) ? <img key={product.id} src={process.env.REACT_APP_API_URL + '/' + product.image} effect="blur" /> : null}
                         </a>
@@ -52,18 +52,18 @@ const ProductItem = observer(({ product }) => {
                             <h5>{product.title}</h5>
                         </a>
                         <div className="ingredients">{(product.mini_description) ? product.mini_description : product.description}</div>
-                        <div class="row m-0 justify-content-between align-items-center">
+                        <div className="row m-0 justify-content-between align-items-center">
                             <div className="col p-0 d-none d-md-block">
-                                <div class="price mb-2 mb-md-0">
+                                <div className="price mb-2 mb-md-0">
                                     <div className="sec-font d-flex flex-wrap flex-row-reverse flex-md-row align-items-center">
-                                        <span className="fw-5 fs-15 align-middle">{product.price} ₽</span>
-                                        {product.sale && product.sale > 0 ? <span className="gray-3 text-decoration-line-through align-middle me-1 me-md-0 ms-1">{product.sale} ₽</span> : null}
+                                        <span className="fw-6 fs-15 align-middle">{product.attribute ? 'от ' + JSON.parse(product.attribute)[0].price : product.price} ₽</span>
+                                        {product.sale && product.sale > 0 ? <span className="gray-3 text-decoration-line-through align-middle me-1 me-md-0 ms-1">{product.sale} ₽</span> : null}
                                     </div>
                                 </div>
                             </div>
                             <div className="col p-0">
-                                <div class="add-to-cart">
-                                    <div className="add-count" style={{ top: (btnAdd) ? "0%" : "-100%" }}>
+                                <div className="add-to-cart">
+                                    <div className="add-count justify-content-evenly" style={{ top: (btnAdd) ? "0%" : "-100%" }}>
                                         <button className="btn-mini" type="button" onClick={minusCount}>
                                             <img src="/images/icons/minus2.svg" alt="" />
                                         </button>

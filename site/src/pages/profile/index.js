@@ -35,15 +35,6 @@ const Profile = () => {
     } else {
         return (
             <main>
-                <div className="container mb-4 mb-md-5">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><a href="index.html">Главная</a></li>
-                            <li className="breadcrumb-item"><a href="personal-account.html">Личный кабинет</a></li>
-                        </ol>
-                    </nav>
-                </div>
-
                 <section id="sec-13" className="mb-8">
                     <div className="container">
                         <div className="row">

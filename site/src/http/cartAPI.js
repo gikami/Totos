@@ -1,13 +1,15 @@
-import { $authHost, $host } from "./index";
-import jwt_decode from "jwt-decode";
+import { $host } from "./index";
 
-
-export const fetchCart = async () => {
-    const { data } = await $authHost.get('api/cart')
-    return jwt_decode(data)
-}
-
-export const createCart = async (product) => {
-    const { data } = await $authHost.post('api/cart', product)
-    return jwt_decode(data)
+export const fetchPromo = async (array) => {
+    let arrayPromo = {
+        code: array.code ? array.code : '',
+        total: array.total ? array.total : 0,
+        user: array.user ? array.user : 0,
+    }
+    const { data } = await $host.post('api/order/promo', arrayPromo)
+    if (data) {
+        return data
+    } else {
+        return 'Промокод не применен'
+    }
 }

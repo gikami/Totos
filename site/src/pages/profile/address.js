@@ -88,14 +88,6 @@ const Address = () => {
 
         return (
             <main>
-                <div className="container mb-4 mb-md-5">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                            <li className="breadcrumb-item"><a>Добавить адрес</a></li>
-                        </ol>
-                    </nav>
-                </div>
                 <section id="sec-13" className="mb-8">
                     <div className="container">
                         <div className="row">
@@ -106,7 +98,7 @@ const Address = () => {
                                     <div className="gray-1 mb-2">Название адреса</div>
                                     <input type="text" name="name" placeholder="Например, Работа" className="mb-3" onChange={change} />
 
-                                    <div class="row">
+                                    <div className="row">
                                         <div className="col-10 mb-4">
                                             <div className="gray-1 mb-2">Улица <span className="text-danger">*</span></div>
                                             <AddressSuggestions inputProps={{ autoComplete: "new-address", placeholder: "Улица" }} name="street" token={process.env.REACT_APP_DADATA_API} filterLocations={[{ "kladr_id": "16" }]} count={6} minChars={1} delay={500} selectOnBlur={true} onChange={changeAddress} />
@@ -131,7 +123,7 @@ const Address = () => {
                                             <div className="gray-1 mb-2">Код двери</div>
                                             <input type="text" name="code" placeholder="Код двери" onChange={change} value={address.code} />
                                         </div>
-                                        <div class="mb-3"><span className="text-danger">*</span> - поля обязательные для заполнения</div>
+                                        <div className="mb-3"><span className="text-danger">*</span> - поля обязательные для заполнения</div>
                                     </div>
 
                                     <button type="submit" className="btn btn-2">Сохранить</button>
@@ -183,14 +175,6 @@ const Address = () => {
 
         return (
             <main>
-                <div className="container mb-4 mb-md-5">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                            <li className="breadcrumb-item"><a>Редактировать адрес</a></li>
-                        </ol>
-                    </nav>
-                </div>
                 <section id="sec-13" className="mb-8">
                     <div className="container">
                         <div className="row">
@@ -202,7 +186,7 @@ const Address = () => {
                                         <div className="gray-1 mb-2">Название адреса</div>
                                         <input type="text" name="name" placeholder="Например, Работа" className="mb-3" onChange={change} value={address.name} />
 
-                                        <div class="row">
+                                        <div className="row">
                                             <div className="col-sm-10 mb-4">
                                                 <div className="gray-1 mb-2">Адрес</div>
                                                 <AddressSuggestions inputProps={{ autoComplete: "new-address", placeholder: "Начните вводить адрес" }} name="street" token={process.env.REACT_APP_DADATA_API} filterLocations={[{ "kladr_id": "16" }]} count={6} minChars={1} delay={500} selectOnBlur={true} defaultQuery={address.full} onChange={changeAddress} />
@@ -246,15 +230,6 @@ const Address = () => {
     } else {
         return (
             <main>
-                <div className="container mb-4 mb-md-5">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                            <li className="breadcrumb-item"><a>Адрес доставки</a></li>
-                        </ol>
-                    </nav>
-                </div>
-
                 <section id="sec-13" className="mb-8">
                     <div className="container">
                         <div className="row">
@@ -283,7 +258,7 @@ const Address = () => {
                                             </>
                                             : <div className="fs-09 gray-1 mb-4">Добавьте адрес для доставки по умолчанию.</div>
                                     }
-                                    <Link to={PROFILE_ROUTE + '/address/add'} className="d-flex align-items-center">
+                                    <Link to={PROFILE_ROUTE + '/address/add'} className="d-flex align-items-center fw-6">
                                         <img src="/images/icons/plus3.svg" alt="Добавить" className="me-2" />
                                         <span className="primary">Добавить адрес</span>
                                     </Link>

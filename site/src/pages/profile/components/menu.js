@@ -13,6 +13,9 @@ const Menu = () => {
             <nav>
                 <ul>
                     <li>
+                        <Link to={PROFILE_ROUTE + "/"} className={(!id) ? 'active' : null}>Мой профиль</Link>
+                    </li>
+                    <li>
                         <Link to={PROFILE_ROUTE + "/edit"} className={(id === 'edit') ? 'active' : null}>Настройки профиля</Link>
                     </li>
                     {/* <li>
@@ -38,7 +41,7 @@ const Menu = () => {
                     </li>
                 </ul>
             </nav>
-            <div className="modal fade" id="account-exit" tabindex="-1" aria-hidden="true">
+            <div className="modal fade" id="account-exit" tabIndex="-1" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <button type="button" className="btn-close" data-bs-dismiss="modal">

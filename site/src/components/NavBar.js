@@ -1,31 +1,55 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Context } from "../index"
 import { NavLink, Link } from "react-router-dom"
-import { PROFILE_ROUTE, HOME_ROUTE, ABOUT_ROUTE, DELIVERY_ROUTE, FAVORITES_ROUTE, CART_ROUTE, CHECKOUT_ROUTE } from "../utils/consts"
+import { NavDropdown } from "react-bootstrap"
+import { PROFILE_ROUTE, HOME_ROUTE, ABOUT_ROUTE, DELIVERY_ROUTE, FAVORITES_ROUTE, CART_ROUTE, CHECKOUT_ROUTE, CONTACTS_ROUTE, SALE_ROUTE, CATALOG_ROUTE } from "../utils/consts"
 import { observer } from "mobx-react-lite"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import CartContent from "./Cart"
+import {fetchCategory } from "../http/productAPI"
+
 const NavBar = observer(() => {
     const { user, cart, product } = useContext(Context)
-    const [isShown, setIsShown] = useState(false);
+    const [isShown, setIsShown] = useState(false)
+    const localAddress = localStorage.getItem('address')
+    const [address, setAddress] = useState((localAddress) ? localAddress : 'Ямашева 97 ТЦ XL')
+    
+    useEffect(() => {
+        fetchCategory().then(data => {
+            product.setCategory(data)
+        })
+    }, [])
+    
+    const changeAddress = (e) => {
+        setAddress(e.target.innerText)
+        localStorage.setItem('address', e.target.innerText);
+    }
+
     return (
         <>
             <header>
                 <div className="container">
-                    <Link to={HOME_ROUTE} className="logo"><img src='/images/logo.svg' alt="Totos" /></Link>
-                    <div>
-                        Казань
-                    </div>
-                    <div>
-                        Ямашева 97 ТЦ “XL”(+7 843 226-80-60)
+                    <div className="d-flex align-items-center justify-content-between address-box">
+                        <Link to={HOME_ROUTE} className="logo"><img src='/images/logo.svg' alt="Totos" /></Link>
+                        <div className="mx-md-4 d-flex align-items-center">
+                            <img src="/images/icons/marker.svg" width="14" />
+                            <NavDropdown
+                                title={address}
+                                className="fw-6 fs-11 address-menu"
+                            >
+                                <NavDropdown.Item onClick={changeAddress} active={(address === 'Ямашева 97 ТЦ XL') ? true : false}>Ямашева 97 ТЦ XL</NavDropdown.Item>
+                                <NavDropdown.Item onClick={changeAddress} active={(address === 'Гвардейская 33') ? true : false}>Гвардейская 33</NavDropdown.Item>
+                            </NavDropdown>
+                            <a className="ms-3" href={(address === 'Ямашева 97 ТЦ XL') ? 'tel:+7 843 226-80-60' : 'tel:+7 843 226-80-06'}><img src="/images/icons/phone.svg" width="18" /></a>
+                        </div>
                     </div>
                     <div className="d-none d-md-flex align-items-center">
                         <nav className="d-none d-lg-block">
                             <ul>
-                                <li><Link>Акции</Link></li>
+                                <li><NavLink to={SALE_ROUTE}>Акции</NavLink></li>
                                 <li><NavLink to={DELIVERY_ROUTE}>Доставка и оплата</NavLink></li>
                                 <li><NavLink to={FAVORITES_ROUTE}>Избранное</NavLink></li>
-                                <li><Link>Контакты</Link></li>
+                                <li><NavLink to={CONTACTS_ROUTE}>Контакты</NavLink></li>
                                 <li><NavLink to={ABOUT_ROUTE}>О нас</NavLink></li>
                             </ul>
                         </nav>
@@ -43,7 +67,7 @@ const NavBar = observer(() => {
                                     </svg>
                                 </button>
                         }
-                        <div id="toggle-cart" class="ms-5" >
+                        <div id="toggle-cart" className="ms-4" >
                             <Link to={CART_ROUTE} onMouseEnter={() => setIsShown(true)} onMouseLeave={() => setIsShown(false)} className="btn-svg position-relative">
                                 <svg viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20.4997 3.84375C16.9813 3.84375 14.0934 6.73169 14.0934 10.25V11.5312H7.7666L7.68716 12.7331L6.40591 35.7956L6.3252 37.1562H34.6728L34.5934 35.7943L33.3122 12.7318L33.2314 11.5312H26.9059V10.25C26.9059 6.73169 24.018 3.84375 20.4997 3.84375ZM20.4997 6.40625C21.5191 6.40625 22.4968 6.81122 23.2176 7.53206C23.9384 8.2529 24.3434 9.23057 24.3434 10.25V11.5312H16.6559V10.25C16.6559 9.23057 17.0609 8.2529 17.7817 7.53206C18.5026 6.81122 19.4802 6.40625 20.4997 6.40625ZM10.1689 14.0938H14.0934V17.9375H16.6559V14.0938H24.3434V17.9375H26.9059V14.0938H30.8304L31.9515 34.5938H9.04913L10.1689 14.0938Z" />
@@ -76,8 +100,8 @@ const NavBar = observer(() => {
             </header >
             <div className="sec-2" id="soop-menu">
                 <div className="container p-0">
-                    <div class="d-flex">
-                        <div class="w-100">
+                    <div className="d-flex">
+                        <div className="w-100">
                             <Swiper
                                 className="soops"
                                 slidesPerView={'auto'}
@@ -85,7 +109,7 @@ const NavBar = observer(() => {
                             >
                                 {product.category.map((category, i) =>
                                     <SwiperSlide>
-                                        <Link key={category.id} to={HOME_ROUTE} onClick={() => product.setSelectedCategory(category)} className={(category.id === product.selectedCategory.id) ? 'btn soop active' : 'btn soop'}>{category.title}</Link>
+                                        <Link key={category.id} to={CATALOG_ROUTE + '/' + category.id} onClick={() => product.setSelectedCategory(category)} className={(category.id === product.selectedCategory.id) ? 'btn soop active' : 'btn soop'}>{category.title}</Link>
                                     </SwiperSlide>
                                 )}
                             </Swiper>

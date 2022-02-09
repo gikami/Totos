@@ -1,12 +1,13 @@
-import Admin from "./pages/Admin";
-import { HOME_ROUTE, ADMIN_ROUTE, CART_ROUTE, CHECKOUT_ROUTE, PRODUCT_ROUTE, PROFILE_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, FAVORITES_ROUTE, POLICY_ROUTE } from "./utils/consts";
+import Admin from "./pages/admin/index";
+import { HOME_ROUTE, ADMIN_ROUTE, CART_ROUTE, CHECKOUT_ROUTE, PRODUCT_ROUTE, PROFILE_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, SALE_ROUTE, FAVORITES_ROUTE, POLICY_ROUTE, CONTACTS_ROUTE, CATALOG_ROUTE } from "./utils/consts";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
+import Sale from "./pages/Sale";
 import Checkout from "./pages/Checkout";
 import Profile from "./pages/profile/index";
-import Product from "./pages/Product";
 import About from "./pages/About";
 import Delivery from "./pages/Delivery";
+import Contacts from "./pages/Contacts";
 import Policy from "./pages/Policy";
 import Favorites from "./pages/Favorites";
 
@@ -43,12 +44,28 @@ export const publicRoutes = [
         Component: About
     },
     {
+        path: SALE_ROUTE,
+        Component: Sale
+    },
+    {
+        path: SALE_ROUTE + '/:saleId',
+        Component: Sale
+    },
+    {
         path: DELIVERY_ROUTE,
         Component: Delivery
     },
     {
-        path: PRODUCT_ROUTE + '/:id',
-        Component: Product
+        path: CONTACTS_ROUTE,
+        Component: Contacts
+    },
+    {
+        path: PRODUCT_ROUTE + '/:productId',
+        Component: Home
+    },
+    {
+        path: CATALOG_ROUTE + '/:catalogId',
+        Component: Home
     },
     {
         path: CART_ROUTE,

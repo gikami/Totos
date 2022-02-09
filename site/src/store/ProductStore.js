@@ -4,6 +4,7 @@ export default class ProductStore {
     constructor() {
         this._category = []
         this._products = []
+        this._product = false
         this._selectedCategory = {}
         this._page = 1
         this._totalCount = 0
@@ -16,6 +17,9 @@ export default class ProductStore {
     }
     setProducts(products) {
         this._products = products
+    }
+    setProduct(product) {
+        this._product = product
     }
 
     setSelectedCategory(category) {
@@ -33,6 +37,9 @@ export default class ProductStore {
     }
     get products() {
         return this._products
+    }
+    get product() {
+        return this._product
     }
     get selectedCategory() {
         return this._selectedCategory

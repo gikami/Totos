@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { observer } from "mobx-react-lite"
 import ProductItem from "./ProductItem";
 import { Swiper, SwiperSlide } from 'swiper/react';
