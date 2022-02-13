@@ -34,12 +34,14 @@ const Home = observer(() => {
     }, [])
     
     useEffect(() => {
-        let selectCategory = product.category.find(el => el.id == catalogId) 
-        if(selectCategory){
-            product.setSelectedCategory(selectCategory)
+        if(catalogId){
+            let selectCategory = product.category.find(el => el.id == catalogId) 
+            if(selectCategory){
+                product.setSelectedCategory(selectCategory)
+            }
         }
-        if (product.selectedCategory) {
-            fetchProducts(product.selectedCategory.id, product.page, 8).then(data => {
+        if (product.selectedCategory && product.selectedCategory.id) {
+            fetchProducts(product.selectedCategory.id, product.page, 30).then(data => {
                 product.setProducts(data.rows)
                 product.setTotalCount(data.count)
             })
@@ -50,22 +52,23 @@ const Home = observer(() => {
         if (productId) {
             fetchOneProduct(productId).then(data => {
                 if (data) {
-                    if (data.product.param) {
-                        setParam(JSON.parse(data.product.param)[0])
-                    }
-                    let sizeId = cart.getSize(data.product)
-                    if(sizeId && data.product.attribute){
-                        let dataSize = JSON.parse(data.product.attribute).find(item => item.id == sizeId.id)
-                        if(dataSize){
-                            data.product.price = dataSize.price
-                            data.product.size = dataSize.size
-                        }
-                    }
+                    // if (data.product.param) {
+                    //     setParam(JSON.parse(data.product.param)[0])
+                    // }
+                    // let sizeId = cart.getSize(data.size)
+                    // if(sizeId && data.product.attribute){
+                    //     let dataSize = JSON.parse(data.product.attribute).find(item => item.id == sizeId.id)
+                    //     if(dataSize){
+                    //         data.product.price = dataSize.price
+                    //         data.product.size = dataSize.size
+                    //     }
+                    // }
+  
                     product.setProduct(data.product)
                 }
-                if (data.dop) {
-                    setDop(data.dop)
-                }
+                // if (data.dop) {
+                //     setDop(data.dop)
+                // }
                 setBtnAdd(cart.checkCart(data.product))
             })
 
@@ -91,7 +94,7 @@ const Home = observer(() => {
                                     <div className="short-info row">
                                         <div className="col-md-5">
                                             <div className="img-prod mb-5 mb-md-0">
-                                                {(product.product.image) ? <img className="w-100" src={process.env.REACT_APP_API_URL + '/' + product.product.image} alt={product.product.title} /> : null}
+                                                {(product.product.image) ? <img className="w-100" src={process.env.REACT_APP_API_URL + '/products/' + product.product.image} alt={product.product.title} /> : null}
                                             </div>
                                         </div>
                                         <div className="col-md-7">
@@ -101,7 +104,7 @@ const Home = observer(() => {
                                                     (param.gramm || !param) && <div className="fs-14 fw-5 text-secondary">{product.product.weight * 1000} г</div>
                                                 }
                                             </div>
-                                            <div className="text-secondary fs-14 mb-4"><span className="me-2">{(product.product.mini_description) ? product.product.mini_description : 'Нет состава'}</span></div>
+                                            <div className="text-secondary fs-14 mb-4"><span className="me-2">{(product.product.mini_description) ? product.product.mini_description : (product.product.description ) ? product.product.description : 'Нет состава'}</span></div>
                                             {
                                                 (btnAdd.status && product.product.attribute) && <Radio />
                                             }
@@ -136,7 +139,6 @@ const Home = observer(() => {
                 <section id="sec-12">
                     <Swiper
                         loop={true}
-                        className="swiper-gallery"
                         slidesPerView={1}
                         centeredSlides={true}
                         spaceBetween={20}
@@ -153,7 +155,7 @@ const Home = observer(() => {
                                 spaceBetween: 20,
                             }
                         }}
-                        className="home-slider"
+                        className="home-slider swiper-gallery"
                     >
                         <SwiperSlide className="px-2"><img src="/images/home-slide-1.jpg" alt="" className='img-fluid' /></SwiperSlide>
                         <SwiperSlide className="px-2"><img src="/images/home-slide-2.jpg" alt="" className='img-fluid' /></SwiperSlide>

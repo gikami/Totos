@@ -190,7 +190,7 @@ const Products = () => {
                     </div>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Обложка</div>
-                        {(product.image) ? <img className="mb-3" width="200" src={process.env.REACT_APP_API_URL + '/' + product.image} /> : null}
+                        {(product.image) ? <img className="mb-3" width="200" src={process.env.REACT_APP_API_URL + 'products/' + product.image} /> : null}
                         <input type="file" onChange={selectFile} className="mb-3" />
                     </fieldset>
                     <div className="d-flex">
@@ -220,8 +220,8 @@ const Products = () => {
                             <thead>
                                 <tr>
                                     <th scope="col">id</th>
+                                    <th></th>
                                     <th scope="col">Название</th>
-                                    <th scope="col">Порядок</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -230,8 +230,8 @@ const Products = () => {
                                     products.rows.map(item => (
                                         <tr>
                                             <td scope="row">{item.id}</td>
-                                            <td>{item.title}</td>
-                                            <td>{item.priority}</td>
+                                            <td>{(item.image) ? <img width="40" src={process.env.REACT_APP_API_URL + 'products/' + item.image} /> : ''}</td>
+                                            <td><b>{item.title}</b><p className="gray-3"><small>{item.description}</small></p></td>
                                             <td align="right"><Link to={ADMIN_ROUTE + '/products/' + item.id}>Редактировать</Link></td>
                                         </tr>
                                     ))

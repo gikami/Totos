@@ -60,7 +60,7 @@ const CartContent = observer(({ type }) => {
                     return (
                         <div key={i} className="item p-3">
                             <div className="d-flex align-items-start">
-                                <img src={process.env.REACT_APP_API_URL + cart.image} alt={cart.title} className="me-3" />
+                                <img src={process.env.REACT_APP_API_URL + "/products/" + cart.image} alt={cart.title} className="me-3" />
                                 <div className="row w-100">
                                     <div className="col">
                                         <div className="text">
@@ -138,7 +138,7 @@ const CartContent = observer(({ type }) => {
                                         <>
                                             <tr>
                                                 <td width="55">
-                                                    <img src={process.env.REACT_APP_API_URL + cart.image} alt={cart.title} className="w-100 me-3" />
+                                                    <img src={process.env.REACT_APP_API_URL + "/products/" + cart.image} alt={cart.title} className="w-100 me-3" />
                                                 </td>
                                                 <td>
                                                     <div>{cart.title}{
@@ -194,7 +194,7 @@ const CartContent = observer(({ type }) => {
                             <div key={i} className="d-md-flex justify-content-between align-items-start item mb-4">
                                 <div className="d-flex w-100 align-items-start">
                                     <div className="img">
-                                        <img src={process.env.REACT_APP_API_URL + '/' + cart.image} alt={cart.title} />
+                                        <img src={process.env.REACT_APP_API_URL + '/products/' + cart.image} alt={cart.title} />
                                     </div>
                                     <div className="text w-100 ms-3 ms-md-4 d-block d-md-flex justify-content-between align-items-start">
                                         <div>

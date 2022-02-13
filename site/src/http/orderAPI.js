@@ -17,6 +17,14 @@ export const getOrder = async (array) => {
         return false
     }
 }
+export const getStreets = async (array) => {
+    const { data } = await $host.get('api/order/getStreets')
+    if (data) {
+        return data
+    } else {
+        return false
+    }
+}
 export const getOrders = async (user) => {
     const { data } = await $authHost.post('api/order/getorders', { user })
     if (data) {

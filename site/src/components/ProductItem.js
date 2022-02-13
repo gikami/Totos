@@ -44,7 +44,7 @@ const ProductItem = observer(({ product }) => {
                 <div className="row m-0 w-100">
                     <div className="col-5 col-md-12 p-0">
                         <a onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>
-                            {(product.image) ? <img key={product.id} src={process.env.REACT_APP_API_URL + '/' + product.image} effect="blur" /> : null}
+                            {(product.image) ? <img key={product.id} src={process.env.REACT_APP_API_URL + '/products/' + product.image} effect="blur" /> : null}
                         </a>
                     </div>
                     <div className="col-7 col-md-12 pl-2 pe-0 p-md-0">
@@ -56,7 +56,7 @@ const ProductItem = observer(({ product }) => {
                             <div className="col p-0 d-none d-md-block">
                                 <div className="price mb-2 mb-md-0">
                                     <div className="sec-font d-flex flex-wrap flex-row-reverse flex-md-row align-items-center">
-                                        <span className="fw-6 fs-15 align-middle">{product.attribute ? 'от ' + JSON.parse(product.attribute)[0].price : product.price} ₽</span>
+                                        <span className="fw-6 fs-15 align-middle">{(product.groupModifiers) ? 'от ' + product.price + ' ₽' : product.price}</span>
                                         {product.sale && product.sale > 0 ? <span className="gray-3 text-decoration-line-through align-middle me-1 me-md-0 ms-1">{product.sale} ₽</span> : null}
                                     </div>
                                 </div>
@@ -72,8 +72,8 @@ const ProductItem = observer(({ product }) => {
                                             <img src="/images/icons/plus2.svg" alt="" />
                                         </button>
                                     </div>
-                                    <button type="button" className="add-prod d-none d-md-block" onClick={addCart}>{(updateState || btnAdd) ? 'Добавлено' : 'Добавить'}</button>
-                                    <button type="button" className="add-prod d-block d-md-none" onClick={addCart}>от {product.price} ₽</button>
+                                    <button type="button" className="add-prod d-none d-md-block" onClick={() => (product.groupModifiers) ? history.push(PRODUCT_ROUTE + '/' + product.id) : addCart()}>{(updateState || btnAdd) ? 'Удалить' : 'Добавить'}</button>
+                                    <button type="button" className="add-prod d-block d-md-none" onClick={() => (product.groupModifiers) ? history.push(PRODUCT_ROUTE + '/' + product.id) : addCart()}>{ (product.groupModifiers) ? 'от ' + product.price + ' ₽' : product.price}</button>
                                 </div>
                             </div>
                         </div>

@@ -3,16 +3,16 @@ import { Context } from "../index"
 import { HOME_ROUTE, CART_ROUTE, PROFILE_ROUTE, DELIVERY_ROUTE, POLICY_ROUTE } from "../utils/consts"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react-lite"
-import { setOrder } from "../http/orderAPI"
+import { setOrder, getStreets } from "../http/orderAPI"
 import CartContent from "../components/Cart"
 import InputMask from 'react-input-mask'
-import { AddressSuggestions } from 'react-dadata'
 import { NotificationManager } from 'react-notifications'
 import { NavDropdown } from "react-bootstrap"
 
 const Checkout = observer(() => {
     const { user, cart } = useContext(Context)
-    const [sendOrder, setSendOrder] = useState(false);
+    const [sendOrder, setSendOrder] = useState(false)
+    const [streets, setStreets] = useState(false)
     const timeNew = new Date()
     const timeNow = new Date()
     timeNew.setTime(timeNew.getTime() + 90 * 60 * 1000)
@@ -39,6 +39,7 @@ const Checkout = observer(() => {
 
     useEffect(() => {
         document.title = "Оформление заказа"
+        getStreets().then(data => setStreets(data))
     }, [])
 
     const addLocalAddress = (e) => {
@@ -125,14 +126,6 @@ const Checkout = observer(() => {
     }
     return (
         <main>
-            <div className="container mb-4 mb-md-5">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                        <li className="breadcrumb-item"><a>Оформление заказа</a></li>
-                    </ol>
-                </nav>
-            </div>
             {
                 (timeNow.getHours() === 22 || timeNow.getHours() < 10) ?
                     <section className="mb-8">
@@ -190,7 +183,7 @@ const Checkout = observer(() => {
                                                                     <div key={i} className="d-flex align-items-start mb-4">
                                                                         <input type="radio" name="address" value={i} id={"address-" + i} onClick={change} defaultChecked={(i === 0) ?? true} />
                                                                         <div className="ms-2">
-                                                                            <label for={"address-" + i} className="gray-1 fw-5">{item.name}</label>
+                                                                            <label for={"address-" + i} className="gray-1 fw-5">{(item.name) ? item.name : item.street}</label>
                                                                             <div className="d-flex mt-2">
                                                                                 <Link to={PROFILE_ROUTE + '/address/edit/' + item.id} className="fs-09 gray-4">Редактировать</Link>
                                                                             </div>
@@ -207,7 +200,16 @@ const Checkout = observer(() => {
                                                         <div className="row g-2 g-lg-3 sec-font">
                                                             <div className="col-sm-10">
                                                                 <div className="gray-1 mb-2">Улица <span className="text-danger">*</span></div>
-                                                                <AddressSuggestions inputProps={{ autoComplete: "new-address", placeholder: "Улица" }} name="street" token={process.env.REACT_APP_DADATA_API} filterLocations={[{ "kladr_id": "16" }]} count={6} minChars={1} delay={500} selectOnBlur={true} defaultQuery={checkout.full} onChange={changeAddress} />
+                                                                <input type="text" list="streets" name="street" autoComplete="off" placeholder="Улица"/>
+                                                                <datalist id="streets">
+                                                                    {
+                                                                    (streets) ? 
+                                                                        streets.rows.map((item, key) =>
+                                                                          <option key={key} value={item.title} />
+                                                                        )
+                                                                        : <option key={0} value="Введите улицу" />
+                                                                    }
+                                                                </datalist>
                                                             </div>
                                                             <div className="col-2">
                                                                 <div className="gray-1 mb-2">Дом <span className="text-danger">*</span></div>

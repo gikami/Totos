@@ -1,9 +1,9 @@
-import React, { useContext, useState, createRef } from 'react'
+import React, { useContext, useState, createRef, useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
 import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts"
 import { Context } from "../../index"
 import { addAddress, editAddress, deleteAddress } from "../../http/userAPI"
-import { AddressSuggestions } from 'react-dadata'
+import { getStreets } from "../../http/orderAPI"
 import SideBar from "./components/menu"
 import { NotificationManager } from 'react-notifications'
 
@@ -11,13 +11,19 @@ const Address = () => {
     const { action, actionId } = useParams()
     const { user } = useContext(Context)
     const [update, setUpdate] = useState(1)
+    const [streets, setStreets] = useState(false)
     const [address, setAddress] = useState(
         (user.user.address && user.user.address.find(ids => ids.id == actionId)) ? user.user.address.find(ids => ids.id == actionId)
             :
             {
                 name: '', full: '', street: '', home: '', entrance: '', code: '', floor: '', apartment: '',
             })
-
+            
+    useEffect(() => {
+        document.title = "Мои адреса"
+        getStreets().then(data => setStreets(data))
+    }, [])
+    
     const deleteSubmit = async (id) => {
         try {
             let data;
@@ -101,7 +107,16 @@ const Address = () => {
                                     <div className="row">
                                         <div className="col-10 mb-4">
                                             <div className="gray-1 mb-2">Улица <span className="text-danger">*</span></div>
-                                            <AddressSuggestions inputProps={{ autoComplete: "new-address", placeholder: "Улица" }} name="street" token={process.env.REACT_APP_DADATA_API} filterLocations={[{ "kladr_id": "16" }]} count={6} minChars={1} delay={500} selectOnBlur={true} onChange={changeAddress} />
+                                            <input type="text" list="streets" name="street" autoComplete="off" placeholder="Улица" onChange={change} value={address.street}/>
+                                            <datalist id="streets">
+                                                {
+                                                (streets) ? 
+                                                    streets.rows.map((item, key) =>
+                                                      <option key={key} value={item.title} />
+                                                    )
+                                                    : <option key={0} value="Введите улицу" />
+                                                }
+                                            </datalist>
                                         </div>
                                         <div className="col-2 mb-4">
                                             <div className="gray-1 mb-2">Дом <span className="text-danger">*</span></div>
@@ -189,7 +204,16 @@ const Address = () => {
                                         <div className="row">
                                             <div className="col-sm-10 mb-4">
                                                 <div className="gray-1 mb-2">Адрес</div>
-                                                <AddressSuggestions inputProps={{ autoComplete: "new-address", placeholder: "Начните вводить адрес" }} name="street" token={process.env.REACT_APP_DADATA_API} filterLocations={[{ "kladr_id": "16" }]} count={6} minChars={1} delay={500} selectOnBlur={true} defaultQuery={address.full} onChange={changeAddress} />
+                                                <input type="text" list="streets" name="street" autoComplete="off" placeholder="Улица" onChange={change} value={address.street}/>
+                                                <datalist id="streets">
+                                                    {
+                                                    (streets) ? 
+                                                        streets.rows.map((item, key) =>
+                                                          <option key={key} value={item.title} />
+                                                        )
+                                                        : <option key={0} value="Введите улицу" />
+                                                    }
+                                                </datalist>
                                             </div>
                                             <div className="col-2 mb-4">
                                                 <div className="gray-1 mb-2">Дом</div>
@@ -246,7 +270,7 @@ const Address = () => {
                                                         <div key={i} className="d-flex align-items-start mb-4">
                                                             <input type="radio" name="address" value="Адрес Работа" id={"address-" + i} defaultChecked={(i === 0) ?? true} />
                                                             <div className="ms-2">
-                                                                <label for={"address-" + i} className="gray-1 fw-5">{item.name}</label>
+                                                                <label for={"address-" + i} className="gray-1 fw-5">{(item.name) ? item.name : item.street}</label>
                                                                 <div className="d-flex mt-2">
                                                                     <Link to={PROFILE_ROUTE + '/address/edit/' + item.id} className="fs-09 gray-1 me-3">Редактировать</Link>
                                                                     <button type="button" onClick={() => deleteSubmit(item.id)} className="fs-09 gray-4">Удалить</button>

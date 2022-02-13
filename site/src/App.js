@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter } from "react-router-dom";
-import ScrollToTop from "./components/ScrollToTop";
+import { BrowserRouter  } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
+import ScrollToTop from "./components/ScrollToTop";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { observer } from "mobx-react-lite";
@@ -17,7 +17,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 const App = observer(() => {
     const { user } = useContext(Context)
     const [loading, setLoading] = useState(true)
-    
+
     useEffect(() => {
         check().then(data => {
             user.setUser(data)
@@ -30,11 +30,11 @@ const App = observer(() => {
     }
     return (
         <BrowserRouter>
-            <ScrollToTop />
-            <NotificationContainer />
             <NavBar />
             <AppRouter />
             <Footer />
+            <ScrollToTop />
+            <NotificationContainer />
         </BrowserRouter>
     );
 });

@@ -16,7 +16,10 @@ const NavBar = observer(() => {
     
     useEffect(() => {
         fetchCategory().then(data => {
-            product.setCategory(data)
+            if(!product.selectedCategory.id){
+                product.setSelectedCategory(data.category[0])
+            }
+            product.setCategory(data.category)
         })
     }, [])
     

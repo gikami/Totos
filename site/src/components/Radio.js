@@ -3,9 +3,8 @@ import { Context } from "../index"
 
 const Radio = () => {
     const { product, cart } = useContext(Context)
-    const size = cart.getSize(product.product) ? cart.getSize(product.product) : 1
-    const list = (product.product) ? JSON.parse(product.product.attribute) : false
-    console.log(size)
+    const size = 1
+    const list = (product.product) ? product.product.attribute : false
     const changeSize = (e) => {
         product.product.price = e.target.value
         product.product.size = {

@@ -1,15 +1,24 @@
 import { $authHost, $host } from "./index";
 
-export const getAikoCategory = async () => {
-    const data = await $host.get('api/admin/getaikocategory')
+export const getAikoStreets = async () => {
+    const data = await $authHost.get('api/admin/getAikoStreets')
     if (data) {
         return data.data
     } else {
         return false
     }
 }
+export const getAikoCategories = async () => {
+    const data = await $authHost.get('api/admin/getAikoCategories')
+    if (data) {
+        console.log(data.data)
+        return data.data
+    } else {
+        return false
+    }
+}
 export const getAikoProducts = async () => {
-    const data = await $host.get('api/admin/getaikoproducts')
+    const data = await $authHost.get('api/admin/getAikoProducts')
     if (data) {
         return data.data
     } else {
@@ -17,7 +26,7 @@ export const getAikoProducts = async () => {
     }
 }
 export const sendAikoOrder = async () => {
-    const data = await $host.post('api/admin/sendaikoorder')
+    const data = await $authHost.post('api/admin/sendAikoOrder')
     if (data) {
         return data.data
     } else {
