@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const { Product, Review, User } = require('../models/models')
+const { Product, Review, User, Category } = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class ProductController {
@@ -29,9 +29,14 @@ class ProductController {
         let products
 
         if (categoryId) {
-            products = await Product.findAndCountAll({ where: { category: categoryId, type: 'product', status: 1 }, order: [['price', 'ASC']], limit, offset })
+            let category = await Category.findOne({ where: { id: categoryId, status: 1 } })
+            if(category){
+                products = await Product.findAndCountAll({ where: { parentGroup: category.apiId, type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
+            }else{
+                products = false
+            }
         } else {
-            products = await Product.findAndCountAll({ where: { type: 'product', status: 1 }, order: [['price', 'ASC']], limit, offset })
+            products = await Product.findAndCountAll({ where: { type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
         }
 
         return res.json(products)
@@ -43,19 +48,23 @@ class ProductController {
     }
     async getOne(req, res) {
         const { id } = req.params
-        let product = await Product.findOne({ where: { id, type: 'product', status: 1 } })
-        let review = await Review.findAll({ include: User, where: { product: id } })
-        let dop = await Product.findAll({ where: { type: 'dop', status: 1 } })
-        let rating = []
-        if (review && review.length > 0) {
-            rating.push(
-                {
-                    total: (review.length > 1) ? review.reduce((a, b) => a.rating + b.rating, 0) / review.length : review[0].rating,
-                    count: review.length
-                }
-            )
+        var product = await Product.findOne({ where: { id, type: 'dish', status: 1 } })
+        // let review = await Review.findAll({ include: User, where: { product: id } })
+        let size = await Product.findAll({ where: { groupId: product.groupModifiers, type: 'modifier', status: 1 }, order: [['price', 'ASC']] })
+        if(size){
+            product.attribute = size
         }
-        return res.json({ product, review, rating, dop })
+        // let dop = await Product.findAll({ where: { type: 'dop', status: 1 } })
+        // let rating = []
+        // if (review && review.length > 0) {
+        //     rating.push(
+        //         {
+        //             total: (review.length > 1) ? review.reduce((a, b) => a.rating + b.rating, 0) / review.length : review[0].rating,
+        //             count: review.length
+        //         }
+        //     )
+        // }
+        return res.json({ product })
     }
 }
 

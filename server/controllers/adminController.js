@@ -6,29 +6,47 @@ const { Product, Category, User, Order } = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class AdminController {
-
-    // async getAikoCategory(req, res, next) {
-    //     try {
-    //         return res.json(Aiko.uploadCategory())
-    //     } catch (error) {
-    //         return res.json(error);
-    //     }
-    // }
-    // async getAikoProducts(req, res, next) {
-    //     try {
-    //         return res.json(Aiko.uploadProducts())
-    //     } catch (error) {
-    //         return res.json(error);
-    //     }
-    // }
-    // async sendAikoOrder(req, res, next) {
-    //     try {
-    //         let result = await Aiko.sendOrder()
-    //         return res.json(result)
-    //     } catch (error) {
-    //         return res.json(error);
-    //     }
-    // }
+    
+    async getAikoCompany(req, res, next) {
+        try {
+            let data = await Aiko.getCompany()
+            return res.json(data)
+        } catch (error) {
+            return res.json(error)
+        }
+    }
+    async getAikoStreets(req, res, next) {
+        try {
+            let data = await Aiko.getStreets()
+            return res.json(data)
+        } catch (error) {
+            return res.json(error)
+        }
+    }
+    async getAikoCategories(req, res, next) {
+        try {
+            let data = await Aiko.getCategories()
+            return res.json(data)
+        } catch (error) {
+            return res.json(error)
+        }
+    }
+    async getAikoProducts(req, res, next) {
+        try {
+            let data = await Aiko.getProducts()
+            return res.json(data)
+        } catch (error) {
+            return res.json(error)
+        }
+    }
+    async sendAikoOrder(req, res, next) {
+        try {
+            let result = await Aiko.sendOrder()
+            return res.json(result)
+        } catch (error) {
+            return res.json(error)
+        }
+    }
 
     async getCategories(req, res) {
         let { limit, page } = req.query
@@ -91,7 +109,7 @@ class AdminController {
             const product = await Product.create(data)
             if (image) {
                 let fileName = uuid.v4() + ".jpg"
-                image.mv(path.resolve(__dirname, '..', 'static', fileName))
+                image.mv(path.resolve(__dirname, '..', 'static/products', fileName))
                 product.update({ image: fileName })
                 product.save()
             }
@@ -122,12 +140,12 @@ class AdminController {
         await product.save()
         if (file && file.image) {
             if (product.image) {
-                unlink('static/' + product.image, (err) => {
+                unlink('static/products/' + product.image, (err) => {
                     if (err) throw err
                 })
             }
             let fileName = uuid.v4() + ".jpg"
-            file.image.mv(path.resolve(__dirname, '..', 'static', fileName))
+            file.image.mv(path.resolve(__dirname, '..', 'static/products', fileName))
 
             await product.update({ image: fileName })
             await product.save()

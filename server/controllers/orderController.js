@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { Order, Address, Promo } = require('../models/models')
+const { Order, Address, Promo, Street } = require('../models/models')
 const Telegram = require('../components/telegram')
 const ApiError = require('../error/ApiError')
 
@@ -199,6 +199,10 @@ class OrderController {
         } else {
             return res.json({ status: 0, text: 'Введите промокод' })
         }
+    }
+    async getStreets(req, res) {
+        let streets = await Street.findAndCountAll({ order: [['id', 'ASC']] })
+        return res.json(streets)
     }
 }
 

@@ -1,5 +1,5 @@
 const sequelize = require('../db')
-const { DataTypes } = require('sequelize')
+const { DataTypes, Op } = require('sequelize')
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     email: { type: DataTypes.STRING },
@@ -55,7 +55,11 @@ const Order = sequelize.define('order', {
 
 const Product = sequelize.define('product', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    category_mogifier: { type: DataTypes.STRING },
+    apiId: { type: DataTypes.STRING(100) },
+    groupId: { type: DataTypes.STRING(100) },
+    parentGroup: { type: DataTypes.STRING(100) },
+    productCategoryId: { type: DataTypes.STRING(100) },
+    groupModifiers: { type: DataTypes.STRING(100) },
     title: { type: DataTypes.STRING(500) },
     price: { type: DataTypes.INTEGER, defaultValue: 0 },
     sale: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -97,6 +101,9 @@ const Sale = sequelize.define('sale', {
 const Category = sequelize.define('category', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     priority: { type: DataTypes.INTEGER },
+    apiId: { type: DataTypes.STRING(100) },
+    parentGroup: { type: DataTypes.STRING(100) },
+    isGroupModifier: { type: DataTypes.INTEGER, defaultValue: 0 },
     title: { type: DataTypes.STRING(500) },
     image: { type: DataTypes.STRING },
     status: { type: DataTypes.INTEGER, defaultValue: 1 }
@@ -116,12 +123,28 @@ const Promo = sequelize.define('promo', {
     authUser: { type: DataTypes.INTEGER, defaultValue: 0 },
     status: { type: DataTypes.INTEGER, defaultValue: 1 }
 })
-
+const City = sequelize.define('city', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    apiId: { type: DataTypes.STRING(100) },
+    title: { type: DataTypes.STRING(100) },
+    externalRevision: { type: DataTypes.INTEGER },
+    classifierId: { type: DataTypes.STRING(100) },
+    status: { type: DataTypes.INTEGER, defaultValue: 1 }
+})
+const Street = sequelize.define('street', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    apiId: { type: DataTypes.STRING(100) },
+    title: { type: DataTypes.STRING(150) },
+    externalRevision: { type: DataTypes.INTEGER },
+    classifierId: { type: DataTypes.STRING(100) },
+    status: { type: DataTypes.INTEGER, defaultValue: 1 }
+})
 
 User.hasMany(Review);
 Review.belongsTo(User);
 
 module.exports = {
+    Op,
     User,
     Product,
     Category,
@@ -129,5 +152,7 @@ module.exports = {
     Order,
     Review,
     Promo, 
-    Sale
+    Sale,
+    City,
+    Street
 }
