@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
 import { Context } from "../../index"
 import { getOrders } from "../../http/orderAPI"
-import { PROFILE_ROUTE, SHOP_ROUTE, HOME_ROUTE } from "../../utils/consts"
+import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts"
 import SideBar from "./components/menu"
 
 const Orders = () => {
@@ -20,15 +20,6 @@ const Orders = () => {
 
     return (
         <main>
-            <div className="container mb-4 mb-md-5">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                        <li className="breadcrumb-item"><a>История заказов</a></li>
-                    </ol>
-                </nav>
-            </div>
-
             <section id="sec-13" className="mb-8">
                 <div className="container">
                     <div className="row">
@@ -47,7 +38,7 @@ const Orders = () => {
                                         <div className="body">
                                             {
                                                 orders.map(item => {
-                                                    return(
+                                                    return (
                                                         <div className="order">
                                                             <div>
                                                                 <div className="gray-1 pb-2 fw-5">Заказ № {item.id}</div>
@@ -62,7 +53,7 @@ const Orders = () => {
                                                                             <>
                                                                                 <tr>
                                                                                     <td>
-                                                                                        <div className="pb-2">{cart.title} <span class="gray-3">{(cart.count) ? cart.count : 1} шт</span></div>
+                                                                                        <div className="pb-2">{cart.title} <span className="gray-3">{(cart.count) ? cart.count : 1} шт</span></div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div className="gray-1 text-end">{total} ₽</div>
@@ -84,7 +75,7 @@ const Orders = () => {
                                                                             </>
                                                                         )
                                                                     })
-    
+
                                                                 }
                                                             </div>
                                                             <div>
@@ -106,7 +97,7 @@ const Orders = () => {
                                     :
                                     <>
                                         <div className="gray-2 text-start mb-4">У вас пока не было ни одного заказа. Добавляйте <br /> товары и оформите свой первый заказ.</div>
-                                        <Link to={SHOP_ROUTE} className="btn btn-2 mb-5">В каталог</Link>
+                                        <Link to={HOME_ROUTE} className="btn btn-2 mb-5">В каталог</Link>
                                     </>
                             }
                             <Link to={PROFILE_ROUTE} className="gray-3 d-flex align-items-center">

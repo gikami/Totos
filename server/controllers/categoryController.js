@@ -1,18 +1,12 @@
-const { Category } = require('../models/models')
+const { Op,Category } = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class CategoryController {
-    async create(req, res) {
-        const { title } = req.body
-        const category = await Category.create({ title })
-        return res.json(category)
-    }
-
     async getAll(req, res) {
-        const category = await Category.findAll({ order: [['priority', 'ASC']] })
-        return res.json(category)
+        const category = await Category.findAll({ where: {parentGroup: null, isGroupModifier: 0, status: 1}, order: [['id', 'DESC']] })
+        const subcategory = await Category.findAll({ where: {parentGroup: {[Op.not]: null}, isGroupModifier: 0, status: 1}, order: [['id', 'DESC']] })
+        return res.json({category, subcategory})
     }
-
 }
 
 module.exports = new CategoryController()

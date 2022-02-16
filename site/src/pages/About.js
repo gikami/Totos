@@ -3,24 +3,17 @@ import React, { useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const About = () => {
+    
     useEffect(() => {
         document.title = "О нас"
     }, [])
+    
     return (
         <main>
-            <div className="container mb-4 mb-md-5">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><a href="index.html">Главная</a></li>
-                        <li className="breadcrumb-item"><a href="about.html">О нас</a></li>
-                    </ol>
-                </nav>
-            </div>
-
             <section id="sec-about" className="position-relative mb-8">
                 <div className="container">
-                    <h2 class="text-start">О нас</h2>
-                    <div className="row">
+                    <h1 className="h2 fw-6 mb-4 text-center text-md-start">О нас</h1>
+                    <div className="row align-items-center">
                         <div className="col-md-4">
                             <div className="about-collage">
                                 <img src="/images/about-1.png" alt="Только свежие ингредиенты" id="img-1" className="round-img w-100" />
@@ -35,7 +28,7 @@ const About = () => {
             </section>
             <section id="sec-about" className="position-relative mb-8">
                 <div className="container">
-                    <div className="row flex-md-row-reverse">
+                    <div className="row flex-md-row-reverse align-items-center">
                         <div className="col-md-4 d-md-flex justify-content-end">
                             <div className="about-collage">
                                 <img src="/images/about-2.png" alt="Только свежие ингредиенты" id="img-1" className="round-img w-100" />
@@ -50,7 +43,7 @@ const About = () => {
             </section>
             <section id="sec-about" className="position-relative mb-8">
                 <div className="container">
-                    <div className="row">
+                    <div className="row align-items-center">
                         <div className="col-md-4">
                             <div className="about-collage">
                                 <img src="/images/about-3.png" alt="Только свежие ингредиенты" id="img-1" className="round-img w-100" />

@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react'
+import { Context } from "../index"
 
-const Radio = ({ list }) => {
+const Radio = () => {
+    const { product, cart } = useContext(Context)
+    const size = (product.product) ? product.product.attribute[0][0] : false
+    const list = (product.product) ? product.product.attribute[0] : false
+    const changeSize = (e) => {
+        product.product.price = e.target.value
+        product.product.size = {
+            id: e.target.attributes.dataId.value,
+            title: e.target.attributes.dataTitle.value
+        }
+        product.setProduct(product.product)
+        cart.setSize(product.product)
+    }
+
     return (
-        (list) ?
-            <div className="switch">
-                <div className="indicator"></div>
-                {
-                    Array(list).map((radio, i) =>
-                        <div key={i} className={(radio.checked) ? 'switch-option text-form active' : 'switch-option text-form'}>
-                            <input type="radio" name={"product-" + radio.group} value={radio.title} />
-                            <div>{radio.title}</div>
-                        </div>
-                    )
-                }
-            </div>
-            : false
-    );
-};
+        (list) &&
+        <div className="switch">
+            {
+                list.map((radio, i) =>
+                    <label key={i} className='text-form'>
+                        <input type="radio" id={"radio" + radio.id} name={"radio" + radio.group} dataId={radio.id} dataTitle={radio.title} value={radio.price} onChange={changeSize} defaultChecked={size.id == radio.id} />
+                        <div className="switch-option">{radio.title}</div>
+                    </label>
+                )
+            }
+        </div>
+    )
+}
 
-export default Radio;
-{//[{"group":1,"title":"30см","checked": true}]
+export default Radio
+{
+    //[{"group":1,"title":"30см","checked": true}]
 }

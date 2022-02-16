@@ -4,13 +4,15 @@ export default class CartStore {
     constructor() {
         this._cart = []
         this._total = 0
+        this._size = 1
         this._sale = { text: '', total: 0 }
+        this._promo = { text: '', total: 0 }
         this._deliveryMinPrice = 700
         this._deliveryPrice = 100
         this._giftMinPrice = [1000, 2500]
         this._gift = [
-            {
-                "id": 'gift',
+            {   
+                "id": 1,
                 "gift": true,
                 "api_id": "4e542b7f-c7f7-4028-80cd-d698c1e0bc46",
                 "title": "Подарок Пицца Маргарита",
@@ -25,7 +27,7 @@ export default class CartStore {
                 "count": 1
             },
             {
-                "id": 'gift2',
+                "id": 2,
                 "gift": true,
                 "api_id": "25792c22-16f1-4519-ab3e-6c44533378f3",
                 "title": "Подарок Ролл Филадельфия с авокадо",
@@ -40,7 +42,7 @@ export default class CartStore {
                 "count": 1
             },
             {
-                "id": 'gift3',
+                "id": 3,
                 "gift": true,
                 "api_id": "9a2dae36-b05d-4e9b-9007-89a8942d7a71",
                 "title": "Подарок Пицца ветчина с вешанками",
@@ -59,13 +61,13 @@ export default class CartStore {
         this.totalSum()
     }
     totalSum() {
-        let data = localStorage.getItem('cart');
+        let data = localStorage.getItem('cart')
         let pizza = { product: [], count: 0 }
         if (data) {
             this._total = 0
             this._cart = JSON.parse(data);
             this._cart.map(item => {
-                if(item){
+                if (item) {
                     let param = (item.param) ? JSON.parse(item.param)[0].type : false
                     if (param === 'pizza' && pizza.count < 3 && item.type !== 'gift') {
                         let id_yes = Object.keys(pizza.product).find(ids => pizza.product[ids].id === item.id)
@@ -82,11 +84,16 @@ export default class CartStore {
                     }
                 }
             })
-            if (pizza.count >= 3) {
+            if (pizza.count >= 3 && !Object.keys(this._cart).find(ids => this._cart[ids].type === 'gift')) {
                 this._sale = { text: 'Скидка по акции - Третья пицца в подарок', total: Math.min(...pizza.product.map(item => item.price)) }
                 this._total = this._total - this._sale.total
             } else {
                 this._sale = { text: '', total: 0 }
+            }
+            let promo = localStorage.getItem('promo')
+            if (promo) {
+                this._promo = JSON.parse(promo)
+                this._total = this._total - this._promo.price
             }
         }
     }
@@ -131,12 +138,39 @@ export default class CartStore {
 
         localStorage.setItem('cart', JSON.stringify(this._cart))
         this.totalSum()
-
+    }
+    setPromo(promo) {
+        if (promo) {
+            this._promo = promo
+            localStorage.setItem('promo', JSON.stringify(this._promo))
+            this.totalSum()
+        }
+    }
+    removePromo() {
+        this._promo = { text: '', total: 0 }
+        localStorage.removeItem('promo')
+        this.totalSum()
     }
     addGift(id) {
         this.setCart(this._gift[id])
     }
-
+    getSize(product) {
+        if (product) {
+            let id_yes = Object.keys(this._cart).find(ids => this._cart[ids].id === product.id);
+            return (id_yes && this._cart[id_yes].size) ? this._cart[id_yes].size : 1
+        }
+    }
+    setSize(product) {
+        if (product) {
+            let id_yes = Object.keys(this._cart).find(ids => this._cart[ids].id === product.id);
+            if (id_yes) {
+                this._cart[id_yes].size = product.size
+                this._cart[id_yes].price = product.price
+                localStorage.setItem('cart', JSON.stringify(this._cart))
+            }
+            this.totalSum()
+        }
+    }
     setCartCountPlus(product) {
         if (product) {
             let id_yes = Object.keys(this._cart).find(ids => this._cart[ids].id === product.id);
@@ -222,6 +256,9 @@ export default class CartStore {
     }
     get sale() {
         return this._sale
+    }
+    get promo() {
+        return this._promo
     }
     giftMinPrice(id) {
         return this._giftMinPrice[id]

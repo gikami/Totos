@@ -6,15 +6,6 @@ const Policy = () => {
     }, [])
     return (
         <main>
-            <div className="container mb-4 mb-md-5">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><a href="index.html">Главная</a></li>
-                        <li className="breadcrumb-item"><a href="delivery.html">Доставка и оплата</a></li>
-                    </ol>
-                </nav>
-            </div>
-
             <section id="sec-8" className="mb-8">
                 <div className="container">
                     <h1>Политика конфиденциальности персональных данных</h1>

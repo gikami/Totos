@@ -28,6 +28,38 @@ const generateJwt = (user, address = false, order = false) => {
         { expiresIn: '24h' }
     )
 }
+const sendSms = (phone, text) => {
+    if (text.length > 0 && phone.length > 10) {
+        var from = 'BizonFood'
+        var apikey = '5W0Y4B5DJK54KZ732JJBY0EJ590727Z114S8YT8AO6L201S5A7GQN1O9DHDQ0ZQ4'
+        var uri = [
+            'https://smspilot.ru/api.php',
+            '?send=', querystring.escape(text),
+            '&to=', phone,
+            '&from=', from,
+            '&apikey=', apikey,
+            '&format=json'
+        ].join('')
+
+        https.get(uri, (res) => {
+            var str = ''
+            res.on('data', (chunk) => {
+                str += chunk;
+            })
+
+            res.on('end', () => {
+                var parsedData = JSON.parse(str)
+                return true
+            })
+
+        }).on('error', (err) => {
+            console.log('ошибка сети ' + err);
+            return false
+        })
+    } else {
+        return false
+    }
+}
 
 class UserController {
     async registration(req, res, next) {
@@ -58,37 +90,49 @@ class UserController {
             const getUser = await User.create({ phone, password: heshPassword })
 
             if (getUser) {
-                var text = 'Ваш пароль ' + password + ' от профиля на сайте bizon-food.ru';
-                var from = 'BizonFood';
-                var apikey = '5W0Y4B5DJK54KZ732JJBY0EJ590727Z114S8YT8AO6L201S5A7GQN1O9DHDQ0ZQ4';
-                var uri = [
-                    'https://smspilot.ru/api.php',
-                    '?send=', querystring.escape(text),
-                    '&to=', phone,
-                    '&from=', from,
-                    '&apikey=', apikey,
-                    '&format=json'
-                ].join('');
-
-                https.get(uri, (res) => {
-                    var str = ''
-                    res.on('data', (chunk) => {
-                        str += chunk;
-                    });
-
-                    res.on('end', () => {
-                        console.log('ответ сервера: ' + str);
-                        var parsedData = JSON.parse(str);
-                        console.log('server_id=' + parsedData.send[0].server_id);
-                    });
-
-                }).on('error', (err) => {
-                    console.log('ошибка сети ' + err);
-                });
+                sendSms(phone, 'Ваш пароль ' + password + ' от профиля на сайте bizon-food.ru')
             }
 
             const token = generateJwt(getUser)
+
             return res.json(token)
+
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+    async newPassword(req, res, next) {
+        try {
+            var { phone } = req.body
+
+            if (!phone && phone.length < 10) {
+                return next(ApiError.badRequest('Введите номер телефона'))
+            }
+            phone = phone.replace(/[^\d]/g, '')
+
+            const user = await User.findOne({ where: { phone } })
+
+            if (!user) {
+                return next(ApiError.badRequest('Пользователя с таким номером не существует'))
+            }
+
+            var chars = "0123456789abcdefghijklmnopqrstuvwxyz"
+            var passwordLength = 5
+            var password = ""
+
+            for (var i = 0; i <= passwordLength; i++) {
+                var randomNumber = Math.floor(Math.random() * chars.length)
+                password += chars.substring(randomNumber, randomNumber + 1)
+            }
+
+            const heshPassword = await bcrypt.hash(password, 5)
+
+            await user.update({ password: heshPassword })
+            await user.save()
+
+            sendSms(phone, 'Ваш новый пароль ' + password + ' от профиля на сайте bizon-food.ru')
+
+            return res.json(true)
 
         } catch (e) {
             next(ApiError.badRequest(e.message))

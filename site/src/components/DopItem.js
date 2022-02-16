@@ -14,14 +14,11 @@ const DopItem = observer(({ product, dop }) => {
         setUpdateState(!updateState)
     }
     return (
-        <div className="ingredient">
-            <LazyLoadImage src={process.env.REACT_APP_API_URL + '/' + dop.image} effect="blur" alt={dop.title} />
+        <div onClick={addCart} className={(updateState || btnAdd) ? 'ingredient active' : 'ingredient'}>
+            <LazyLoadImage src={(dop.image) ? process.env.REACT_APP_API_URL + '/' + dop.image : '/images/no-image.jpg'} effect="blur" alt={dop.title} />
             <div>
                 <div className="title">{dop.title}<small> ({dop.weight * 1000}г)</small></div>
-                <div className="mt-1 d-sm-flex justify-content-between align-items-center">
-                    <div className="gray">{dop.price} ₽</div>
-                    <button type="button" className="btn" onClick={addCart}>{(updateState || btnAdd) ? 'Добавлено' : 'Добавить'}</button>
-                </div>
+                <div className="mt-1 gray fw-6">{dop.price} ₽</div>
             </div>
         </div>
     )

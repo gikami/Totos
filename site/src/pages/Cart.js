@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Context } from "../index"
-import { HOME_ROUTE, SHOP_ROUTE, CHECKOUT_ROUTE } from "../utils/consts"
+import { HOME_ROUTE, CHECKOUT_ROUTE } from "../utils/consts"
 import { Link } from "react-router-dom"
 import CartContent from "../components/Cart"
 import RecommendList from "../components/RecommendList"
@@ -22,37 +22,24 @@ const Cart = observer(() => {
 
     return (
         <main>
-            <div className="container mb-4 mb-md-5">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><Link to={HOME_ROUTE}>Главная</Link></li>
-                        <li className="breadcrumb-item"><a>Корзина</a></li>
-                    </ol>
-                </nav>
-            </div>
-
             <section id="sec-14" className="mb-8">
                 <div className="container">
                     {
                         (cart.cart && cart.cart.length > 0) ?
                             <>
-                                <div className="d-flex justify-content-between align-items-center mb-4">
-                                    <div className="d-flex align-items-baseline">
-                                        <h1 className="mb-0">Корзина {(cart.cart.length > 0) && '(' + cart.cart.length + ')'}</h1>
-                                    </div>
-                                </div>
+                                <h1 className="text-center text-md-start">Корзина</h1>
                                 <form>
                                     <CartContent />
                                 </form>
-                                <h3 class="fw-7 mb-3 mt-4">Вам может понравится</h3>
+                                <h3 className="fw-7 mb-3 mt-4">Вам может понравится</h3>
                                 <RecommendList list={recommend} />
                             </>
                             :
                             <div className="gx-xxl-5">
-                                <img src="/images/icons/shopping-bag.svg" alt="" className="d-block mx-auto mb-4" />
+                                <img src="/images/no-card.svg" alt="" className="d-block mx-auto mb-4" />
                                 <h1 className="text-center mb-4">Корзина пуста</h1>
-                                <div className="sec-font text-center mb-4">Посмотрите наше меню и добавьте <br /> понравившиеся товары</div>
-                                <Link to={SHOP_ROUTE} className="btn btn-1 mx-auto py-md-3 mb-5 text-uppercase">Перейти к меню</Link>
+                                <div className="sec-font text-center mb-4">Добавьте сюда понравившиеся товары</div>
+                                <Link to={HOME_ROUTE} className="btn btn-1 mx-auto mb-5">В каталог</Link>
                             </div>
                     }
                 </div>

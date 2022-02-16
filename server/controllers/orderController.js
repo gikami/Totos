@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { Order, Address } = require('../models/models')
+const { Order, Address, Promo, Street } = require('../models/models')
 const Telegram = require('../components/telegram')
 const ApiError = require('../error/ApiError')
 
@@ -171,6 +171,38 @@ class OrderController {
         } else {
             return res.json('Ошибка при получении истории заказов')
         }
+    }
+    async promo(req, res) {
+        const { user, code, total } = req.body
+        if (code) {
+            const info = await Promo.findOne({ where: { code, status: 1 } })
+            if (info) {
+                if (info.authUser === 1 && !user) {
+                    return res.json({ status: 0, text: 'Сначала авторизуйтесь' })
+                }
+                if (info.minTotal > total) {
+                    return res.json({ status: 0, text: 'Минимальная сумма заказа ' + info.minTotal })
+                }
+                if (info.maxTotal !== 0 && info.maxTotal < total) {
+                    return res.json({ status: 0, text: 'Максимальная сумма заказа ' + info.minTotal })
+                }
+                if (info.maxOrder !== 0) {
+                    const orderPromo = await Order.findOne({ where: { user, promo: code } })
+                    if (orderPromo) {
+                        return res.json({ status: 0, text: 'Вы уже использовали данный промокод' })
+                    }
+                }
+                return res.json({ status: 1, text: 'Промокод применен', data: info })
+            } else {
+                return res.json({ status: 0, text: 'Промокода не существует' })
+            }
+        } else {
+            return res.json({ status: 0, text: 'Введите промокод' })
+        }
+    }
+    async getStreets(req, res) {
+        let streets = await Street.findAndCountAll({ order: [['id', 'ASC']] })
+        return res.json(streets)
     }
 }
 
