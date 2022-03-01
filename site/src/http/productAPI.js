@@ -5,12 +5,8 @@ export const fetchCategory = async () => {
     return data
 }
 
-export const fetchProducts = async (categoryId, page, limit = 20) => {
-    const { data } = await $host.get('api/product', {
-        params: {
-            categoryId, page, limit
-        }
-    })
+export const fetchProducts = async (categoryId = false, page = 1, limit = 20) => {
+    const { data } = await $host.post('api/product', { categoryId, page, limit })
     return data
 }
 
@@ -34,7 +30,6 @@ export const fetchRecommed = async (param, id = 1) => {
 
 export const fetchOneProduct = async (id) => {
     const { data } = await $host.get('api/product/' + id)
-    console.log(data)
     return data
 }
 

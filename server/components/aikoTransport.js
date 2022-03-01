@@ -1,7 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
-const { Op, Category, Product, City, Street } = require('../models/models')
+const { Category, Product, City, Street } = require('../models/models')
 
 class Aiko {
   constructor() {
@@ -9,8 +9,13 @@ class Aiko {
     this.apiLogin = '7d87398c'
     this.token = false
     this.org = false
+    this.terminal = false
+    this.payment = []
+    this.order = false
     this.city = []
     this.streets = []
+    this.modifiers = []
+    this.header = {}
     this.auth()
   }
   async auth() {
@@ -29,7 +34,17 @@ class Aiko {
       .then(response => {
         this.token = response.data.token
       })
+      .catch(error => console.error(error))
 
+    if (!this.token) {
+      return 'Ошибка нет данные организации или ключа'
+    }
+
+    this.header = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+    }
     //Получение данных организации (id)
     await axios({
       method: 'post',
@@ -37,16 +52,14 @@ class Aiko {
       data: {
         'apiLogin': this.apiLogin
       },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      }
+      headers: this.header
     })
       .then(response => {
         this.org = response.data.organizations[0].id
       })
-    if (!this.org || !this.token) {
+      .catch(error => console.error(error))
+
+    if (!this.org) {
       return 'Ошибка нет данные организации или ключа'
     }
   }
@@ -58,15 +71,12 @@ class Aiko {
       data: {
         'organizationIds': [this.org]
       },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      }
+      headers: this.header
     })
       .then(response => {
         this.city = response.data.cities[0].items[0]
       })
+      .catch(error => console.error(error))
 
     if (!this.city) {
       return 'Ошибка при получении городов'
@@ -79,15 +89,13 @@ class Aiko {
         'organizationId': this.org,
         'cityId': this.city.id
       },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      }
+      headers: this.header
     })
       .then(response => {
         this.streets = response.data.streets
       })
+      .catch(error => console.error(error))
+
     if (!this.streets) {
       return 'Ошибка при получении улиц'
     }
@@ -106,28 +114,27 @@ class Aiko {
       data: {
         'organizationId': this.org
       },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      }
+      headers: this.header
     })
       .then(response => {
         this.categories = response.data.groups
       })
+      .catch(error => console.error(error))
+
     if (!this.categories) {
       return 'Ошибка при получении категорий'
     }
     Category.destroy({ where: {}, truncate: true, cascade: false, restartIdentity: true })
-    this.categories.map(item =>
+    this.categories.map((item, i) => {
       Category.create({
         apiId: item.id,
         title: item.name.replace(/(<([^>]+)>)/ig, ''),
+        priority: i,
         parentGroup: item.parentGroup,
         isGroupModifier: (item.isGroupModifier) ? 1 : 0,
         status: (item.isDeleted) ? 0 : 1
       })
-    )
+    })
 
     return { count: this.categories.length, categories: this.categories }
   }
@@ -139,15 +146,14 @@ class Aiko {
       data: {
         'organizationId': this.org
       },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      }
+      headers: this.header
     })
       .then(response => {
+        console.log(response)
         this.products = response.data.products
       })
+      .catch(error => console.error(error))
+
     if (!this.products) {
       return 'Ошибка при получении товаров'
     }
@@ -193,7 +199,7 @@ class Aiko {
       }
     })
     this.products.map(async item => {
-      if (item.type.toLowerCase() === 'modifier') {
+      if (item.type.toLowerCase() === 'modifier' && item.groupId) {
         Product.create({
           apiId: item.id,
           title: (item.name) ? item.name.replace(/(<([^>]+)>)/ig, '') : '',
@@ -211,71 +217,117 @@ class Aiko {
             }
           ])
         })
-        Product.update({ price: (item.sizePrices[0] && item.sizePrices[0].price.currentPrice) ? item.sizePrices[0].price.currentPrice : 0 }, { where: { groupModifiers: { [Op.like]: '%' + item.groupId + '%' }, price: 0 } })
-
       }
     })
     return { count: this.products.length, products: this.products }
 
   }
 
-  async sendOrder(order) {
+  async sendOrder(order, address) {
     if (!order) {
       return 'Нет данных о заказе'
     }
-    const payment = await axios.get(this.url + "rmsSettings/getPaymentTypes?access_token=" + this.token.data + "&organization=" + this.org.data[0].id)
-    if (!payment) {
-      return 'Ошибка при получении типа оплаты'
-    }
-    let matches = payment.data.paymentTypes.filter(pay => pay.code === order.payment.toUpperCase() && pay);
-    if (matches && matches[0]) {
-      var productsData = []
-      order.products.map(item => {
-        productsData.push(
-          {
-            "id": item.api_id,
-            "name": item.title,
-            "amount": item.count,
-            "code": 31,
-            "sum": item.price,
-          }
-        )
-      })
-      await axios.post(this.url + "orders/add?access_token=" + this.token.data + "&organization=" + this.org.data[0].id,
-        JSON.stringify({
-          "organization": this.org.data[0].id,
-          "order": {
-            "phone": order.phone,
-            "isSelfService": false,
-            "address": {
-              "street": (order.street) ? order.street : 'ул 1 мая',
-              "home": (order.home) ? order.home : 5,
-              "apartment": order.apartment,
-              "comment": order.comment
-            },
-            //"date": order.date,
-            "personsCount": 1,
-            "items": productsData,
-            "paymentItems": [
-              {
-                "sum": order.total,
-                "paymentType": matches[0],
-                "isProcessedExternally": false,
-              }
-            ]
-          }
-        }), {
-        headers: {
-          'Content-Type': 'application/json',
-          "access_token": this.token.data,
-          "organization": this.org.data[0].id,
+    //Получение типы оплат
+    await axios({
+      method: 'post',
+      url: this.url + 'payment_types',
+      data: {
+        'organizationIds': [this.org]
+      },
+      headers: this.header
+    })
+      .then(response => {
+        let pay = response.data.paymentTypes.filter(item => item.code.toUpperCase() == order.payment.toUpperCase() && item)[0]
+        if (!pay) {
+          return 'Не удалось определить тип платежа'
         }
-      }).then(result => {
-        console.log(result)
-      }).catch(error => {
-        console.log(error)
+        this.payment = {
+          'paymentTypeKind': pay.paymentTypeKind,
+          'paymentTypeId': pay.id,
+          'sum': order.total
+        }
+        let terminal = pay.terminalGroups.filter(item => item.name.toUpperCase().indexOf(order.terminalAddress.toUpperCase()) > -1 && item)[0]
+        this.terminal = terminal ? terminal.id : false
       })
+      .catch(error => console.error(error))
+
+    if (!this.payment || !this.terminal) {
+      console.error('Нет типа оплаты иди идентификатора терминала')
+      return 'Нет типа оплаты иди идентификатора терминала'
     }
+    let products = order.products && order.products.map(item => {
+      let dop = item.attribute ?
+        item.size ?
+          item.attribute[0].filter(e => e.id == item.size.id && e).map(modifer => ({
+            'productId': modifer.apiId,
+            'amount': modifer.count ? modifer.count : 1,
+            'productGroupId': modifer.groupId ? modifer.groupId : '',
+            'price': modifer.price ? modifer.price : 0,
+          }))
+          : [{
+            'productId': item.attribute[0][0].apiId,
+            'amount': item.attribute[0][0].count ? item.attribute[0][0].count : 1,
+            'productGroupId': item.attribute[0][0].groupId ? item.attribute[0][0].groupId : '',
+            'price': item.attribute[0][0].price ? item.attribute[0][0].price : 0,
+          }]
+        : []
+
+      if (item.dop) {
+        item.dop.map(e => dop.push({
+          'productId': e.apiId,
+          'amount': e.count ? e.count : 1,
+          'productGroupId': e.groupId ? e.groupId : '',
+          'price': e.price ? e.price : 0,
+        }))
+      }
+
+      return {
+        'productId': item.apiId,
+        'type': 'Product',
+        'price': item.attribute ? 0 : item.price ? item.price : 0,
+        'amount': item.count,
+        'modifiers': dop
+      }
+    })
+
+    //Отправка заявки
+    await axios({
+      method: 'post',
+      url: this.url + 'deliveries/create',
+      data: {
+        'organizationId': this.org,
+        'terminalGroupId': this.terminal,
+        'order': {
+          'phone': '+' + order.phone,
+          'orderServiceType': order.delivery == 1 ? 'DeliveryByClient' : 'DeliveryByCourier',
+          'customer': {
+            'name': order.name ? order.name : '',
+            'comment': order.comment ? order.comment : ''
+          },
+          'items': products,
+          'payments': [
+            this.payment
+          ],
+          'deliveryPoint': {
+            'address': {
+              'street': {
+                'id': order.streetId ? order.streetId : '',
+                'name': address.street ? address.street : '',
+                'city': 'Казань',
+              },
+              'house': address.home ? address.home : '',
+              'flat': address.apartment ? address.apartment : '',
+              'entrance': address.entrance ? address.entrance : '',
+              'floor': address.floor ? address.floor : '',
+            },
+            'comment': order.comment
+          }
+        }
+      },
+      headers: this.header
+    })
+      .then(response => console.log(response))
+      .catch(error => console.error(error))
   }
 }
 

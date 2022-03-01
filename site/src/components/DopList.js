@@ -10,7 +10,7 @@ const DopList = observer(({ product, dop }) => {
                     {
                         dop.map(item => {
                             return (
-                                <div className="col-md-4 p-2" key={item.id}>
+                                <div className="col-6 col-md-4 p-2 " key={item.id}>
                                     <DopItem product={product} dop={item} />
                                 </div>
                             )

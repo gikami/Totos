@@ -33,7 +33,7 @@ const Order = sequelize.define('order', {
     name: { type: DataTypes.STRING },
     phone: { type: DataTypes.STRING },
     user: { type: DataTypes.INTEGER },
-    products: { type: DataTypes.STRING(10000) },
+    products: { type: DataTypes.TEXT },
     total: { type: DataTypes.INTEGER, defaultValue: 0 },
     paymentId: { type: DataTypes.STRING },
     payment: { type: DataTypes.STRING, defaultValue: 'card' },
@@ -68,7 +68,7 @@ const Product = sequelize.define('product', {
     weight: { type: DataTypes.FLOAT, defaultValue: 0 },
     mini_description: { type: DataTypes.STRING(2500) },
     description: { type: DataTypes.STRING(5000) },
-    attribute: { type: DataTypes.STRING(2000) },
+    attribute: { type: DataTypes.STRING(10000) },
     param: { type: DataTypes.STRING },
     recommend: { type: DataTypes.STRING },
     tags: { type: DataTypes.STRING(2000) },
@@ -90,11 +90,11 @@ const Sale = sequelize.define('sale', {
     title: { type: DataTypes.STRING(250) },
     desc: { type: DataTypes.TEXT },
     image: { type: DataTypes.STRING(250) },
-    price: {type: DataTypes.INTEGER},
-    procent: {type: DataTypes.INTEGER},
-    category: {type: DataTypes.INTEGER},
-    product: {type: DataTypes.INTEGER},
-    day: {type: DataTypes.INTEGER},
+    price: { type: DataTypes.INTEGER },
+    procent: { type: DataTypes.INTEGER },
+    category: { type: DataTypes.INTEGER },
+    product: { type: DataTypes.INTEGER },
+    day: { type: DataTypes.INTEGER },
     dateEnd: { type: DataTypes.DATEONLY },
     status: { type: DataTypes.INTEGER, defaultValue: 1 }
 })
@@ -106,6 +106,7 @@ const Category = sequelize.define('category', {
     isGroupModifier: { type: DataTypes.INTEGER, defaultValue: 0 },
     title: { type: DataTypes.STRING(500) },
     image: { type: DataTypes.STRING },
+    subcategory: { type: DataTypes.TEXT },
     status: { type: DataTypes.INTEGER, defaultValue: 1 }
 })
 const Promo = sequelize.define('promo', {
@@ -140,8 +141,8 @@ const Street = sequelize.define('street', {
     status: { type: DataTypes.INTEGER, defaultValue: 1 }
 })
 
-User.hasMany(Review);
-Review.belongsTo(User);
+// User.hasMany(Review);
+// Review.belongsTo(User);
 
 module.exports = {
     Op,
@@ -151,7 +152,7 @@ module.exports = {
     Address,
     Order,
     Review,
-    Promo, 
+    Promo,
     Sale,
     City,
     Street

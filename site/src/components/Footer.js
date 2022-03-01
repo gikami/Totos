@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react'
 import { Context } from "../index"
 import { Link, NavLink } from "react-router-dom"
-import { HOME_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE } from "../utils/consts"
+import { HOME_ROUTE, DELIVERY_ROUTE, ABOUT_ROUTE, POLICY_ROUTE, CART_ROUTE, FAVORITES_ROUTE, CATALOG_ROUTE } from "../utils/consts"
 import { observer } from "mobx-react-lite"
 import { login, registration, newPassword } from "../http/userAPI"
 import InputMask from 'react-input-mask'
 import { NotificationManager } from 'react-notifications'
 
 const Footer = observer(() => {
-    const { user, cart } = useContext(Context)
+    const { user, cart, product } = useContext(Context)
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [isRegistarion, setIsRegistarion] = useState(false)
@@ -75,6 +75,7 @@ const Footer = observer(() => {
     return (
         <>
             <footer className="d-none d-md-block">
+
                 <div className="container">
                     <div className="row justify-content-between">
                         <div className="col-4 col-xl-3">
@@ -82,19 +83,15 @@ const Footer = observer(() => {
                                 <div className="col-6">
                                     <nav>
                                         <ul>
-                                            <li><Link to={HOME_ROUTE}>Роллы холодные</Link></li>
-                                            <li><Link to={HOME_ROUTE}>Роллы запеченые</Link></li>
-                                            <li><Link to={HOME_ROUTE}>Роллы жареные</Link></li>
-                                            <li><Link to={HOME_ROUTE}>Супы</Link></li>
-                                            <li><Link to={HOME_ROUTE}>Поке</Link></li>
-                                            <li><Link to={HOME_ROUTE}>Пиццы</Link></li>
+                                            {
+                                                product.category.map(item => (<li><Link to={CATALOG_ROUTE + '/' + item.id}>{item.title}</Link></li>))
+                                            }
                                         </ul>
                                     </nav>
                                 </div>
                                 <div className="col-6">
                                     <nav>
                                         <ul>
-                                            <li><Link to={HOME_ROUTE}>Напитки</Link></li>
                                             <li><Link to={ABOUT_ROUTE}>О нас</Link></li>
                                             <li><Link to={DELIVERY_ROUTE}>Доставка и оплата</Link></li>
                                             <li><Link to={POLICY_ROUTE}>Политика конфиденциальности</Link></li>
@@ -169,6 +166,8 @@ const Footer = observer(() => {
             <div className="offcanvas offcanvas-end" tabIndex="-1" id="right-menu">
                 <div className="offcanvas-header">
                     <Link to={HOME_ROUTE} className="logo"><img src='/images/logo.svg' alt="Totos" /></Link>
+                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas">
+                    </button>
                 </div>
                 <div className="offcanvas-body">
                     <nav>
@@ -192,12 +191,6 @@ const Footer = observer(() => {
                         </div>
                     </div>
                 </div>
-                <button type="button" className="btn-close" data-bs-dismiss="offcanvas">
-                    <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M23.0001 2.99995L13.345 12.9999L23.0001 22.9999"></path>
-                        <path d="M2.99997 22.9999L13.3447 13L2.99997 3"></path>
-                    </svg>
-                </button>
             </div>
 
             <div id="cookie" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true">

@@ -7,12 +7,13 @@ const Radio = () => {
     const list = (product.product) ? product.product.attribute[0] : false
     const changeSize = (e) => {
         product.product.price = e.target.value
+        product.product.dop = []
         product.product.size = {
             id: e.target.attributes.dataId.value,
             title: e.target.attributes.dataTitle.value
         }
         product.setProduct(product.product)
-        cart.setSize(product.product)
+        //cart.setSize(product.product)
     }
 
     return (
@@ -31,6 +32,3 @@ const Radio = () => {
 }
 
 export default Radio
-{
-    //[{"group":1,"title":"30см","checked": true}]
-}

@@ -6,23 +6,23 @@ import { PROFILE_ROUTE, HOME_ROUTE, ABOUT_ROUTE, DELIVERY_ROUTE, FAVORITES_ROUTE
 import { observer } from "mobx-react-lite"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import CartContent from "./Cart"
-import {fetchCategory } from "../http/productAPI"
+import { fetchCategory } from "../http/productAPI"
 
 const NavBar = observer(() => {
     const { user, cart, product } = useContext(Context)
     const [isShown, setIsShown] = useState(false)
     const localAddress = localStorage.getItem('address')
-    const [address, setAddress] = useState((localAddress) ? localAddress : 'Ямашева 97 ТЦ XL')
-    
+    const [address, setAddress] = useState((localAddress) ? localAddress : 'Ямашева 97')
+
     useEffect(() => {
         fetchCategory().then(data => {
-            if(!product.selectedCategory.id){
+            if (!product.selectedCategory.id) {
                 product.setSelectedCategory(data.category[0])
             }
             product.setCategory(data.category)
         })
     }, [])
-    
+
     const changeAddress = (e) => {
         setAddress(e.target.innerText)
         localStorage.setItem('address', e.target.innerText);
@@ -40,10 +40,13 @@ const NavBar = observer(() => {
                                 title={address}
                                 className="fw-6 fs-11 address-menu"
                             >
-                                <NavDropdown.Item onClick={changeAddress} active={(address === 'Ямашева 97 ТЦ XL') ? true : false}>Ямашева 97 ТЦ XL</NavDropdown.Item>
+                                <NavDropdown.Item onClick={changeAddress} active={(address === 'Ямашева 97') ? true : false}>Ямашева 97 </NavDropdown.Item>
                                 <NavDropdown.Item onClick={changeAddress} active={(address === 'Гвардейская 33') ? true : false}>Гвардейская 33</NavDropdown.Item>
                             </NavDropdown>
-                            <a className="ms-3" href={(address === 'Ямашева 97 ТЦ XL') ? 'tel:+7 843 226-80-60' : 'tel:+7 843 226-80-06'}><img src="/images/icons/phone.svg" width="18" /></a>
+                            <a className="ms-3" href={(address === 'Ямашева 97') ? 'tel:+7 843 226-80-60' : 'tel:+7 843 226-80-06'}>
+                                <img src="/images/icons/phone.svg" width="18" />
+                                <span className="d-none d-md-inline-block ms-3 fw-6 fs-11">{(address === 'Ямашева 97') ? '+7 843 226-80-60' : '+7 843 226-80-06'}</span>
+                            </a>
                         </div>
                     </div>
                     <div className="d-none d-md-flex align-items-center">

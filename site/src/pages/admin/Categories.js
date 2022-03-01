@@ -57,6 +57,10 @@ const Categories = () => {
                         <div className="sec-font mb-2">Название</div>
                         <input type="text" placeholder="Введите название" name="title" value={category.title} className="mb-3" />
                     </fieldset>
+                    <fieldset className="mb-3">
+                        <div className="sec-font mb-2">Порядок</div>
+                        <input type="number" placeholder="0" name="priority" value={category.priority} className="mb-3" />
+                    </fieldset>
                     <div className="d-flex">
                         <button type="submit" className="btn btn-1">Добавить</button>
                     </div>
@@ -96,6 +100,14 @@ const Categories = () => {
                     <fieldset className="mb-3">
                         <div className="sec-font mb-2">Название</div>
                         <input type="text" placeholder="Введите название" name="title" value={category.title} className="mb-3" />
+                    </fieldset>
+                    <fieldset className="mb-3">
+                        <div className="sec-font mb-2">Порядок</div>
+                        <input type="number" placeholder="0" name="priority" value={category.priority} className="mb-3" />
+                    </fieldset>
+                    <fieldset className="mb-3">
+                        <div className="sec-font mb-2">Статус</div>
+                        <input type="number" placeholder="1" name="status" value={category.status} className="mb-3" />
                     </fieldset>
                     <div className="d-flex">
                         <button type="submit" className="btn btn-1 mx-2">Сохранить изменения</button>

@@ -98,7 +98,7 @@ const CartContent = observer(({ type }) => {
                                 </div>
                             </div>
                             {
-                                (cart.dop && cart.dop.length > 0) && <div className="product-dop d-flex mt-2"> {
+                                (cart.dop && cart.dop.length > 0) && <div className="flex-wrap product-dop d-flex mt-2"> {
                                     cart.dop.map(dop => (
                                         <div className='product-dop-box d-flex justify-content-between align-items-center'>
                                             <div className='flex-1 fs-10'>{dop.title} <span className='fw-5'>{dop.price} ₽</span></div>
@@ -183,9 +183,6 @@ const CartContent = observer(({ type }) => {
                 </div>
                 {
                     cart.cart.map((cart, i) => {
-                        var dataFavorite = favorite.checkFavorite(cart)
-                        var btnFavoriteAdd = (dataFavorite) ? dataFavorite.status : false
-                        var param = (cart.param) ? JSON.parse(cart.param)[0] : false
                         var total = cart.price * cart.count
                         if (cart.dop) {
                             cart.dop.map(dop => total += dop.price)
@@ -221,7 +218,7 @@ const CartContent = observer(({ type }) => {
                                             <div className="ingredients">{cart.description}</div>
 
                                             {
-                                                (cart.dop && cart.dop.length > 0) && <div className="product-dop d-flex mt-2"> {
+                                                (cart.dop && cart.dop.length > 0) && <div className="flex-wrap product-dop d-flex mt-2"> {
                                                     cart.dop.map(dop => (
                                                         <div className='product-dop-box d-flex justify-content-between align-items-center'>
                                                             <div className='flex-1 fs-10'>{dop.title} <span className='fw-5'>{dop.price} ₽</span></div>

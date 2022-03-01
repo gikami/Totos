@@ -1,6 +1,7 @@
 const axios = require('axios')
 const { Order, Address, Promo, Street } = require('../models/models')
-const Telegram = require('../components/telegram')
+const Mail = require('../components/mail')
+const Aiko = require('../components/aikoTransport')
 const ApiError = require('../error/ApiError')
 
 class OrderController {
@@ -13,6 +14,7 @@ class OrderController {
             if (!data.phone || data.phone.length < 10) {
                 return res.json('Введите номер телефона')
             }
+
             var address = {
                 full: (data.address && data.address.full) ? data.address.full : data.full,
                 street: (data.address && data.address.street) ? data.address.street : data.street,
@@ -33,6 +35,7 @@ class OrderController {
                 delivery: data.delivery,
                 time: data.time == 1 ? 'Как можно скорее' : 'Приготовить к ' + data.timevalue ? data.timevalue : '',
                 products: JSON.stringify(data.products),
+                size: data.size ? data.size : '',
                 street: (address.street) ? address.street : '',
                 home: (address.home) ? address.home : '',
                 entrance: (address.entrance) ? address.entrance : '',
@@ -65,18 +68,18 @@ class OrderController {
                     } else {
                         payment = 'Наличными'
                     }
-                    let text = '<b>№' + result.id + '</b>\n' +
-                        'Имя: <b>' + data.name + '</b>\n' +
-                        'Телефон: <b>' + data.phone + '</b>\n' +
-                        'Оплаты: <b>' + payment + '</b>\n' +
-                        'Доставка/Самовывоз: <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b>\n' +
-                        (data.delivery == 2 ? 'Адрес: <b>' + address.street + ' ' + address.home + ((address.entrance) ? ' подъезд ' + address.entrance : '') + ((address.floor) ? ' этаж ' + address.floor : '') + ((address.apartment) ? ' кв ' + address.apartment : '') + ((address.code) ? ' код ' + address.code : '') + '</b>\n' : '') +
-                        'Время готовки: <b>' + ((data.time == 1) ? 'Сейчас' : 'К ' + (data.timevalue ? data.timevalue : '')) + '</b>\n' +
-                        ((data.comment) ? 'Комментарий: ' + data.comment + '\n' : '') +
+                    let text = '<b>№' + result.id + '</b><br />' +
+                        'Имя: <b>' + data.name + '</b><br />' +
+                        'Телефон: <b>' + data.phone + '</b><br />' +
+                        'Оплаты: <b>' + payment + '</b><br />' +
+                        'Доставка/Самовывоз: <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b><br />' +
+                        (data.delivery == 2 ? 'Адрес: <b>' + address.street + ' ' + address.home + ((address.entrance) ? ' подъезд ' + address.entrance : '') + ((address.floor) ? ' этаж ' + address.floor : '') + ((address.apartment) ? ' кв ' + address.apartment : '') + ((address.code) ? ' код ' + address.code : '') + '</b><br />' : '') +
+                        'Время готовки: <b>' + ((data.time == 1) ? 'Сейчас' : 'К ' + (data.timevalue ? data.timevalue : '')) + '</b><br />' +
+                        ((data.comment) ? 'Комментарий: ' + data.comment + '<br />' : '') +
                         'Товары:' +
-                        data.products.map(item => '\n<b>' + item.title + '</b> - <b>' + item.count + '</b> шт - <b>' + (item.price * item.count) + '</b> р' + ((item.dop) ? '\n(' + item.dop.map(dop => '<b>' + dop.title + '</b> - <b>' + 1 + '</b> шт - <b>' + dop.price + '</b> р') + ')' : '')) +
-                        ((data.sale && data.sale.total > 0) ? '\n' + ((data.sale.text) ? data.sale.text : 'Скидка: ') + ' -' + data.sale.total + ' руб' : '') +
-                        '\nИтого: <b>' + data.total + ' руб</b>';
+                        data.products.map(item => '<br /><b>' + item.title + '</b> - <b>' + item.count + '</b> шт - <b>' + (item.price * item.count) + '</b> р' + ((item.dop) ? '<br />(' + item.dop.map(dop => '<b>' + dop.title + '</b> - <b>' + 1 + '</b> шт - <b>' + dop.price + '</b> р') + ')' : '')) +
+                        ((data.sale && data.sale.total > 0) ? '<br />' + ((data.sale.text) ? data.sale.text : 'Скидка: ') + ' -' + data.sale.total + ' руб' : '') +
+                        '<br />Итого: <b>' + data.total + ' руб</b>';
 
                     if (data.payment == 'online') {
 
@@ -107,15 +110,23 @@ class OrderController {
                             })
                             .catch(e => res.json(e))
                     } else {
-                        Telegram.send(text)
-                        //Aiko.sendOrder(data)
-
+                        try {
+                            Mail.send(text)
+                        } catch (error) {
+                            console.error(error)
+                        }
+                        try {
+                            Aiko.sendOrder(data, address)
+                        } catch (error) {
+                            console.error(error)
+                        }
                         return res.json(true)
                     }
                 } else {
                     return res.json('Ошибка при создании заявки')
                 }
             })
+                .catch(err => console.error(err))
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
@@ -144,18 +155,18 @@ class OrderController {
                 } else {
                     payment = 'Наличными'
                 }
-                let text = '<b>№' + data.id + '</b>\n' +
-                    'Имя: <b>' + data.name + '</b>\n' +
-                    'Телефон: <b>' + data.phone + '</b>\n' +
-                    'Оплаты: <b>' + payment + '</b>\n' +
-                    'Доставка/Самовывоз: <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b>\n' +
-                    (data.delivery == 2 ? 'Адрес: <b>' + address.street + ' ' + address.home + (address.entrance ? ' подъезд ' + address.entrance : '') + (address.floor ? ' этаж ' + address.floor : '') + (address.apartment ? ' кв ' + address.apartment : '') + (address.code ? ' код ' + address.code : '') + '</b>\n' : '') +
-                    'Время готовки: <b>' + (data.time ? data.time : '') + '</b>\n' +
-                    (data.comment ? 'Комментарий: ' + data.comment + '\n' : '') +
+                let text = '<b>№' + data.id + '</b><br />' +
+                    'Имя: <b>' + data.name + '</b><br />' +
+                    'Телефон: <b>' + data.phone + '</b><br />' +
+                    'Оплаты: <b>' + payment + '</b><br />' +
+                    'Доставка/Самовывоз: <b>' + (data.delivery == 1 ? 'Самовывоз' : 'Доставка') + '</b><br />' +
+                    (data.delivery == 2 ? 'Адрес: <b>' + address.street + ' ' + address.home + (address.entrance ? ' подъезд ' + address.entrance : '') + (address.floor ? ' этаж ' + address.floor : '') + (address.apartment ? ' кв ' + address.apartment : '') + (address.code ? ' код ' + address.code : '') + '</b><br />' : '') +
+                    'Время готовки: <b>' + (data.time ? data.time : '') + '</b><br />' +
+                    (data.comment ? 'Комментарий: ' + data.comment + '<br />' : '') +
                     'Товары:' +
-                    JSON.parse(data.products).map(item => '\n<b>' + item.title + '</b> - <b>' + item.count + '</b> шт - <b>' + (item.price * item.count) + '</b> р' + (item.dop ? '\n(' + item.dop.map(dop => '<b>' + dop.title + '</b> - <b>' + 1 + '</b> шт - <b>' + dop.price + '</b> р') + ')' : '')) +
-                    ((data.sale && data.sale.total > 0) ? '\n' + (data.sale.text ? data.sale.text : 'Скидка: ') + ' -' + data.sale.total + ' руб' : '') +
-                    '\nИтого: <b>' + data.total + ' руб</b>';
+                    JSON.parse(data.products).map(item => '<br /><b>' + item.title + '</b> - <b>' + item.count + '</b> шт - <b>' + (item.price * item.count) + '</b> р' + (item.dop ? '<br />(' + item.dop.map(dop => '<b>' + dop.title + '</b> - <b>' + 1 + '</b> шт - <b>' + dop.price + '</b> р') + ')' : '')) +
+                    ((data.sale && data.sale.total > 0) ? '<br />' + (data.sale.text ? data.sale.text : 'Скидка: ') + ' -' + data.sale.total + ' руб' : '') +
+                    '<br />Итого: <b>' + data.total + ' руб</b>';
 
                 Telegram.send(text)
 

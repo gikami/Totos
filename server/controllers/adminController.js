@@ -6,7 +6,7 @@ const { Product, Category, User, Order } = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class AdminController {
-    
+
     async getAikoCompany(req, res, next) {
         try {
             let data = await Aiko.getCompany()
@@ -53,7 +53,7 @@ class AdminController {
         page = page || 1
         limit = limit || 30
         let offset = page * limit - limit
-        let categories = await Category.findAndCountAll({ order: [['id', 'ASC']], limit, offset })
+        let categories = await Category.findAndCountAll({ order: [['priority', 'ASC']], limit, offset })
         return res.json(categories)
     }
     async getCategory(req, res) {

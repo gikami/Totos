@@ -17,6 +17,8 @@ const Checkout = observer(() => {
     const timeNow = new Date()
     timeNew.setTime(timeNew.getTime() + 90 * 60 * 1000)
     const time = timeNew.getHours() + ':' + (timeNew.getMinutes() < 10 ? '0' : '') + timeNew.getMinutes()
+    const localAddress = localStorage.getItem('address')
+    const [address, setAddress] = useState((localAddress) ? localAddress : 'Ямашева 97')
     const [checkout, setCheckout] = useState({
         name: (user.isAuth && user.user.firstname) ? user.user.firstname : '',
         phone: (user.isAuth && user.user.phone) ? user.user.phone : '',
@@ -27,14 +29,14 @@ const Checkout = observer(() => {
         delivery: 1,
         total: cart.total,
         products: cart.cart,
-        full: '', street: '', home: '', entrance: '', code: '', floor: '', apartment: '',
+        full: '', streetId: '', street: '', home: '', entrance: '', code: '', floor: '', apartment: '',
         address: (user.user.address && user.user.address[0]) ? user.user.address[0] : '',
+        terminalAddress: address ? address : false,
         saveaddress: true,
         comment: '',
+        person: 1,
         sale: cart.sale
     })
-    const localAddress = localStorage.getItem('address')
-    const [address, setAddress] = useState((localAddress) ? localAddress : 'Ямашева 97 ТЦ XL')
 
 
     useEffect(() => {
@@ -91,6 +93,12 @@ const Checkout = observer(() => {
             setCheckout({ ...checkout, [e.target.name]: user.user.address[e.target.value] })
         } else if (e.target.name === 'saveaddress') {
             setCheckout({ ...checkout, [e.target.name]: e.target.checked })
+        } else if (e.target.name === 'street') {
+            let streetId = streets.rows.find(street => street.title === e.target.value)
+            if (streetId) {
+                setCheckout({ ...checkout, 'streetId': streetId.apiId })
+                setCheckout({ ...checkout, [e.target.name]: e.target.value })
+            }
         } else {
             setCheckout({ ...checkout, [e.target.name]: e.target.value })
         }
@@ -170,7 +178,7 @@ const Checkout = observer(() => {
                                                             title={address}
                                                             className="fw-6 fs-11 address-menu"
                                                         >
-                                                            <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Ямашева 97 ТЦ XL') ? true : false}>Ямашева 97 ТЦ XL</NavDropdown.Item>
+                                                            <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Ямашева 97') ? true : false}>Ямашева 97</NavDropdown.Item>
                                                             <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Гвардейская 33') ? true : false}>Гвардейская 33</NavDropdown.Item>
                                                         </NavDropdown>
                                                     </div>
@@ -181,7 +189,7 @@ const Checkout = observer(() => {
                                                             {
                                                                 user.user.address.map((item, i) =>
                                                                     <div key={i} className="d-flex align-items-start mb-4">
-                                                                        <input type="radio" name="address" value={i} id={"address-" + i} onClick={change} defaultChecked={(i === 0) ?? true} />
+                                                                        <input type="radio" name="address" value={i} id={"address-" + i} onClick={changeAddress} defaultChecked={(i === 0) ?? true} />
                                                                         <div className="ms-2">
                                                                             <label for={"address-" + i} className="gray-1 fw-5">{(item.name) ? item.name : item.street}</label>
                                                                             <div className="d-flex mt-2">
@@ -200,14 +208,14 @@ const Checkout = observer(() => {
                                                         <div className="row g-2 g-lg-3 sec-font">
                                                             <div className="col-sm-10">
                                                                 <div className="gray-1 mb-2">Улица <span className="text-danger">*</span></div>
-                                                                <input type="text" list="streets" name="street" autoComplete="off" placeholder="Улица"/>
+                                                                <input type="text" list="streets" onChange={change} name="street" autoComplete="off" placeholder="Улица" />
                                                                 <datalist id="streets">
                                                                     {
-                                                                    (streets) ? 
-                                                                        streets.rows.map((item, key) =>
-                                                                          <option key={key} value={item.title} />
-                                                                        )
-                                                                        : <option key={0} value="Введите улицу" />
+                                                                        (streets) ?
+                                                                            streets.rows.map((item, key) =>
+                                                                                <option key={key} value={item.title} />
+                                                                            )
+                                                                            : <option key={0} value="Введите улицу" />
                                                                     }
                                                                 </datalist>
                                                             </div>
@@ -253,7 +261,7 @@ const Checkout = observer(() => {
                                         </fieldset>
                                         <fieldset className="mb-4 mb-sm-5">
                                             <legend className="title-font gray-1 fs-15 fw-7 mb-3">Заказать ко времени:</legend>
-                                            <div className=" sec-font ">
+                                            <div className="sec-font">
                                                 <div className="d-flex align-items-center mb-2">
                                                     <input type="radio" name="time" value={1} id="sooner" onClick={change} defaultChecked />
                                                     <label for="sooner" className="flex-1 ms-2">Как можно скорее</label>
@@ -262,6 +270,14 @@ const Checkout = observer(() => {
                                                     <input type="radio" name="time" value={2} onClick={change} id="in-time" />
                                                     <label for="in-time" className="ms-2">К назначенному времени </label>
                                                     <input type="time" name="timevalue" className="ms-2 w-fit py-2" onChange={change} defaultValue={time} />
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset className="mb-4 mb-sm-5">
+                                            <legend className="title-font gray-1 fs-15 fw-7 mb-3">Количество персон:</legend>
+                                            <div className="sec-font">
+                                                <div className="d-flex align-items-center">
+                                                    <input type="number" name="person" min={1} max={100} value={1} onClick={change} id="in-time" />
                                                 </div>
                                             </div>
                                         </fieldset>

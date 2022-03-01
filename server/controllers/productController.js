@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const { Product, Review, User, Category } = require('../models/models')
+const { Op, Product, Review, User, Category } = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class ProductController {
@@ -20,26 +20,49 @@ class ProductController {
         }
     }
 
-    async getAll(req, res) {
-        let { categoryId, limit, page } = req.query
-        categoryId = categoryId || null
-        page = page || 1
-        limit = limit || 30
-        let offset = page * limit - limit
-        let products
+    async getAll(req, res, next) {
+        try {
+            let { categoryId, limit, page } = req.body
+            categoryId = categoryId ? categoryId : false
+            page = page || 1
+            limit = limit || 30
+            let offset = page * limit - limit
+            var products
 
-        if (categoryId) {
-            let category = await Category.findOne({ where: { id: categoryId, status: 1 } })
-            if (category) {
-                products = await Product.findAndCountAll({ where: { parentGroup: category.apiId, type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
+            if (categoryId) {
+                var category
+                if (categoryId.subcategory && categoryId.subcategory.length > 0) {
+                    category = await Category.findOne({ where: { id: categoryId.subcategory[0].id, status: 1 } })
+                } else {
+                    category = await Category.findOne({ where: { id: categoryId.id, status: 1 } })
+                }
+                if (category) {
+                    products = await Product.findAndCountAll({ where: { parentGroup: category.apiId, type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
+                } else {
+                    products = false
+                }
             } else {
-                products = false
+                products = await Product.findAndCountAll({ where: { type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
             }
-        } else {
-            products = await Product.findAndCountAll({ where: { type: 'dish', status: 1 }, order: [['price', 'ASC']], limit, offset })
-        }
+            if (products && products.rows) {
+                let rows = await products.rows.map(async item => {
+                    let idModifier = item.groupModifiers && JSON.parse(item.groupModifiers)[0] ? JSON.parse(item.groupModifiers)[0] : false
+                    if (idModifier) {
+                        let modifier = await Product.findOne({ where: { groupId: idModifier, type: 'modifier', status: 1 }, order: [['price', 'ASC']] })
+                        if (modifier) {
+                            item.price = modifier.price
+                        }
+                    }
+                    return item
+                })
+                products.rows = await Promise.all(rows).then(res => res)
 
-        return res.json(products)
+            }
+            return res.json(products)
+
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
     async getRecommend(req, res) {
         let { id } = req.query
@@ -49,14 +72,14 @@ class ProductController {
     async getOne(req, res, next) {
         try {
             const { id } = req.params
-            var product = await Product.findOne({ where: { id, type: 'dish', status: 1 } })
-            let attribute = JSON.parse(product.groupModifiers)
+            var product = await Product.findOne({ where: { id: id, type: 'dish', status: 1 } })
+            let attribute = product.groupModifiers ? JSON.parse(product.groupModifiers) : false
             let attributeView = []
-            if (attribute[0]) {
+            if (attribute && attribute[0]) {
                 let attr = await Product.findAll({ where: { groupId: attribute[0], type: 'modifier', status: 1 }, order: [['price', 'ASC']] })
                 attributeView.push(attr)
             }
-            if (attribute[1]) {
+            if (attribute && attribute[1]) {
                 let attr = await Product.findAll({ where: { groupId: attribute[1], type: 'modifier', status: 1 }, order: [['price', 'ASC']] })
                 attributeView.push(attr)
             }
