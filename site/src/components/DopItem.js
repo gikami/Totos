@@ -1,18 +1,18 @@
-import React, { useState, useContext } from 'react'
-import { observer } from "mobx-react-lite"
-import { Context } from "./../index"
-import { LazyLoadImage } from 'react-lazy-load-image-component'
+import React, {useState, useContext} from 'react'
+import {observer} from 'mobx-react-lite'
+import {Context} from './../index'
+import {LazyLoadImage} from 'react-lazy-load-image-component'
 
-const DopItem = observer(({ dop }) => {
-    const { product } = useContext(Context)
+const DopItem = observer(({dop}) => {
+    const {product} = useContext(Context)
     const [checkDop, setCheckDop] = useState(false)
 
     const changeDop = () => {
         if (dop) {
             if (product.product.dop) {
-                var dopYes = product.product.dop.find(item => item.id === dop.id)
+                var dopYes = product.product.dop.find((item) => item.id === dop.id)
                 if (dopYes) {
-                    product.product.dop = product.product.dop.filter(item => item.id !== dop.id)
+                    product.product.dop = product.product.dop.filter((item) => item.id !== dop.id)
                     product.product.price = Number(product.product.price) - Number(dop.price)
                     setCheckDop(false)
                 } else {
@@ -30,10 +30,20 @@ const DopItem = observer(({ dop }) => {
     }
 
     return (
-        <div onClick={changeDop} className={(checkDop && product.product.dop.length > 0) ? 'ingredient active' : 'ingredient'}>
-            <LazyLoadImage src={(dop.image) ? process.env.REACT_APP_API_URL + '/' + dop.image : '/images/no-image.jpg'} effect="blur" alt={dop.title} />
+        <div
+            onClick={changeDop}
+            className={checkDop && product.product.dop.length > 0 ? 'ingredient active' : 'ingredient'}
+        >
+            <LazyLoadImage
+                src={dop.image ? process.env.REACT_APP_API_URL + '/dop/' + dop.image : '/images/no-image.jpg'}
+                effect="blur"
+                alt={dop.title}
+            />
             <div>
-                <div className="title">{dop.title}<small> ({dop.weight * 1000}г)</small></div>
+                <div className="title">
+                    {dop.title}
+                    <small> ({dop.weight * 1000}г)</small>
+                </div>
                 <div className="mt-1 gray fw-7">{dop.price} ₽</div>
             </div>
         </div>

@@ -11,6 +11,6 @@ router.post('/editaddress', authMiddleware, userController.editAddress)
 router.post('/deleteaddress', authMiddleware, userController.deleteAddress)
 router.post('/edit', authMiddleware, userController.edit)
 router.get('/auth', authMiddleware, userController.check)
-
+router.post('/updatePoint', authMiddleware, userController.updatePoint)
 
 module.exports = router

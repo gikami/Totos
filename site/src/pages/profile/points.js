@@ -1,12 +1,23 @@
-import React, { useContext } from 'react';
-import { Link, useParams } from "react-router-dom";
-import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts";
-import { Context } from "../../index";
-import SideBar from "./components/menu";
-import QRCode from "react-qr-code";
+import React, {useContext, useEffect} from 'react'
+import {Link, useParams} from 'react-router-dom'
+import {PROFILE_ROUTE, HOME_ROUTE} from '../../utils/consts'
+import {Context} from '../../index'
+import SideBar from './components/menu'
+import QRCode from 'react-qr-code'
+import {updatePoint} from '../../http/userAPI'
+
 const Points = () => {
-    const { id } = useParams()
-    const { user } = useContext(Context)
+    const {id} = useParams()
+    const {user} = useContext(Context)
+
+    useEffect(() => {
+        updatePoint(user.user.id).then((data) => {
+            if (data) {
+                console.log(data)
+            }
+        })
+    }, [])
+
     return (
         <main>
             <section id="sec-13" className="mb-8">
@@ -15,52 +26,21 @@ const Points = () => {
                         <SideBar />
                         <div className="col-md-8 col-xl-7 col-xxl-6 offset-xl-1">
                             <div className="mb-5">
-                                <h5 className="mb-3">Мои скидки</h5>
-                                <div className="card mb-4">
-                                    <div className="row row-cols-2 gx-2 h-100">
-                                        <div className="d-flex flex-column justify-content-between">
-                                            <h5>Скидочная карта</h5>
-                                            <div className="primary fw-5 fs-15">3%</div>
-                                        </div>
-                                        <div className="d-flex flex-column justify-content-end align-items-end">
-                                            <div className="barcode" data-bs-toggle="modal" data-bs-target="#barcode">
-                                                A1234567890B
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="d-flex align-items-center fw-5">
-                                    Ваша скидка:
-                                    <span className="primary mx-3">3%</span>
-                                    <img src="/images/icons/help-circle.svg" alt="" />
-                                </div>
-                                <div className="gray-1 fw-5 mt-4">Номер скидочной карты</div>
-                                <div className="gray-1 mt-2">№ 4556 8900 3765</div>
-                                <div className="gray-1 fw-5 mt-4">Увеличьте скидку до 5%!</div>
-                                <div className="gray-1 mt-2">Для этого совершите покупки на сумму от 10 000 ₽</div>
-                                <div className="d-flex align-items-center fw-5 mt-4">
-                                    Сумма заказов:
-                                    <span className="primary mx-3">7 000 ₽</span>
-                                    <img src="/images/icons/help-circle.svg" alt="" />
-                                </div>
-                            </div>
-
-                            <div className="mb-5">
                                 <h5>Мои бонусы</h5>
-                                <div className="card mb-4">
+                                <div className="card card-body mb-4">
                                     <div className="row row-cols-2 gx-2 h-100">
                                         <div className="d-flex flex-column justify-content-between">
-                                            <h5>Бонусная карта</h5>
+                                            <h5>У вас на счету:</h5>
                                             <div className="primary fw-5 fs-12">{user.user.point} баллов</div>
                                         </div>
-                                        <div className="d-flex flex-column justify-content-center align-items-end">
+                                        {/* <div className="d-flex flex-column justify-content-center align-items-end">
                                             <div className="qrcode" data-bs-toggle="modal" data-bs-target="#qrcode">
                                                 <QRCode size={100} value="455689003765" />
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
-                                <div className="d-flex align-items-center fw-5">
+                                {/* <div className="d-flex align-items-center fw-5">
                                     Начисленные баллы
                                     <span className="primary mx-3">{user.user.point}</span>
                                     <img src="/images/icons/help-circle.svg" alt="" />
@@ -75,10 +55,10 @@ const Points = () => {
                                     Сумма заказов:
                                     <span className="primary mx-3">7 000 ₽</span>
                                     <img src="/images/icons/help-circle.svg" alt="" />
-                                </div>
+                                </div> */}
                             </div>
 
-                            <div className="fw-5 fs-12 gray-1 mb-4">История баллов</div>
+                            {/* <div className="fw-5 fs-12 gray-1 mb-4">История баллов</div>
                             <div className="table-responsive">
                                 <table className="table table-borderless table-lg">
                                     <thead>
@@ -98,7 +78,7 @@ const Points = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> */}
                             <Link to={PROFILE_ROUTE} className="gray-3 d-flex align-items-center">
                                 <img src="/images/icons/chevron-left.svg" alt="Вернуться назад" className="me-1" />
                                 Вернуться назад
@@ -135,9 +115,7 @@ const Points = () => {
                             </svg>
                         </button>
                         <div className="modal-body">
-                            <div className="barcode mx-auto mb-4">
-                                A1234567890B
-                            </div>
+                            <div className="barcode mx-auto mb-4">A1234567890B</div>
                             <div className="fs-15 text-center mt-3">Карта № 4556 8900 3765</div>
                         </div>
                     </div>
@@ -145,6 +123,6 @@ const Points = () => {
             </div>
         </main>
     )
-};
+}
 
-export default Points;
+export default Points

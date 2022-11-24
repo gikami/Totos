@@ -1,12 +1,11 @@
 const Aiko = require('../components/aikoTransport')
 const uuid = require('uuid')
 const path = require('path')
-const { unlink } = require('fs')
-const { Product, Category, User, Order } = require('../models/models')
+const {unlink} = require('fs')
+const {Product, Category, User, Order, Sale} = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class AdminController {
-
     async getAikoCompany(req, res, next) {
         try {
             let data = await Aiko.getCompany()
@@ -49,17 +48,17 @@ class AdminController {
     }
 
     async getCategories(req, res) {
-        let { limit, page } = req.query
+        let {limit, page} = req.query
         page = page || 1
         limit = limit || 30
         let offset = page * limit - limit
-        let categories = await Category.findAndCountAll({ order: [['priority', 'ASC']], limit, offset })
+        let categories = await Category.findAndCountAll({order: [['priority', 'ASC']], limit, offset})
         return res.json(categories)
     }
     async getCategory(req, res) {
-        let { id } = req.query
-        let category = await Category.findOne({ where: { id } })
-        return res.json({ category })
+        let {id} = req.query
+        let category = await Category.findOne({where: {id}})
+        return res.json({category})
     }
     async createCategory(req, res) {
         const data = req.body
@@ -68,7 +67,7 @@ class AdminController {
     }
     async deleteCategory(req, res) {
         let data = req.body
-        const category = await Category.findOne({ where: { id: data.id } })
+        const category = await Category.findOne({where: {id: data.id}})
         if (!category) {
             return next(ApiError.internal('Такой категории не существует'))
         }
@@ -78,7 +77,7 @@ class AdminController {
     }
     async editCategory(req, res) {
         const data = req.body
-        let category = await Category.findOne({ where: { id: data.id } })
+        let category = await Category.findOne({where: {id: data.id}})
         if (!category) {
             return next(ApiError.internal('Такой категории не существует'))
         }
@@ -89,28 +88,28 @@ class AdminController {
     }
 
     async getProducts(req, res) {
-        let { limit, page } = req.query
+        let {limit, page} = req.query
         page = page || 1
         limit = limit || 30
         let offset = page * limit - limit
-        let products = await Product.findAndCountAll({ order: [['id', 'ASC']], limit, offset })
+        let products = await Product.findAndCountAll({order: [['id', 'ASC']], limit, offset})
         return res.json(products)
     }
     async getProduct(req, res) {
-        let { id } = req.query
-        let product = await Product.findOne({ where: { id } })
-        return res.json({ product })
+        let {id} = req.query
+        let product = await Product.findOne({where: {id}})
+        return res.json({product})
     }
     async createProduct(req, res, next) {
         const data = req.body
 
         if (data) {
-            const { image } = req.files
+            const {image} = req.files
             const product = await Product.create(data)
             if (image) {
-                let fileName = uuid.v4() + ".jpg"
+                let fileName = uuid.v4() + '.jpg'
                 image.mv(path.resolve(__dirname, '..', 'static/products', fileName))
-                product.update({ image: fileName })
+                product.update({image: fileName})
                 product.save()
             }
             return res.json(product)
@@ -120,7 +119,7 @@ class AdminController {
     }
     async deleteProduct(req, res) {
         let data = req.body
-        const product = await Product.findOne({ where: { id: data.id } })
+        const product = await Product.findOne({where: {id: data.id}})
         if (!product) {
             return next(ApiError.internal('Такого товара не существует'))
         }
@@ -132,7 +131,7 @@ class AdminController {
         const data = req.body
         const file = req.files
 
-        const product = await Product.findOne({ where: { id: data.id } })
+        const product = await Product.findOne({where: {id: data.id}})
         if (!product) {
             return next(ApiError.internal('Такого товара не существует'))
         }
@@ -144,41 +143,99 @@ class AdminController {
                     if (err) throw err
                 })
             }
-            let fileName = uuid.v4() + ".jpg"
+            let fileName = uuid.v4() + '.jpg'
             file.image.mv(path.resolve(__dirname, '..', 'static/products', fileName))
 
-            await product.update({ image: fileName })
+            await product.update({image: fileName})
             await product.save()
         }
         return res.json(product)
     }
 
-
-
-    async getOrders(req, res) {
-        let { limit, page } = req.query
+    async getSales(req, res) {
+        let {limit, page} = req.query
         page = page || 1
         limit = limit || 30
         let offset = page * limit - limit
-        let orders = await Order.findAndCountAll({ order: [['id', 'ASC']], limit, offset })
+        let sales = await Sale.findAndCountAll({order: [['id', 'ASC']], limit, offset})
+        return res.json(sales)
+    }
+    async getSale(req, res) {
+        let {id} = req.query
+        let sale = await Sale.findOne({where: {id}})
+        return res.json({sale})
+    }
+    async createSale(req, res, next) {
+        const data = req.body
+        const {image} = req.files
+        const sale = await Sale.create(data)
+        if (image) {
+            let fileName = uuid.v4() + '.jpg'
+            image.mv(path.resolve(__dirname, '..', 'static/sale', fileName))
+            sale.update({image: fileName})
+            sale.save()
+        }
+        return res.json(sale)
+    }
+    async deleteSale(req, res) {
+        let data = req.body
+        const sale = await Sale.findOne({where: {id: data.id}})
+        if (!sale) {
+            return next(ApiError.internal('Такой акции не существует'))
+        }
+        await sale.destroy()
+
+        return res.json(true)
+    }
+    async editSale(req, res) {
+        const data = req.body
+        const file = req.files
+
+        const sale = await Sale.findOne({where: {id: data.id}})
+        if (!sale) {
+            return next(ApiError.internal('Такой акции не существует'))
+        }
+        await sale.update(data)
+        await sale.save()
+        if (file && file.image) {
+            if (sale.image) {
+                unlink('static/sale/' + sale.image, (err) => {
+                    if (err) throw err
+                })
+            }
+            let fileName = uuid.v4() + '.jpg'
+            file.image.mv(path.resolve(__dirname, '..', 'static/sale', fileName))
+
+            await sale.update({image: fileName})
+            await sale.save()
+        }
+        return res.json(sale)
+    }
+
+    async getOrders(req, res) {
+        let {limit, page} = req.query
+        page = page || 1
+        limit = limit || 30
+        let offset = page * limit - limit
+        let orders = await Order.findAndCountAll({order: [['id', 'ASC']], limit, offset})
         return res.json(orders)
     }
     async getOrder(req, res) {
-        let { id } = req.query
-        let order = await Order.findOne({ where: { id } })
-        return res.json({ order })
+        let {id} = req.query
+        let order = await Order.findOne({where: {id}})
+        return res.json({order})
     }
     async createOrder(req, res, next) {
-        let { name, price, category, sale } = req.body
-        const { image } = req.files
-        let fileName = uuid.v4() + ".jpg"
+        let {name, price, category, sale} = req.body
+        const {image} = req.files
+        let fileName = uuid.v4() + '.jpg'
         image.mv(path.resolve(__dirname, '..', 'static', fileName))
-        const order = await Order.create({ name, price, sale, category, image: fileName })
+        const order = await Order.create({name, price, sale, category, image: fileName})
         return res.json(order)
     }
     async deleteOrder(req, res) {
         let data = req.body
-        const order = await Order.findOne({ where: { id: data.id } })
+        const order = await Order.findOne({where: {id: data.id}})
         if (!order) {
             return next(ApiError.internal('Такого заказа не существует'))
         }
@@ -188,7 +245,7 @@ class AdminController {
     }
     async editOrder(req, res) {
         const data = req.body
-        let order = await Order.findOne({ where: { id: data.id } })
+        let order = await Order.findOne({where: {id: data.id}})
         if (!order) {
             return next(ApiError.internal('Такого заказа не существует'))
         }
@@ -197,32 +254,30 @@ class AdminController {
         return res.json(order)
     }
 
-
-
     async getUsers(req, res) {
-        let { limit, page } = req.query
+        let {limit, page} = req.query
         page = page || 1
         limit = limit || 30
         let offset = page * limit - limit
-        let users = await User.findAndCountAll({ order: [['id', 'ASC']], limit, offset })
+        let users = await User.findAndCountAll({order: [['id', 'ASC']], limit, offset})
         return res.json(users)
     }
     async getUser(req, res) {
-        let { id } = req.query
-        let user = await User.findOne({ where: { id } })
-        return res.json({ user })
+        let {id} = req.query
+        let user = await User.findOne({where: {id}})
+        return res.json({user})
     }
     async createUser(req, res, next) {
-        let { name, price, category, sale } = req.body
-        const { image } = req.files
-        let fileName = uuid.v4() + ".jpg"
+        let {name, price, category, sale} = req.body
+        const {image} = req.files
+        let fileName = uuid.v4() + '.jpg'
         image.mv(path.resolve(__dirname, '..', 'static', fileName))
-        const user = await User.create({ name, price, sale, category, image: fileName })
+        const user = await User.create({name, price, sale, category, image: fileName})
         return res.json(user)
     }
     async deleteUser(req, res) {
         let data = req.body
-        const user = await User.findOne({ where: { id: data.id } })
+        const user = await User.findOne({where: {id: data.id}})
         if (!user) {
             return next(ApiError.internal('Такого пользователя не существует'))
         }
@@ -232,7 +287,7 @@ class AdminController {
     }
     async editUser(req, res) {
         var data = req.body
-        const user = await User.findOne({ where: { id: data.id } })
+        const user = await User.findOne({where: {id: data.id}})
 
         if (!user) {
             return next(ApiError.internal('Пользователь не найден'))

@@ -1,10 +1,10 @@
-const { Sale } = require('../models/models')
-const ApiError = require('../error/ApiError');
+const {Sale} = require('../models/models')
+const ApiError = require('../error/ApiError')
 
 class SaleController {
     async getAll(req, res, next) {
         try {
-            let sale = await Sale.findAll({ where: { status: 1 } })
+            let sale = await Sale.findAll({where: {status: 1}, order: [['priority', 'ASC']]})
             return res.json(sale)
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -12,8 +12,8 @@ class SaleController {
     }
     async getOne(req, res) {
         try {
-            const { id } = req.params
-            let sale = await Sale.findOne({ where: { id, status: 1 } })
+            const {id} = req.params
+            let sale = await Sale.findOne({where: {id, status: 1}})
             return res.json(sale)
         } catch (e) {
             next(ApiError.badRequest(e.message))

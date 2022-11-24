@@ -9,7 +9,6 @@
 /build
 
 /site/.DS_Store
-/site/.env
 /site/.env.local
 /site/.env.development.local
 /site/.env.test.local
@@ -20,4 +19,3 @@
 /site/yarn-error.log*
 
 /server/node_modules
-/server/.env

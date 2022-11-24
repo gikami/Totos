@@ -27,6 +27,12 @@ router.post('/deleteProduct', checkRole('ADMIN'), adminController.deleteProduct)
 router.get('/getProduct', adminController.getProduct)
 router.get('/getProducts', adminController.getProducts)
 
+router.post('/createSale', checkRole('ADMIN'), adminController.createSale)
+router.post('/editSale', checkRole('ADMIN'), adminController.editSale)
+router.post('/deleteSale', checkRole('ADMIN'), adminController.deleteSale)
+router.get('/getSale', adminController.getSale)
+router.get('/getSales', adminController.getSales)
+
 router.post('/createOrder', checkRole('ADMIN'), adminController.createOrder)
 router.post('/editOrder', checkRole('ADMIN'), adminController.editOrder)
 router.post('/deleteOrder', checkRole('ADMIN'), adminController.deleteOrder)
