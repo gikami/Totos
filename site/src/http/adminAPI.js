@@ -1,4 +1,4 @@
-import {$authHost, $host} from './index'
+import { $authHost, $host } from "./index";
 
 export const getAikoStreets = async () => {
     const data = await $authHost.get('/admin/getAikoStreets')
@@ -33,121 +33,128 @@ export const sendAikoOrder = async () => {
     }
 }
 export const getCategories = async (page = 1, limit = 20) => {
-    const {data} = await $host.get('/admin/getCategories', {
+    const { data } = await $host.get('/admin/getCategories', {
         params: {
-            page,
-            limit,
-        },
+            page, limit
+        }
     })
     return data
 }
 export const getCategory = async (id) => {
-    const {data} = await $host.get('/admin/getCategory', {
+    const { data } = await $host.get('/admin/getCategory', {
         params: {
-            id,
-        },
+            id
+        }
     })
     return data
 }
 export const editCategory = async (category) => {
-    const {data} = await $authHost.post('/admin/editCategory', category)
+    const { data } = await $authHost.post('/admin/editCategory', category)
     return data
 }
 export const deleteCategory = async (category) => {
-    const {data} = await $authHost.post('/admin/deleteCategory', category)
+    const { data } = await $authHost.post('/admin/deleteCategory', category)
     return data
 }
 export const createCategory = async (category) => {
-    const {data} = await $authHost.post('/admin/createCategory', category)
+    const { data } = await $authHost.post('/admin/createCategory', category)
     return data
 }
 
+
+
+
+
 export const getProducts = async (page = 1, limit = 20) => {
-    const {data} = await $host.get('/admin/getProducts', {
+    const { data } = await $host.get('/admin/getProducts', {
         params: {
-            page,
-            limit,
-        },
+            page, limit
+        }
     })
     return data
 }
 export const getProduct = async (id) => {
-    const {data} = await $host.get('/admin/getProduct', {
+    const { data } = await $host.get('/admin/getProduct', {
         params: {
-            id,
-        },
+            id
+        }
     })
     return data
 }
 export const editProduct = async (product) => {
-    const {data} = await $authHost.post('/admin/editProduct', product)
+    const { data } = await $authHost.post('/admin/editProduct', product)
     return data
 }
 export const deleteProduct = async (product) => {
-    const {data} = await $authHost.post('/admin/deleteProduct', product)
+    const { data } = await $authHost.post('/admin/deleteProduct', product)
     return data
 }
 export const createProduct = async (product) => {
-    const {data} = await $authHost.post('/admin/createProduct', product)
+    const { data } = await $authHost.post('/admin/createProduct', product)
     return data
 }
 
+
+
+
+
 export const getOrders = async (page = 1, limit = 20) => {
-    const {data} = await $host.get('/admin/getOrders', {
+    const { data } = await $host.get('/admin/getOrders', {
         params: {
-            page,
-            limit,
-        },
+            page, limit
+        }
     })
     return data
 }
 export const getOrder = async (id) => {
-    const {data} = await $host.get('/admin/getOrder', {
+    const { data } = await $host.get('/admin/getOrder', {
         params: {
-            id,
-        },
+            id
+        }
     })
     return data
 }
 export const editOrder = async (order) => {
-    const {data} = await $authHost.post('/admin/editOrder', order)
+    const { data } = await $authHost.post('/admin/editOrder', order)
     return data
 }
 export const deleteOrder = async (order) => {
-    const {data} = await $authHost.post('/admin/deleteOrder', order)
+    const { data } = await $authHost.post('/admin/deleteOrder', order)
     return data
 }
 export const createOrder = async (order) => {
-    const {data} = await $authHost.post('/admin/createOrder', order)
+    const { data } = await $authHost.post('/admin/createOrder', order)
     return data
 }
 
+
+
+
 export const getSales = async (page = 1, limit = 20) => {
-    const {data} = await $host.get('/admin/getSales', {
+    const { data } = await $host.get('/admin/getSales', {
         params: {
-            page,
-            limit,
-        },
+            page, limit
+        }
     })
     return data
 }
 export const getSale = async (id) => {
-    const {data} = await $host.get('/admin/getSale', {
+    const { data } = await $host.get('/admin/getSale', {
         params: {
-            id,
-        },
+            id
+        }
     })
     return data
 }
 export const editSale = async (sale) => {
-    const {data} = await $authHost.post('/admin/editSale', sale)
+    const { data } = await $authHost.post('/admin/editSale', sale)
     return data
 }
 export const deleteSale = async (sale) => {
-    const {data} = await $authHost.post('/admin/deleteSale', sale)
+    const { data } = await $authHost.post('/admin/deleteSale', sale)
     return data
 }
 export const createSale = async (sale) => {
-    const {data} = await $authHost.post('/admin/createSale', sale)
+    const { data } = await $authHost.post('/admin/createSale', sale)
     return data
 }

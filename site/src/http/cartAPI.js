@@ -1,4 +1,4 @@
-import {$host} from './index'
+import { $host } from "./index";
 
 export const fetchPromo = async (array) => {
     let arrayPromo = {
@@ -6,7 +6,7 @@ export const fetchPromo = async (array) => {
         total: array.total ? array.total : 0,
         user: array.user ? array.user : 0,
     }
-    const {data} = await $host.post('/order/promo', arrayPromo)
+    const { data } = await $host.post('/order/promo', arrayPromo)
     if (data) {
         return data
     } else {

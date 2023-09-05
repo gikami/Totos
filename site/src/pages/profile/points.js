@@ -1,22 +1,22 @@
-import React, {useContext, useEffect} from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {PROFILE_ROUTE, HOME_ROUTE} from '../../utils/consts'
-import {Context} from '../../index'
-import SideBar from './components/menu'
-import QRCode from 'react-qr-code'
-import {updatePoint} from '../../http/userAPI'
+import React, { useContext, useEffect } from 'react';
+import { Link, useParams } from "react-router-dom";
+import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts";
+import { Context } from "../../index";
+import SideBar from "./components/menu";
+import QRCode from "react-qr-code";
+import { updatePoint } from "../../http/userAPI"
 
 const Points = () => {
-    const {id} = useParams()
-    const {user} = useContext(Context)
+    const { id } = useParams()
+    const { user } = useContext(Context)
 
     useEffect(() => {
-        updatePoint(user.user.id).then((data) => {
+        updatePoint(user.user.id).then(data => {
             if (data) {
                 console.log(data)
             }
         })
-    }, [])
+    }, []);
 
     return (
         <main>
@@ -115,7 +115,9 @@ const Points = () => {
                             </svg>
                         </button>
                         <div className="modal-body">
-                            <div className="barcode mx-auto mb-4">A1234567890B</div>
+                            <div className="barcode mx-auto mb-4">
+                                A1234567890B
+                            </div>
                             <div className="fs-15 text-center mt-3">Карта № 4556 8900 3765</div>
                         </div>
                     </div>
@@ -123,6 +125,6 @@ const Points = () => {
             </div>
         </main>
     )
-}
+};
 
-export default Points
+export default Points;

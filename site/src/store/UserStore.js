@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx'
+import { makeAutoObservable } from "mobx";
 
 export default class UserStore {
     constructor() {
@@ -15,19 +15,19 @@ export default class UserStore {
     }
     get birthday() {
         var monthNames = [
-            'Января',
-            'Февраля',
-            'Марта',
-            'Апреля',
-            'Мая',
-            'Июня',
-            'Июля',
-            'Августа',
-            'Сентября',
-            'Октября',
-            'Ноября',
-            'Декабря',
-        ]
+            "Января",
+            "Февраля",
+            "Марта",
+            "Апреля",
+            "Мая",
+            "Июня",
+            "Июля",
+            "Августа",
+            "Сентября",
+            "Октября",
+            "Ноября",
+            "Декабря",
+        ];
         if (this._user && this._user.birthday_day && this._user.birthday_month) {
             var text = this._user.birthday_day + ' ' + monthNames[this._user.birthday_month - 1]
             return text

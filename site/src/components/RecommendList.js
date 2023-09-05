@@ -1,11 +1,11 @@
 import React from 'react'
-import {observer} from 'mobx-react-lite'
-import ProductItem from './ProductItem'
-import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation, Pagination} from 'swiper'
-SwiperCore.use([Navigation, Pagination])
+import { observer } from "mobx-react-lite"
+import ProductItem from "./ProductItem";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+SwiperCore.use([Navigation, Pagination]);
 
-const RecommendList = observer(({list}) => {
+const RecommendList = observer(({ list }) => {
     if (list) {
         return (
             <Swiper
@@ -20,18 +20,20 @@ const RecommendList = observer(({list}) => {
                     992: {
                         slidesPerView: 4,
                         spaceBetween: 16,
-                    },
+                    }
                 }}
                 navigation={{
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 }}
             >
-                {list.map((item, i) => (
-                    <SwiperSlide>
-                        <ProductItem key={i} product={item} />
-                    </SwiperSlide>
-                ))}
+                {
+                    list.map((item, i) => (
+                        <SwiperSlide>
+                            <ProductItem key={i} product={item} />
+                        </SwiperSlide>
+                    ))
+                }
             </Swiper>
         )
     } else {

@@ -1,13 +1,13 @@
-import {$authHost, $host} from './index'
-import jwt_decode from 'jwt-decode'
+import { $authHost, $host } from "./index";
+import jwt_decode from "jwt-decode";
 
 export const registration = async (phone) => {
-    const {data} = await $host.post('/user/registration', {phone})
+    const { data } = await $host.post('/user/registration', { phone })
     //localStorage.setItem('token', data.token)
     return jwt_decode(data)
 }
 export const newPassword = async (phone) => {
-    const {data} = await $host.post('/user/newpassword', {phone})
+    const { data } = await $host.post('/user/newpassword', { phone })
     if (data) {
         return data
     } else {
@@ -16,12 +16,12 @@ export const newPassword = async (phone) => {
 }
 
 export const login = async (phone, password) => {
-    const {data} = await $host.post('/user/login', {phone, password})
+    const { data } = await $host.post('/user/login', { phone, password })
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
 export const edit = async (array) => {
-    const {data} = await $authHost.post('/user/edit', array)
+    const { data } = await $authHost.post('/user/edit', array)
     if (data) {
         localStorage.setItem('token', data.token)
         return jwt_decode(data.token)
@@ -30,7 +30,7 @@ export const edit = async (array) => {
     }
 }
 export const addAddress = async (array) => {
-    const {data} = await $authHost.post('/user/address', array)
+    const { data } = await $authHost.post('/user/address', array)
     if (data) {
         localStorage.setItem('token', data.token)
         return jwt_decode(data.token)
@@ -39,7 +39,7 @@ export const addAddress = async (array) => {
     }
 }
 export const editAddress = async (array) => {
-    const {data} = await $authHost.post('/user/editaddress', array)
+    const { data } = await $authHost.post('/user/editaddress', array)
     if (data) {
         localStorage.setItem('token', data.token)
         return jwt_decode(data.token)
@@ -48,7 +48,7 @@ export const editAddress = async (array) => {
     }
 }
 export const deleteAddress = async (id) => {
-    const {data} = await $authHost.post('/user/deleteaddress', {id})
+    const { data } = await $authHost.post('/user/deleteaddress', { id })
     if (data) {
         localStorage.setItem('token', data.token)
         return jwt_decode(data.token)
@@ -57,14 +57,14 @@ export const deleteAddress = async (id) => {
     }
 }
 export const check = async () => {
-    const {data} = await $authHost.get('/user/auth')
+    const { data } = await $authHost.get('/user/auth')
     if (data && data.token) {
         localStorage.setItem('token', data.token)
     }
     return jwt_decode(data.token)
 }
 export const updatePoint = async () => {
-    const {data} = await $authHost.post('/user/updatePoint')
+    const { data } = await $authHost.post('/user/updatePoint')
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }

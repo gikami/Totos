@@ -1,10 +1,10 @@
-import React from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {PROFILE_ROUTE, HOME_ROUTE} from '../../utils/consts'
-import SideBar from './components/menu'
+import React from 'react';
+import { Link, useParams } from "react-router-dom";
+import { PROFILE_ROUTE, HOME_ROUTE } from "../../utils/consts";
+import SideBar from "./components/menu";
 
 const Payments = () => {
-    const {id} = useParams()
+    const { id } = useParams()
     return (
         <main>
             <section id="sec-13" className="mb-8">
@@ -14,9 +14,7 @@ const Payments = () => {
                         <div className="col-md-8 col-xl-7 col-xxl-6 offset-xl-1">
                             <div className="mb-5">
                                 <h5 className="mb-3">Способы оплаты</h5>
-                                <div className="gray-1 fs-09 mb-3">
-                                    Добавьте карту для быстрой и безопасной оплаты заказов
-                                </div>
+                                <div className="gray-1 fs-09 mb-3">Добавьте карту для быстрой и безопасной оплаты заказов</div>
                                 <button type="button" className="d-flex align-items-center">
                                     <img src="/images/icons/plus3.svg" alt="Добавить" className="me-2" />
                                     <span className="primary fs-11 fw-5">Добавить адрес</span>
@@ -36,9 +34,7 @@ const Payments = () => {
                                         <input type="text" placeholder="CVC" />
                                     </div>
                                     <div className="col-12">
-                                        <button type="submit" className="btn btn-1">
-                                            Сохранить карту
-                                        </button>
+                                        <button type="submit" className="btn btn-1">Сохранить карту</button>
                                     </div>
                                 </div>
                             </form>
@@ -46,31 +42,21 @@ const Payments = () => {
                                 <div className="d-flex justify-content-between mb-4">
                                     <h5 className="mb-0">Способы оплаты</h5>
                                 </div>
-                                <div className="gray-3 fs-09 mb-4">
-                                    Добавьте карту для быстрой и безопасной оплаты заказов
-                                </div>
+                                <div className="gray-3 fs-09 mb-4">Добавьте карту для быстрой и безопасной оплаты заказов</div>
                                 <div className="fs-09 mb-4">
                                     <div>Visa</div>
                                     <div className="gray-3 mt-1">**** **** **** 7685</div>
                                     <div className="d-flex mt-1">
-                                        <button type="button" className="fs-09 gray-1 me-3">
-                                            Редактировать
-                                        </button>
-                                        <button type="button" className="fs-09 gray-4">
-                                            Удалить
-                                        </button>
+                                        <button type="button" className="fs-09 gray-1 me-3">Редактировать</button>
+                                        <button type="button" className="fs-09 gray-4">Удалить</button>
                                     </div>
                                 </div>
                                 <div className="fs-09 mb-4">
                                     <div>Mastercard</div>
                                     <div className="gray-3 mt-1">**** **** **** 1234</div>
                                     <div className="d-flex mt-1">
-                                        <button type="button" className="fs-09 gray-1 me-3">
-                                            Редактировать
-                                        </button>
-                                        <button type="button" className="fs-09 gray-4">
-                                            Удалить
-                                        </button>
+                                        <button type="button" className="fs-09 gray-1 me-3">Редактировать</button>
+                                        <button type="button" className="fs-09 gray-4">Удалить</button>
                                     </div>
                                 </div>
                                 <button type="button" className="d-flex align-items-center">
@@ -88,6 +74,6 @@ const Payments = () => {
             </section>
         </main>
     )
-}
+};
 
-export default Payments
+export default Payments;

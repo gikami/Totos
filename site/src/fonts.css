@@ -3,7 +3,8 @@
     src: url('assets/fonts/Gilroy-Thin.eot');
     src: local('Gilroy Thin'), local('Gilroy-Thin'),
         url('assets/fonts/Gilroy-Thin.eot?#iefix') format('embedded-opentype'),
-        url('assets/fonts/Gilroy-Thin.woff') format('woff'), url('assets/fonts/Gilroy-Thin.ttf') format('truetype');
+        url('assets/fonts/Gilroy-Thin.woff') format('woff'),
+        url('assets/fonts/Gilroy-Thin.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
 }
@@ -42,7 +43,8 @@
     src: url('assets/fonts/Gilroy-Light.eot');
     src: local('Gilroy Light'), local('Gilroy-Light'),
         url('assets/fonts/Gilroy-Light.eot?#iefix') format('embedded-opentype'),
-        url('assets/fonts/Gilroy-Light.woff') format('woff'), url('assets/fonts/Gilroy-Light.ttf') format('truetype');
+        url('assets/fonts/Gilroy-Light.woff') format('woff'),
+        url('assets/fonts/Gilroy-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
 }
@@ -121,7 +123,8 @@
     src: url('assets/fonts/Gilroy-Bold.eot');
     src: local('Gilroy Bold'), local('Gilroy-Bold'),
         url('assets/fonts/Gilroy-Bold.eot?#iefix') format('embedded-opentype'),
-        url('assets/fonts/Gilroy-Bold.woff') format('woff'), url('assets/fonts/Gilroy-Bold.ttf') format('truetype');
+        url('assets/fonts/Gilroy-Bold.woff') format('woff'),
+        url('assets/fonts/Gilroy-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
@@ -160,7 +163,8 @@
     src: url('assets/fonts/Gilroy-Black.eot');
     src: local('Gilroy Black'), local('Gilroy-Black'),
         url('assets/fonts/Gilroy-Black.eot?#iefix') format('embedded-opentype'),
-        url('assets/fonts/Gilroy-Black.woff') format('woff'), url('assets/fonts/Gilroy-Black.ttf') format('truetype');
+        url('assets/fonts/Gilroy-Black.woff') format('woff'),
+        url('assets/fonts/Gilroy-Black.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
 }
@@ -179,7 +183,8 @@
     src: url('assets/fonts/Gilroy-Heavy.eot');
     src: local('Gilroy Heavy'), local('Gilroy-Heavy'),
         url('assets/fonts/Gilroy-Heavy.eot?#iefix') format('embedded-opentype'),
-        url('assets/fonts/Gilroy-Heavy.woff') format('woff'), url('assets/fonts/Gilroy-Heavy.ttf') format('truetype');
+        url('assets/fonts/Gilroy-Heavy.woff') format('woff'),
+        url('assets/fonts/Gilroy-Heavy.ttf') format('truetype');
     font-weight: 1000;
     font-style: normal;
 }

@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react'
-import {OFFER_ROUTE} from '../utils/consts'
-import {HashLink as Link} from 'react-router-hash-link'
+import React, { useEffect } from 'react'
+import { OFFER_ROUTE } from "../utils/consts"
+import { HashLink as Link } from 'react-router-hash-link';
 
 const About = () => {
     useEffect(() => {
-        document.title = 'Доставка и оплата'
+        document.title = "Доставка и оплата"
     }, [])
     return (
         <main>
@@ -14,11 +14,7 @@ const About = () => {
                     <div className="row mb-5">
                         <div className="col-md-4">
                             <div id="map">
-                                <iframe
-                                    src="https://www.google.com/maps/d/embed?mid=17lCQLErcNQTUS5rYvyk5pt7kMc84FI5X&ehbc=2E312F"
-                                    width="100%"
-                                    height="400"
-                                ></iframe>
+                                <iframe src="https://www.google.com/maps/d/embed?mid=17lCQLErcNQTUS5rYvyk5pt7kMc84FI5X&ehbc=2E312F" width="100%" height="400"></iframe>
                             </div>
                         </div>
                         <div className="col-md-8">
@@ -34,16 +30,8 @@ const About = () => {
                                     <li>Минимальный заказ 1000 р</li>
                                     <li>Бесплатная достовка при заказе от 1500 р</li>
                                 </ul>
-                                <li>
-                                    Среднее время доставки составляет от 45 минут. Максимальное время доставки заказа
-                                    от 60 до 90 минут.
-                                    <br />
-                                    <Link
-                                        to={OFFER_ROUTE + '/#delivery'}
-                                        className="text-success fw-6 d-inline-block color-green mt-3"
-                                    >
-                                        Подробнее о доставке
-                                    </Link>
+                                <li>Среднее время доставки составляет от 45 минут. Максимальное время доставки заказа от 60 до 90 минут.<br />
+                                    <Link to={OFFER_ROUTE + '/#delivery'} className="text-success fw-6 d-inline-block color-green mt-3">Подробнее о доставке</Link>
                                 </li>
                             </ul>
                         </div>
@@ -89,7 +77,7 @@ const About = () => {
                 </div>
             </section>
         </main>
-    )
-}
+    );
+};
 
-export default About
+export default About;

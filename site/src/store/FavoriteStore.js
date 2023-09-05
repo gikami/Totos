@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx'
+import { makeAutoObservable } from "mobx";
 
 export default class FavoriteStore {
     constructor() {
@@ -7,15 +7,15 @@ export default class FavoriteStore {
         this.getData()
     }
     getData() {
-        let data = localStorage.getItem('favorite')
+        let data = localStorage.getItem('favorite');
         if (data) {
-            this._favorite = JSON.parse(data)
+            this._favorite = JSON.parse(data);
         }
     }
     setFavorite(product) {
-        let id_yes = Object.keys(this._favorite).find((ids) => this._favorite[ids].id === product.id)
+        let id_yes = Object.keys(this._favorite).find(ids => this._favorite[ids].id === product.id);
         if (id_yes) {
-            this._favorite.splice(id_yes, 1)
+            this._favorite.splice(id_yes, 1);
             localStorage.setItem('favorite', JSON.stringify(this._favorite))
         } else {
             this._favorite.push(product)
@@ -23,11 +23,8 @@ export default class FavoriteStore {
         }
     }
     checkFavorite(product) {
-        let id_yes =
-            product && product.id
-                ? Object.keys(this._favorite).find((ids) => this._favorite[ids].id === product.id)
-                : false
-        return {status: id_yes ? true : false}
+        let id_yes = (product && product.id) ? Object.keys(this._favorite).find(ids => this._favorite[ids].id === product.id) : false;
+        return { status: (id_yes) ? true : false }
     }
 
     removeAllFavorite() {

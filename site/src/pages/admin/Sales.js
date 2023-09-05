@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {ADMIN_ROUTE} from '../../utils/consts'
-import Pagination from './components/Pagination'
-import {NotificationManager} from 'react-notifications'
-import {getSale, getSales, editSale, deleteSale, createSale} from '../../http/adminAPI'
+import React, { useState, useEffect } from 'react'
+import { Link, useParams } from "react-router-dom"
+import { ADMIN_ROUTE } from "../../utils/consts"
+import Pagination from "./components/Pagination"
+import { NotificationManager } from "react-notifications"
+import { getSale, getSales, editSale, deleteSale, createSale } from "../../http/adminAPI"
 
 const Sales = () => {
-    const {action, page} = useParams()
+    const { action, page } = useParams()
     const [sales, setSales] = useState(false)
     const [sale, setSale] = useState(false)
     const [file, setFile] = useState(false)
@@ -14,11 +14,11 @@ const Sales = () => {
 
     useEffect(() => {
         if (Number(action)) {
-            getSale(action).then((data) => {
+            getSale(action).then(data => {
                 setSale(data.sale)
             })
         } else if (!action) {
-            getSales(page ? page : 1, 40).then((data) => {
+            getSales((page) ? page : 1, 40).then(data => {
                 console.log(data)
                 setSales(data)
                 setPageAll(Number(Math.round(Number(data.count) / 40)))
@@ -27,9 +27,9 @@ const Sales = () => {
     }, [page])
 
     const change = (e) => {
-        setSale({...sale, [e.target.name]: e.target.value})
+        setSale({ ...sale, [e.target.name]: e.target.value })
     }
-    const selectFile = (e) => {
+    const selectFile = e => {
         setFile(e.target.files[0])
     }
 
@@ -45,8 +45,10 @@ const Sales = () => {
                 formData.append('image', file)
 
                 await createSale(formData)
-                    .then((res) => NotificationManager.success('Акция добавлена'))
-                    .catch((err) => NotificationManager.error('Ошибка при добавлении акции'))
+                    .then(res => (NotificationManager.success('Акция добавлена')))
+                    .catch(err => (NotificationManager.error('Ошибка при добавлении акции')))
+
+
             } catch (e) {
                 if (e.response && e.response.data) {
                     NotificationManager.error(e.response.data.message)
@@ -60,29 +62,14 @@ const Sales = () => {
                 <div className="d-flex justify-content-between">
                     <h5>Создать акцию</h5>
                 </div>
-                <form onSubmit={submit}>
+                <form onSubmit={submit} >
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Название</div>
-                        <input
-                            type="text"
-                            placeholder="Введите название"
-                            onChange={change}
-                            name="title"
-                            value={sale.title}
-                            className="mb-3"
-                        />
+                        <input type="text" placeholder="Введите название" onChange={change} name="title" value={sale.title} className="mb-3" />
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Описание</div>
-                        <textarea
-                            rows="6"
-                            type="text"
-                            onChange={change}
-                            placeholder="Введите описание"
-                            name="desc"
-                            value={sale.desc}
-                            className="mb-3"
-                        />
+                        <textarea rows="6" type="text" onChange={change} placeholder="Введите описание" name="desc" value={sale.desc} className="mb-3" />
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Обложка</div>
@@ -90,19 +77,10 @@ const Sales = () => {
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Порядок</div>
-                        <input
-                            type="text"
-                            placeholder={0}
-                            onChange={change}
-                            name="priority"
-                            value={sale.priority}
-                            className="mb-3"
-                        />
+                        <input type="text" placeholder={0} onChange={change} name="priority" value={sale.priority} className="mb-3" />
                     </fieldset>
                     <div className="d-flex">
-                        <button type="submit" className="btn btn-1 mx-2">
-                            Добавить
-                        </button>
+                        <button type="submit" className="btn btn-1 mx-2">Добавить</button>
                     </div>
                 </form>
             </div>
@@ -161,63 +139,34 @@ const Sales = () => {
             <div>
                 <div className="d-flex justify-content-between mb-4">
                     <h5>{sale.title}</h5>
-                    <Link className="btn btn-1" to={ADMIN_ROUTE + '/sales/add'}>
+                    <Link
+                        className="btn btn-1"
+                        to={ADMIN_ROUTE + '/sales/add'}
+                    >
                         Добавить акцию
                     </Link>
                 </div>
-                <form onSubmit={submit}>
+                <form onSubmit={submit} >
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Название</div>
-                        <input
-                            type="text"
-                            onChange={change}
-                            placeholder="Введите название"
-                            name="title"
-                            value={sale.title}
-                            className="mb-3"
-                        />
+                        <input type="text" onChange={change} placeholder="Введите название" name="title" value={sale.title} className="mb-3" />
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Описание</div>
-                        <textarea
-                            rows="6"
-                            onChange={change}
-                            type="text"
-                            placeholder="Введите описание"
-                            name="desc"
-                            value={sale.desc}
-                            className="mb-3"
-                        />
+                        <textarea rows="6" onChange={change} type="text" placeholder="Введите описание" name="desc" value={sale.desc} className="mb-3" />
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Обложка</div>
-                        {sale.image ? (
-                            <img
-                                className="mb-3"
-                                width="200"
-                                src={process.env.REACT_APP_API_URL + 'sale/' + sale.image}
-                            />
-                        ) : null}
+                        {(sale.image) ? <img className="mb-3" width="200" src={process.env.REACT_APP_API_URL + 'sale/' + sale.image} /> : null}
                         <input type="file" onChange={selectFile} className="mb-3" />
                     </fieldset>
                     <fieldset className="mb-2">
                         <div className="sec-font mb-2">Порядок</div>
-                        <input
-                            type="text"
-                            placeholder={0}
-                            onChange={change}
-                            name="priority"
-                            value={sale.priority}
-                            className="mb-3"
-                        />
+                        <input type="text" placeholder={0} onChange={change} name="priority" value={sale.priority} className="mb-3" />
                     </fieldset>
                     <div className="d-flex">
-                        <button type="submit" className="btn btn-1 mx-2">
-                            Сохранить изменения
-                        </button>
-                        <button className="btn btn-2 mx-2" onClick={() => deleteSaleBtn()}>
-                            Удалить
-                        </button>
+                        <button type="submit" className="btn btn-1 mx-2">Сохранить изменения</button>
+                        <button className="btn btn-2 mx-2" onClick={() => deleteSaleBtn()}>Удалить</button>
                     </div>
                 </form>
             </div>
@@ -227,67 +176,58 @@ const Sales = () => {
         return (
             <div className="admin-page">
                 <div className="d-flex justify-content-between mb-4">
-                    <h5>Акции ({sales.count ? sales.count : 0})</h5>
-                    <Link className="btn btn-1" to={ADMIN_ROUTE + '/sales/add'}>
+                    <h5>Акции ({(sales.count) ? sales.count : 0})</h5>
+                    <Link
+                        className="btn btn-1"
+                        to={ADMIN_ROUTE + '/sales/add'}
+                    >
                         Добавить акцию
                     </Link>
                 </div>
-                {(sales && sales.count > 0 && pageAll) || pageAll === 0 ? (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">id</th>
-                                <th></th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Порядок</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {sales.rows.map((item) => (
+                {
+                    (sales && sales.count > 0 && pageAll || pageAll === 0) ?
+
+                        <table className="table">
+                            <thead>
                                 <tr>
-                                    <td scope="row">{item.id}</td>
-                                    <td>
-                                        {item.image ? (
-                                            <img
-                                                width="50"
-                                                src={process.env.REACT_APP_API_URL + 'sale/' + item.image}
-                                            />
-                                        ) : (
-                                            ''
-                                        )}
-                                    </td>
-                                    <td>
-                                        <b>{item.title}</b>
-                                        <p className="gray-3">
-                                            <small>{item.desc}</small>
-                                        </p>
-                                    </td>
-                                    <td align="center">{item.priority}</td>
-                                    <td align="right">
-                                        <Link to={ADMIN_ROUTE + '/sales/' + item.id}>Редактировать</Link>
-                                    </td>
+                                    <th scope="col">id</th>
+                                    <th></th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Порядок</th>
+                                    <th scope="col"></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    'Нет акций'
-                )}
+                            </thead>
+                            <tbody>
+                                {
+                                    sales.rows.map(item => (
+                                        <tr>
+                                            <td scope="row">{item.id}</td>
+                                            <td>{(item.image) ? <img width="50" src={process.env.REACT_APP_API_URL + 'sale/' + item.image} /> : ''}</td>
+                                            <td><b>{item.title}</b><p className="gray-3"><small>{item.desc}</small></p></td>
+                                            <td align="center">{item.priority}</td>
+                                            <td align="right"><Link to={ADMIN_ROUTE + '/sales/' + item.id}>Редактировать</Link></td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                        : 'Нет акций'
+                }
                 <Pagination data={pageAll} url={String('sales')} />
             </div>
         )
     } else {
-        return (
-            <div className="admin-page">
-                <div className="d-flex justify-content-between mb-4">
-                    <h5>Акции ({sales.count ? sales.count : 0})</h5>
-                    <Link className="btn btn-1" to={ADMIN_ROUTE + '/sales/add'}>
-                        Добавить акцию
-                    </Link>
-                </div>
+        return <div className="admin-page">
+            <div className="d-flex justify-content-between mb-4">
+                <h5>Акции ({(sales.count) ? sales.count : 0})</h5>
+                <Link
+                    className="btn btn-1"
+                    to={ADMIN_ROUTE + '/sales/add'}
+                >
+                    Добавить акцию
+                </Link>
             </div>
-        )
+        </div>
     }
 }
 
