@@ -14,21 +14,23 @@ const About = () => {
                     <div className="row mb-5">
                         <div className="col-md-4">
                             <div id="map">
-                                <iframe src="https://www.google.com/maps/d/embed?mid=17lCQLErcNQTUS5rYvyk5pt7kMc84FI5X&ehbc=2E312F" width="100%" height="400"></iframe>
+                                <iframe src="https://yandex.ru/map-widget/v1/?from=mapframe&ll=49.187931%2C55.788927&mode=usermaps&source=mapframe&um=constructor%3A7f2814a79acdeedc82b7b4a20adcaf85b6f8d4a0742f360318785ccbb0095946&utm_source=mapframe&z=11" width="100%" height="400"></iframe>
                             </div>
                         </div>
                         <div className="col-md-8">
                             <ul className="ul-style-default">
                                 <li>Принятие заказов ежедневно (пн-вс) с 10:00 до 21:00</li>
-                                <li>При доставке на расстояние менее 9 км</li>
+                                <li>При доставке на расстояние менее 9-13 км</li>
                                 <ul className="my-2 my-md-0">
-                                    <li>Минимальный заказ 450 р</li>
-                                    <li>Бесплатная достовка при заказе от 700 р</li>
+                                    <li>Минимальный заказ 650 р</li>
+                                    <li>Бесплатная достовка при заказе от 850 р</li>
+                                    <li>При заказе до 850 рублей стоимость доставки составляет 200 рублей.</li>
                                 </ul>
-                                <li>При доставке на расстояние более 9 км</li>
+                                <li>При доставке на расстояние более 9-13 км</li>
                                 <ul className="my-2 my-md-0">
-                                    <li>Минимальный заказ 1000 р</li>
-                                    <li>Бесплатная достовка при заказе от 1500 р</li>
+                                    <li>Минимальный заказ 1300 р</li>
+                                    <li>Бесплатная достовка при заказе от 1900 р</li>
+                                    <li>При заказе до 1900 рублей стоимость доставки составляет 200 рублей.</li>
                                 </ul>
                                 <li>Среднее время доставки составляет от 45 минут. Максимальное время доставки заказа от 60 до 90 минут.<br />
                                     <Link to={OFFER_ROUTE + '/#delivery'} className="text-success fw-6 d-inline-block color-green mt-3">Подробнее о доставке</Link>

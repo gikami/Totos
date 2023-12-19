@@ -7,9 +7,9 @@ export default class CartStore {
         this._size = 1
         this._sale = { text: '', total: 0 }
         this._promo = { text: '', total: 0 }
-        this._deliveryMinDelivery = 700
-        this._deliveryMinPrice = 450
-        this._deliveryPrice = 150
+        this._deliveryMinDelivery = 850
+        this._deliveryMinPrice = 650
+        this._deliveryPrice = 200
         this._giftMinPrice = []
         this._gift = []
         makeAutoObservable(this)

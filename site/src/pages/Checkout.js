@@ -126,7 +126,7 @@ const Checkout = observer(() => {
                         <div className="row justify-content-center">
                             <div className="col-md-7 col-lg-6 col-xl-5">
                                 <h2 className="text-center">Заявка успешно отправлена!</h2>
-                                <div className="info-text text-center mb-4 mb-sm-5">Ожидайте звонка оператора от 2 до 15 минут. Мы свяжемся с вами для подтверждения заказа. Если вы не получили ответа, <bold>просим позвонить по телефону 226-80-06 (Гвардейская 33)</bold> или <bold>226-80-60 (Ямашева 97)</bold></div>
+                                <div className="info-text text-center mb-4 mb-sm-5">Ожидайте звонка оператора от 2 до 15 минут. Мы свяжемся с вами для подтверждения заказа. Если вы не получили ответа, <bold>просим позвонить по телефону 226-80-06 (Гвардейская 33)</bold>, <bold>226-80-60 (Ямашева 97)</bold> или <bold>226-80-26 (Фучика 105а)</bold></div>
                                 <Link to={HOME_ROUTE} className="btn btn-2 mx-auto py-md-3">В каталог</Link>
                             </div>
                         </div>
@@ -215,6 +215,7 @@ const Checkout = observer(() => {
                                                         >
                                                             <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Ямашева 97') ? true : false}>Ямашева 97</NavDropdown.Item>
                                                             <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Гвардейская 33') ? true : false}>Гвардейская 33</NavDropdown.Item>
+                                                            <NavDropdown.Item onClick={addLocalAddress} active={(address == 'Фучика 105а') ? true : false}>Фучика 105а</NavDropdown.Item>
                                                         </NavDropdown>
                                                         <div className="col-12">
                                                             <div className="gray-1 mb-2">Комментарий</div>

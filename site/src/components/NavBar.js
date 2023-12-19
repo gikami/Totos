@@ -41,10 +41,11 @@ const NavBar = observer(() => {
                             >
                                 <NavDropdown.Item onClick={changeAddress} active={(address === 'Ямашева 97') ? true : false}>Ямашева 97 </NavDropdown.Item>
                                 <NavDropdown.Item onClick={changeAddress} active={(address === 'Гвардейская 33') ? true : false}>Гвардейская 33</NavDropdown.Item>
+                                <NavDropdown.Item onClick={changeAddress} active={(address === 'Фучика 105а') ? true : false}>Фучика 105а</NavDropdown.Item>
                             </NavDropdown>
-                            <a className="ms-3" href={(address === 'Ямашева 97') ? 'tel:+7 843 226-80-60' : 'tel:+7 843 226-80-06'}>
+                            <a className="ms-3" href={(address === 'Ямашева 97') ? 'tel:+7 843 226-80-60' : (address === 'Гвардейская 33') ? 'tel:+7 843 226-80-06' : (address === 'Фучика 105а') && 'tel:+7 843 226-80-26'}>
                                 <img src="/images/icons/phone.svg" width="18" />
-                                <span className="d-none d-md-inline-block ms-3 fw-6 fs-11">{(address === 'Ямашева 97') ? '+7 843 226-80-60' : '+7 843 226-80-06'}</span>
+                                <span className="d-none d-md-inline-block ms-3 fw-6 fs-11">{(address === 'Ямашева 97') ? '+7 843 226-80-60' : (address === 'Гвардейская 33') ? '+7 843 226-80-06' : (address === 'Фучика 105а') && '+7 843 226-80-26'}</span>
                             </a>
                         </div>
                     </div>
